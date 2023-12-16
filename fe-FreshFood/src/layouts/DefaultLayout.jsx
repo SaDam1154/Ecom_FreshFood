@@ -1,7 +1,16 @@
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
-import { useState } from 'react';
+import Sidebar from './components/Sidebar';
 function DefaultLayout({ children }) {
-    return <main>{children}</main>;
+    return (
+        <div>
+            <Header />
+            <div className=" px-28 pt-[120px]">
+                <Sidebar />
+            </div>
+            <main>{children}</main>
+        </div>
+    );
 }
 
 export default DefaultLayout;
