@@ -1,3 +1,4 @@
+import StaggeredDropDown from './StaggeredDropDown.jsx';
 function Sidebar() {
     return (
         <div className="flex justify-between items-center w-full h-20 bg-slate-400 py-3 px-4">
@@ -18,6 +19,12 @@ function Sidebar() {
                 </svg>
                 <span>Category</span>
             </button>
+            <StaggeredDropDown></StaggeredDropDown>
+            <StaggeredDropDown></StaggeredDropDown>
+            <StaggeredDropDown></StaggeredDropDown>
+            <StaggeredDropDown></StaggeredDropDown>
+            <StaggeredDropDown></StaggeredDropDown>
+
             <button className="flex justify-center items-center gap-3 bg-green-300 rounded-lg p-3 text-green-600">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
