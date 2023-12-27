@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from "react";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
+import React, { useState, useEffect } from 'react';
+import Header from './components/Header';
 function DefaultLayout({ children }) {
     return (
-        <div>
+        <div className='h-[100dvh] overflow-hidden'>
             <Header />
-            <div className='h-40'></div>
-            <div className='px-28  relative'>
-                <Sidebar />
-            </div>
-            <main>{children}</main>
+            <main className='w-full h-full overflow-x-hidden overflow-y-auto'>{children}</main>
         </div>
     );
 }

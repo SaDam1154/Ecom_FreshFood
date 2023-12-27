@@ -1,4 +1,5 @@
-import StaggeredDropDown from "./StaggeredDropDown.jsx";
+import StaggeredDropDown from './StaggeredDropDown.jsx';
+import { Dropdown } from 'flowbite-react';
 function Sidebar() {
     return (
         <div className='flex justify-between items-center w-full h-20 py-3 px-4'>
@@ -8,11 +9,25 @@ function Sidebar() {
                 </svg>
                 <span>Category</span>
             </button>
-            <div className='flex gap-3 justify-center items-center relative top-20'>
-                <StaggeredDropDown></StaggeredDropDown>
-                <StaggeredDropDown></StaggeredDropDown>
-                <StaggeredDropDown></StaggeredDropDown>
-                <StaggeredDropDown></StaggeredDropDown>
+            <div className='flex gap-5 justify-center items-center '>
+                <Dropdown label='Loại thực phẩm' inline>
+                    <Dropdown.Item>Dashboard</Dropdown.Item>
+                    <Dropdown.Item>Settings</Dropdown.Item>
+                    <Dropdown.Item>Earnings</Dropdown.Item>
+                    <Dropdown.Item>Sign out</Dropdown.Item>
+                </Dropdown>
+                <Dropdown label='Loại thực phẩm' inline>
+                    <Dropdown.Item>Dashboard</Dropdown.Item>
+                    <Dropdown.Item>Settings</Dropdown.Item>
+                    <Dropdown.Item>Earnings</Dropdown.Item>
+                    <Dropdown.Item>Sign out</Dropdown.Item>
+                </Dropdown>
+                <Dropdown label='Loại thực phẩm' inline>
+                    <Dropdown.Item>Dashboard</Dropdown.Item>
+                    <Dropdown.Item>Settings</Dropdown.Item>
+                    <Dropdown.Item>Earnings</Dropdown.Item>
+                    <Dropdown.Item>Sign out</Dropdown.Item>
+                </Dropdown>
             </div>
 
             <button className='flex justify-center items-center gap-3 bg-green-300 rounded-lg p-3 text-green-600'>

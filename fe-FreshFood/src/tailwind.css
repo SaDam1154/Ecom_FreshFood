@@ -5,7 +5,9 @@
 @layer base {
     :root {
         --h-header: 60px;
+        --primary-color: #fff;
     }
+
     input,
     select {
         @apply caret-primary-dark outline-none;
