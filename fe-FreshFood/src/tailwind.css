@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @layer base {
     :root {
         --h-header: 60px;
@@ -20,52 +19,6 @@
     }
     .text-editor ul {
         @apply list-disc px-5;
-    }
-
-    .abc {
-        @apply bg-primary-dark;
-    }
-
-    .btn2 {
-        @apply flex items-center justify-center rounded text-white;
-    }
-    .btn2 + .btn2 {
-        @apply ml-2;
-    }
-    .btn2.btn2-sm {
-        @apply px-4 py-1.5;
-    }
-    .btn2.btn2-md {
-        @apply min-w-[150px] px-5 py-2;
-    }
-
-    .btn2.btn2-red {
-        @apply bg-red-500 hover:bg-red-400;
-    }
-    .btn2.btn2-blue {
-        @apply bg-blue-500 hover:bg-blue-400;
-    }
-    .btn2.btn2-green {
-        @apply bg-green-600 hover:bg-green-500;
-    }
-    .btn2:disabled {
-        @apply pointer-events-none opacity-50;
-    }
-
-    .text-input2 {
-        @apply h-9 w-full rounded-md border border-gray-400 px-3 focus-within:!border-primary hover:border-gray-500;
-    }
-
-    .text-input2.invalid {
-        @apply !border-red-500;
-    }
-
-    .container {
-        @apply my-0 mx-auto max-w-[1200px];
-    }
-
-    .text-input2.disabled {
-        @apply !border-slate-300 !bg-slate-100;
     }
 
     label {
@@ -109,22 +62,6 @@
     }
     .btn:disabled {
         @apply pointer-events-none opacity-50;
-    }
-
-    .text-input {
-        @apply rounded border border-slate-300 px-2 text-lg outline-none hover:border-slate-500 focus:border-blue-500;
-    }
-
-    .text-input.invalid {
-        @apply border-red-500;
-    }
-
-     {
-        @apply my-0 mx-auto max-w-[1200px];
-    }
-
-    .text-input.disabled {
-        @apply !border-slate-300 !bg-slate-100;
     }
 
     label {
