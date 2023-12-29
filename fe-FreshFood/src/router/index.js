@@ -2,6 +2,7 @@
 
 // Pages ADMIN
 import Home from '../pages/Home';
+import ProductDetail from '../pages/ProductDetail';
 //PAGE CUSTOMER
 
 // Public routes
@@ -13,6 +14,10 @@ const publicRoutes = [
         props: {
             heading: 'Trang chủ',
         },
+    },
+    {
+        path: '/product/:id',
+        component: ProductDetail,
     },
 ];
 
