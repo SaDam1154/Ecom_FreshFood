@@ -77,7 +77,7 @@ function Search() {
 
             {/* PANEL */}
             {searchInput && (
-                <button className="absolute right-0 left-0  top-14 hidden min-h-[200px] cursor-auto flex-col space-y-2 rounded-lg border bg-white p-3 shadow-md group-focus-within:flex">
+                <button className="absolute z-30 right-0 left-0  top-14 hidden min-h-[200px] cursor-auto flex-col space-y-2 rounded-lg border bg-white p-3 shadow-md group-focus-within:flex">
                     {searchPosts.length > 0 ? (
                         searchPosts.map((post) => (
                             <Link
