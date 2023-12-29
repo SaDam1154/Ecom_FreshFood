@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 function DefaultLayout({ children }) {
     return (
-        <div className='h-[100dvh] overflow-hidden'>
+        <div className='h-full overflow-hidden'>
             <Header />
-            <main className='w-full h-full overflow-x-hidden overflow-y-auto'>{children}</main>
+            <div className='w-full h-auto overflow-x-hidden overflow-y-auto'>{children}</div>
         </div>
     );
 }
