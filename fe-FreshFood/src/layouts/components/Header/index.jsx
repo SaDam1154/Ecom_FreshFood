@@ -1,9 +1,9 @@
 import Search from '../../../components/SearchInput';
 function Header() {
     return (
-        <div className='flex  top-0 shadow-lg bg-white z-50 shadow-slate-100'>
+        <div className='flex top-0 shadow-lg bg-white z-50 shadow-slate-100'>
             {/* Logo */}
-            <div className='flex w-full px-28 py-4 justify-between items-center '>
+            <div className='flex w-full px-8 sm:px-12 lg:px-20 xl:px-28 py-4 justify-between items-center px2'>
                 <img className='w-20 h-20' src='/mainLogo.png' alt='Logo thực phẩm sạch' />
                 <Search></Search>
                 <div className='flex [&>*:not(:last-child)]:border-r-2'>
