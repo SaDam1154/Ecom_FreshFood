@@ -28,6 +28,18 @@ function Sidebar() {
                     <Dropdown.Item>Earnings</Dropdown.Item>
                     <Dropdown.Item>Sign out</Dropdown.Item>
                 </Dropdown>
+                <Dropdown label='Loại thực phẩm' inline>
+                    <Dropdown.Item>Dashboard</Dropdown.Item>
+                    <Dropdown.Item>Settings</Dropdown.Item>
+                    <Dropdown.Item>Earnings</Dropdown.Item>
+                    <Dropdown.Item>Sign out</Dropdown.Item>
+                </Dropdown>
+                <Dropdown label='Loại thực phẩm' inline>
+                    <Dropdown.Item>Dashboard</Dropdown.Item>
+                    <Dropdown.Item>Settings</Dropdown.Item>
+                    <Dropdown.Item>Earnings</Dropdown.Item>
+                    <Dropdown.Item>Sign out</Dropdown.Item>
+                </Dropdown>
             </div>
 
             <button className='flex justify-center items-center gap-3 bg-green-300 rounded-lg p-3 text-green-600'>

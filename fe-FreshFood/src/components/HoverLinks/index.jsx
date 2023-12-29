@@ -51,7 +51,7 @@ const Link = ({ heading, imgSrc, subheading, href }) => {
             onMouseMove={handleMouseMove}
             initial='initial'
             whileHover='whileHover'
-            className='group relative flex items-center justify-between w-full px-2 sm:px-4 lg:px-6 xl:px-10 border-b-2 border-neutral-700  transition-colors duration-500 hover:border-[#0da487] hover:text-[]'
+            className='group relative flex items-center justify-between w-full px-1 lg:px-2 xl:px-3 2xl:px-3  border-b-2 border-neutral-700  transition-colors duration-500 hover:border-[#0da487] hover:text-[]'
         >
             <div>
                 <motion.span
@@ -64,7 +64,7 @@ const Link = ({ heading, imgSrc, subheading, href }) => {
                         staggerChildren: 0.075,
                         delayChildren: 0.25,
                     }}
-                    className='relative z-10 block text-xl font-semibold text-neutral-950 transition-colors duration-500 group-hover:text-[#0da487] '
+                    className='relative z-10 block text-base xl:text-base 2xl:text-lg font-semibold text-neutral-950 transition-colors duration-500 group-hover:text-[#0da487] '
                 >
                     {heading.split('').map((l, i) => (
                         <motion.span
@@ -94,9 +94,9 @@ const Link = ({ heading, imgSrc, subheading, href }) => {
                     },
                 }}
                 transition={{ type: 'spring' }}
-                className='relative z-10 p-4'
+                className='relative z-10 p-1 sm:p-2 xl:p-3'
             >
-                <FiArrowRight className='text-5xl text-neutral-950  group-hover:text-[#0da487]' />
+                <FiArrowRight className='text-xl sm:text-2xl lg:text-3xl 2xl:text-5xl text-neutral-950  group-hover:text-[#0da487]' />
             </motion.div>
         </motion.a>
     );
