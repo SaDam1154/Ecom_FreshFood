@@ -64,8 +64,20 @@
         @apply pointer-events-none opacity-50;
     }
 
-    label {
-        cursor: pointer;
+    .text-input {
+        @apply h-10 w-full rounded border-2 border-slate-300 px-2 outline-none hover:border-slate-500 focus:border-blue-500;
+    }
+
+    .text-input.invalid {
+        @apply !border-red-500;
+    }
+
+    .text-input:disabled {
+        @apply pointer-events-none !border-slate-300 !bg-slate-100 opacity-70;
+    }
+
+    .label {
+        @apply inline-block cursor-pointer pb-1 font-semibold text-gray-600;
     }
 
     input[type='checkbox'] {

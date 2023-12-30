@@ -3,6 +3,7 @@
 // Pages ADMIN
 import Cart from '../pages/Cart';
 import Home from '../pages/Home';
+import Order from '../pages/Order';
 import ProductDetail from '../pages/ProductDetail';
 //PAGE CUSTOMER
 
@@ -23,6 +24,10 @@ const publicRoutes = [
     {
         path: '/cart',
         component: Cart,
+    },
+    {
+        path: 'order',
+        component: Order,
     },
 ];
 
