@@ -7,19 +7,22 @@
         --primary-color: #fff;
     }
 
-    input,
+    /* input,
     select {
         @apply caret-primary-dark outline-none;
+    } */
+    input {
+        @apply outline-none;
     }
 }
 
 @layer components {
-    .text-editor a {
+    /* .text-editor a {
         @apply text-primary-dark underline decoration-primary-dark;
     }
     .text-editor ul {
         @apply list-disc px-5;
-    }
+    } */
 
     label {
         cursor: pointer;
@@ -40,9 +43,6 @@
 
     .btn {
         @apply flex items-center justify-center rounded text-white;
-    }
-    .btn + .btn {
-        @apply ml-2;
     }
     .btn.btn-sm {
         @apply px-4 py-1.5;

@@ -32,7 +32,7 @@ export default function LatestProductBlock({ product }) {
             <p className="text-xl font-medium">Sản phẩm mới nhất</p>
             <div className="mt-6 space-y-4">
                 {products.map((p, index) => (
-                    <Link to={'/product/' + p?.id} className="flex space-x-2">
+                    <Link to={'/product/' + p?.id} className="flex space-x-2" key={index}>
                         <img
                             className="w-[70px] h-[70px] rounded object-cover"
                             src={p?.images?.length ? p?.images[0] : '/placeholder.png'}

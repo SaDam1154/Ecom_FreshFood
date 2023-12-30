@@ -1,6 +1,7 @@
 // Layouts
 
 // Pages ADMIN
+import Cart from '../pages/Cart';
 import Home from '../pages/Home';
 import ProductDetail from '../pages/ProductDetail';
 //PAGE CUSTOMER
@@ -18,6 +19,10 @@ const publicRoutes = [
     {
         path: '/product/:id',
         component: ProductDetail,
+    },
+    {
+        path: '/cart',
+        component: Cart,
     },
 ];
 
