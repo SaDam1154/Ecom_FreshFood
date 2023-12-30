@@ -20,6 +20,7 @@ export default function ProductDetail() {
 
     useEffect(() => {
         getProduct();
+        setQty(1);
     }, [id]);
     function getProduct() {
         fetch('http://localhost:5000/api/product' + '/' + id)

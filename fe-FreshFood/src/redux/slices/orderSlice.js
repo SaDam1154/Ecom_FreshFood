@@ -1,11 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    customer: {
-        name: '',
-        phone: '',
-        address: '',
-    },
     details: [], // {product, quantity}
     totalPrice: 0,
 };
@@ -78,10 +73,6 @@ export const orderSlice = createSlice({
                 state.details[indexDetail].quantity = Number(action.payload.quantity);
             }
             updateTotalPrice(state);
-        },
-
-        updateCustomer: (state, action) => {
-            state.customer = action.payload;
         },
         reset: () => initialState,
     },
