@@ -1,11 +1,13 @@
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { orderActions } from '../../redux/slices/orderSlice';
 import { customerSelector, orderSelector } from '../../redux/selectors';
 import PriceFormat from '../../components/PriceFormat';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const validationSchema = Yup.object({
     phone: Yup.string()
@@ -24,6 +26,7 @@ export default function Order() {
     const [coupon, setCoupon] = useState(null);
     const [validateOnChange, setValidateOnChange] = useState(false);
     const [coupons, setCoupons] = useState([]);
+    const navigate = useNavigate();
 
     const form = useFormik({
         initialValues: {
@@ -62,7 +65,61 @@ export default function Order() {
         }
     }, [customer]);
 
-    function handleFormsubmit(values) {}
+    const intoMoney = useMemo(() => {
+        if (!coupon) {
+            return order?.totalPrice;
+        }
+        if (!coupon?.canUse) {
+            return order?.totalPrice;
+        }
+        return order?.totalPrice - (order?.totalPrice * coupon?.discountPercent) / 100;
+    }, [coupon, order]);
+
+    function handleFormsubmit(values) {
+        setLoading(true);
+        const details = order.details.map((d) => ({
+            product: d.product._id,
+            quantity: d.quantity,
+            price: d.price,
+        }));
+        fetch('http://localhost:5000/api/order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                customerId: customer?._id,
+                deliveryStatus: 'pending',
+                paymentStatus: 'unpaid',
+                details: details,
+                receivedMoney: order.totalPrice,
+                totalPrice: order.totalPrice,
+                intoMoney: intoMoney,
+                coupon: coupon?.canUse ? coupon?._id : null,
+                exchangeMoney: 0,
+                phone: values.phone,
+                address: values.address,
+            }),
+        })
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.success) {
+                    dispatch(orderActions.reset());
+                    toast.success('Đặt hàng thành công');
+                    setValidateOnChange(false);
+                    navigate('/');
+                } else {
+                    toast.error('Có lỗi xảy ra');
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                toast.error('Có lỗi xảy ra');
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    }
     return (
         <div className="px-[8vw] py-10">
             <div className="flex space-x-6">
@@ -80,13 +137,15 @@ export default function Order() {
                                 </div>
                                 <div className="flex justify-between">
                                     <span>Giảm giá (VNĐ)</span>
-                                    <span>0</span>
+                                    <span>
+                                        <PriceFormat>{order.totalPrice - intoMoney}</PriceFormat>
+                                    </span>
                                 </div>
                             </div>
                             <div className="flex py-2 mt-2 border-t font-semibold text-lg justify-between">
                                 <span>Thành tiền (VNĐ)</span>
                                 <span className="text-primary-600">
-                                    <PriceFormat>{order.totalPrice}</PriceFormat>
+                                    <PriceFormat>{intoMoney}</PriceFormat>
                                 </span>
                             </div>
                         </div>
@@ -149,6 +208,7 @@ export default function Order() {
                             </label>
                             {customer && (
                                 <button
+                                    type="button"
                                     className="font-semibold text-blue-600 hover:text-blue-700"
                                     onClick={() => form.setFieldValue('address', customer.address)}
                                 >
@@ -225,7 +285,7 @@ export default function Order() {
                     <button
                         type="submit"
                         className={clsx('btn btn-md mt-2 w-full bg-red-500 hover:bg-red-400')}
-                        disabled={loading}
+                        disabled={loading || order.details.length === 0}
                     >
                         Đặt hàng
                     </button>
