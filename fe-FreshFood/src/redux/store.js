@@ -6,13 +6,13 @@ const localStorageMiddleware = (store) => (next) => (action) => {
     const result = next(action);
     // Save to localStorage
     const state = store.getState();
-    localStorage.setItem('oop_account', JSON.stringify(state.account));
+    localStorage.setItem('thuc-pham-sach-account', JSON.stringify(state.account));
 
     return result;
 };
 
 const reHydrateStore = () => {
-    if (localStorage.getItem('oop_account') !== null) {
+    if (localStorage.getItem('thuc-pham-sach-account') !== null) {
         return {
             order: {
                 customer: {
@@ -23,7 +23,7 @@ const reHydrateStore = () => {
                 details: [],
                 totalPrice: 0,
             },
-            account: JSON.parse(localStorage.getItem('oop_account')),
+            account: JSON.parse(localStorage.getItem('thuc-pham-sach-account')),
         };
     } else {
         return {

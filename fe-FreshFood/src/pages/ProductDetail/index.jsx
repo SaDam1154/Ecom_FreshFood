@@ -1,12 +1,19 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import ProductImageSlide from './ProductImageSlide';
 import { useParams } from 'react-router-dom';
 import PriceFormat from '../../components/PriceFormat';
 import RatingsBlock from './RatingsBlock';
 import RelatedProductBlock from './RelatedProductsBlock';
 import LatestProductBlock from './LatestProductsBlock';
+import QuantityInput from '../../components/QuantityInput';
+import { orderActions } from '../../redux/slices/orderSlice';
+import { orderSelector } from '../../redux/selectors';
 
 export default function ProductDetail() {
+    const dispatch = useDispatch();
+    const order = useSelector(orderSelector);
     const [qty, setQty] = useState(1);
     const { id } = useParams();
     const [product, setProduct] = useState(null);
@@ -30,6 +37,15 @@ export default function ProductDetail() {
                     setProduct({});
                 }
             });
+    }
+
+    function handleAddToCart() {
+        if (order.details.find((d) => d.product._id === product._id)) {
+            toast.info('Sản phẩm đã có trong giỏ hàng!');
+        } else {
+            dispatch(orderActions.addMany({ product, quantity: qty, price: product?.price }));
+            toast.success('Đã thêm sản phẩm vào giỏ hàng!');
+        }
     }
 
     return (
@@ -117,44 +133,16 @@ export default function ProductDetail() {
 
                             {/* ACTION GROUP */}
                             <div className="flex items-center mt-4 space-x-2">
-                                <div className="flex items-center p-1 rounded-md bg-gray-100">
-                                    <button className="w-8 h-8 rounded bg-white flex items-center justify-center text-primary-600">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth={2}
-                                            stroke="currentColor"
-                                            className="w-4 h-4"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M5 12h14"
-                                            />
-                                        </svg>
-                                    </button>
-                                    <div className="w-16 flex items-center justify-center text-gray-600">
-                                        {qty}
-                                    </div>
-                                    <button className="w-8 h-8 rounded bg-white flex items-center justify-center text-primary-600">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth={2}
-                                            stroke="currentColor"
-                                            className="w-4 h-4"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M12 4.5v15m7.5-7.5h-15"
-                                            />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <button className="btn bg-primary-600 hover:bg-primary-700 btn-md w-full">
+                                <QuantityInput
+                                    value={qty}
+                                    setValue={setQty}
+                                    min={1}
+                                    max={product?.quantity}
+                                />
+                                <button
+                                    className="btn bg-primary-600 hover:bg-primary-700 btn-md w-full"
+                                    onClick={handleAddToCart}
+                                >
                                     Thêm vào giỏ hàng
                                 </button>
                             </div>

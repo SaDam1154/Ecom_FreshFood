@@ -6,11 +6,7 @@ const initialState = {
         phone: '',
         address: '',
     },
-    details: [],
-    totalPrice: 0,
-};
-const initialStateWithCustomer = {
-    details: [],
+    details: [], // {product, quantity}
     totalPrice: 0,
 };
 
@@ -24,18 +20,17 @@ export const orderSlice = createSlice({
     name: 'order',
     initialState,
     reducers: {
+        // payload {product, price}
         add: (state, action) => {
             //add
-            const indexDetail = state.details.findIndex((detail) => detail.product === action.payload._id);
+            const indexDetail = state.details.findIndex(
+                (detail) => detail.product._id === action.payload.product._id
+            );
             if (indexDetail !== -1) {
-                if (state.details[indexDetail].quantity === action.payload.quantity) {
-                    return state;
-                } else {
-                    state.details[indexDetail].quantity += 1;
-                }
+                state.details[indexDetail].quantity += 1;
             } else {
                 state.details.push({
-                    product: action.payload._id,
+                    product: action.payload.product,
                     price: action.payload.price,
                     quantity: 1,
                 });
@@ -43,17 +38,41 @@ export const orderSlice = createSlice({
             updateTotalPrice(state);
         },
 
-        // action: _id
-        remove: (state, action) => {
-            state.details = state.details.filter((detail) => detail.product !== action.payload);
+        addMany: (state, action) => {
+            //add
+            const indexDetail = state.details.findIndex(
+                (detail) => detail.product._id === action.payload.product._id
+            );
+            if (indexDetail !== -1) {
+                return state;
+            } else {
+                state.details.push({
+                    product: action.payload.product,
+                    price: action.payload.price,
+                    quantity: action.payload.quantity,
+                });
+            }
             updateTotalPrice(state);
         },
 
-        // action: {product, quantity}
+        // payload: {_id}
+        remove: (state, action) => {
+            state.details = state.details.filter((detail) => detail.product._id !== action.payload);
+            updateTotalPrice(state);
+        },
+
+        // payload: {_id, quantity}
         updateQuantity: (state, action) => {
-            const indexDetail = state.details.findIndex((detail) => detail.product === action.payload.product._id);
+            const indexDetail = state.details.findIndex(
+                (detail) => detail.product._id === action.payload._id
+            );
             if (indexDetail !== -1) {
-                if (action.payload.product.quantity < Number(action.payload.quantity)) {
+                if (state.details[indexDetail].product.quantity < Number(action.payload.quantity)) {
+                    state.details[indexDetail].quantity =
+                        state.details[indexDetail].product.quantity;
+                    return;
+                }
+                if (Number(action.payload.quantity) <= 0) {
                     return state;
                 }
                 state.details[indexDetail].quantity = Number(action.payload.quantity);
@@ -64,10 +83,7 @@ export const orderSlice = createSlice({
         updateCustomer: (state, action) => {
             state.customer = action.payload;
         },
-        reset: (state, action) => {
-            (state.details = initialStateWithCustomer.details),
-                (state.totalPrice = initialStateWithCustomer.totalPrice);
-        },
+        reset: () => initialState,
     },
 });
 
