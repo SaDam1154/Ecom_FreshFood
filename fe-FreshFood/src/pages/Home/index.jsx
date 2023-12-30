@@ -2,7 +2,7 @@ import Sidebar from '../../layouts/components/Sidebar';
 import MyCarousel from '../../components/Carousel';
 import HoverLinks from '../../components/HoverLinks';
 import { CardProduct } from '../../components/CardProduct';
-import MyFooter from '../../components/MyFooter';
+import { Link } from 'react-router-dom';
 function Home() {
     return (
         <div className="flex flex-col w-full h-auto px-8 sm:px-12 lg:px-20 xl:px-28 overflow-y-scroll overflow-x-hidden items-center justify-start">

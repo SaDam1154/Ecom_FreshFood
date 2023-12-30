@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import Search from '../../../components/SearchInput';
+import { Link } from 'react-router-dom';
 function Header() {
     return (
-        <div className="flex top-0 shadow-lg bg-white z-50 shadow-slate-100">
+        <div className="flex top-0 shadow-lg bg-white z-50 shadow-slate-100 select-none">
             {/* Logo */}
             <div className="flex w-full px-8 sm:px-12 lg:px-20 xl:px-28 py-4 justify-between items-center px2">
                 <img className="w-20 h-20" src="/mainLogo.png" alt="Logo thực phẩm sạch" />
@@ -60,7 +61,7 @@ function Header() {
                         </svg>
                     </Link>
                     {/* User */}
-                    <button className="px-4 ">
+                    <Link to={'/login'} className="px-4 ">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
@@ -75,7 +76,7 @@ function Header() {
                                 d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
                             />
                         </svg>
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>
