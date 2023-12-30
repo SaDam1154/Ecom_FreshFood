@@ -5,6 +5,7 @@ import Cart from '../pages/Cart';
 import Home from '../pages/Home';
 import Order from '../pages/Order';
 import Login from '../pages/Login';
+import Signup from '../pages/Signup';
 import ProductDetail from '../pages/ProductDetail';
 //PAGE CUSTOMER
 
@@ -22,9 +23,11 @@ const publicRoutes = [
         path: '/Login',
         layout: FullLayout,
         component: Login,
-        props: {
-            heading: 'Trang chủ',
-        },
+    },
+    {
+        path: '/Signup',
+        layout: FullLayout,
+        component: Signup,
     },
     {
         path: '/product/:id',

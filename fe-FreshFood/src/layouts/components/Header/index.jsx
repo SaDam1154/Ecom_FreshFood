@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import Search from '../../../components/SearchInput';
-import { Link } from 'react-router-dom';
 function Header() {
     return (
         <div className="flex top-0 shadow-lg bg-white z-50 shadow-slate-100 select-none">
