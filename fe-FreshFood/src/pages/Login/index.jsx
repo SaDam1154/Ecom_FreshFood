@@ -4,12 +4,12 @@ import { Formik, useFormik } from 'formik';
 import clsx from 'clsx';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { accountActions } from '../../redux/slices/accountSlide';
+import { customerActions } from '../../redux/slices/customerSlide';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const validationSchema = Yup.object({
-    username: Yup.string().required('Vui lòng nhập tên tài tài khoản!'),
+    phone: Yup.string().required('Vui lòng nhập số điện thoại!'),
     password: Yup.string().required('Vui lòng nhập nhập mật khẩu!'),
 });
 
@@ -23,7 +23,7 @@ function Login() {
 
     const form = useFormik({
         initialValues: {
-            username: '',
+            phone: '',
             password: '',
         },
         validationSchema,
@@ -33,7 +33,7 @@ function Login() {
     });
     function handleFormsubmit(values) {
         setLoading(true);
-        fetch('http://localhost:5000/api/auth/login', {
+        fetch('http://localhost:5000/api/customer/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -43,9 +43,9 @@ function Login() {
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {
-                    console.log(resJson.account);
+                    console.log(resJson.customer);
                     showSuccessNoti();
-                    dispatch(accountActions.login(resJson.account));
+                    dispatch(customerActions.login(resJson.customer));
                     navigate('/');
                 } else {
                     showErorrNoti();
@@ -62,13 +62,18 @@ function Login() {
         <div>
             <section className="bg-gray-200">
                 <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
-                    <p href="#" className="mb-6 flex items-center text-2xl font-semibold text-green-600 select-none">
+                    <p
+                        href="#"
+                        className="mb-6 flex items-center text-2xl font-semibold text-green-600 select-none"
+                    >
                         <img className="mr-2 h-16 w-16" src="/mainLogo.png" alt="logo" />
                         Fresh Food
                     </p>
                     <div className=" w-[448px] rounded-lg bg-white shadow">
                         <div className="space-y-4 p-8">
-                            <h1 className="text-center text-2xl font-semibold text-gray-900">Đăng nhập</h1>
+                            <h1 className="text-center text-2xl font-semibold text-gray-900">
+                                Đăng nhập
+                            </h1>
                             <form
                                 onSubmit={(e) => {
                                     setValidateOnChange(true);
@@ -76,31 +81,37 @@ function Login() {
                                 }}
                             >
                                 <div className="mb-2">
-                                    <label htmlFor="username" className="mb-1 block font-medium text-gray-900 ">
-                                        Tài khoản
+                                    <label
+                                        htmlFor="phone"
+                                        className="mb-1 block font-medium text-gray-900 "
+                                    >
+                                        Số điện thoại
                                     </label>
                                     <input
                                         type="text"
-                                        name="username"
-                                        id="username"
+                                        name="phone"
+                                        id="phone"
                                         className={clsx('text-input w-full py-2', {
-                                            invalid: form.errors.username,
+                                            invalid: form.errors.phone,
                                         })}
                                         onChange={form.handleChange}
                                         onBlur={form.handleBlur}
-                                        value={form.values.username}
-                                        placeholder="Tên tài khoản"
+                                        value={form.values.phone}
+                                        placeholder="Số điện thoại"
                                     />
                                     <span
                                         className={clsx('text-sm text-red-500 opacity-0', {
-                                            'opacity-100': form.errors.username,
+                                            'opacity-100': form.errors.phone,
                                         })}
                                     >
-                                        {form.errors.username || 'No message'}
+                                        {form.errors.phone || 'No message'}
                                     </span>
                                 </div>
                                 <div className="mb-2">
-                                    <label htmlFor="password" className="mb-1 block font-medium text-gray-900 ">
+                                    <label
+                                        htmlFor="password"
+                                        className="mb-1 block font-medium text-gray-900 "
+                                    >
                                         Mật khẩu
                                     </label>
                                     <input
@@ -124,7 +135,11 @@ function Login() {
                                     </span>
                                 </div>
 
-                                <button type="submit" className="btn btn-blue btn-md mt-4 w-full" disabled={loading}>
+                                <button
+                                    type="submit"
+                                    className="btn btn-blue btn-md mt-4 w-full"
+                                    disabled={loading}
+                                >
                                     {!loading ? (
                                         <span>Đăng nhập</span>
                                     ) : (

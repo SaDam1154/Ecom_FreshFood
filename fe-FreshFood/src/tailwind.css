@@ -11,8 +11,9 @@
     select {
         @apply caret-primary-dark outline-none;
     } */
-    input {
-        @apply outline-none;
+    input,
+    textarea {
+        @apply !outline-none !ring-0;
     }
 }
 

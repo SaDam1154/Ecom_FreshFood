@@ -2,9 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = null;
 
-export const accountSlice = createSlice({
-    name: 'account',
-    admin: false,
+export const customerSlice = createSlice({
+    name: 'customer',
     initialState,
     reducers: {
         login: (state, action) => {
@@ -15,8 +14,8 @@ export const accountSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-const accountReducer = accountSlice.reducer;
-const accountActions = accountSlice.actions;
+const customerReducer = customerSlice.reducer;
+const customerActions = customerSlice.actions;
 
-export default accountReducer;
-export { accountActions };
+export default customerReducer;
+export { customerActions };

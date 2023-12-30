@@ -1,4 +1,8 @@
+import { useDispatch } from 'react-redux';
+import { customerActions } from '../../redux/slices/customerSlide';
+
 export default function MyFooter() {
+    const dispatch = useDispatch();
     return (
         <footer className="bg-neutral-100 text-center text-neutral-600 dark:bg-neutral-600 dark:text-neutral-200 lg:text-left">
             <div className="flex items-center justify-center border-b-2 border-neutral-200 p-6 dark:border-neutral-500 lg:justify-between">
@@ -84,8 +88,9 @@ export default function MyFooter() {
                             Fresh Food UIT
                         </h6>
                         <p className="select-none">
-                            Welcome to Fresh Food Shop! Discover the freshest and finest food products organized for
-                            easy browsing. Join us for a delightful shopping experience!
+                            Welcome to Fresh Food Shop! Discover the freshest and finest food
+                            products organized for easy browsing. Join us for a delightful shopping
+                            experience!
                         </p>
                     </div>
                     {/* <!-- Products section --> */}
@@ -109,7 +114,9 @@ export default function MyFooter() {
 
                     {/* <!-- Contact section --> */}
                     <div>
-                        <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">Contact</h6>
+                        <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
+                            Contact
+                        </h6>
                         <p className="mb-4 flex items-center justify-center md:justify-start">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -171,9 +178,15 @@ export default function MyFooter() {
             {/* <!--Copyright section--> */}
             <div className="bg-neutral-200 p-6 text-center dark:bg-neutral-700">
                 <span>© 2023 Copyright:</span>
-                <a className="font-semibold text-neutral-600 dark:text-neutral-400" href="https://tw-elements.com/">
+                <a
+                    className="font-semibold text-neutral-600 dark:text-neutral-400"
+                    href="https://tw-elements.com/"
+                >
                     TW Elements
                 </a>
+                <button className="opacity-0" onClick={() => dispatch(customerActions.logout())}>
+                    Đăng xuất
+                </button>
             </div>
         </footer>
     );
