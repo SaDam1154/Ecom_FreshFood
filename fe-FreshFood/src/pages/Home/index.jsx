@@ -3,7 +3,31 @@ import MyCarousel from '../../components/Carousel';
 import HoverLinks from '../../components/HoverLinks';
 import { CardProduct } from '../../components/CardProduct';
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { customerSelector } from '../../redux/selectors';
+import { customerActions } from '../../redux/slices/customerSlide';
+import { useDispatch, useSelector } from 'react-redux';
+
 function Home() {
+    const dispatch = useDispatch();
+    const customer = useSelector(customerSelector);
+    const [products, setProducts] = useState([]);
+
+    useEffect(() => {
+        getProducts();
+    }, []);
+
+    function getProducts() {
+        fetch('http://localhost:5000/api/product')
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.success) {
+                    setProducts(resJson.products);
+                } else {
+                    setProducts([]);
+                }
+            });
+    }
     return (
         <div className="flex flex-col w-full h-auto px-8 sm:px-12 lg:px-20 xl:px-28 overflow-y-scroll overflow-x-hidden items-center justify-start">
             <Sidebar></Sidebar>
@@ -97,7 +121,7 @@ function Home() {
                             <h3 className="text-[28px] text-[#0da487] font-bold cursor-hover">Sức khỏe</h3>
                             <h2 className="text-[20px] text-[#ff4f4f] font-semibold cursor-hover">Đồ bổ dưỡng</h2>
                             <span className="text-[#4a5568] w-3/5">
-                                <p class="organic cursor-hover">
+                                <p className="organic cursor-hover">
                                     Bắt đầu mua sắm hàng ngày của bạn với một số Organic food
                                 </p>
                             </span>
@@ -136,36 +160,50 @@ function Home() {
                 <div className="flex flex-col jite gap-2 bg-slate-100 rounded-2xl p-1 lg:p-2 mx-1 sm:mx-2 lg:mx-3 xl:mx-4 2xl:mx-5">
                     <div className="flex flex-col w-full items-start justify-center gap-1">
                         <span className="text-3xl font-semibold select-none">Category</span>
-                        <hr class=" bg-green-400 w-12 h-1 border-0 rounded" />
+                        <hr className=" bg-green-400 w-12 h-1 border-0 rounded" />
                     </div>
                     <HoverLinks />
                 </div>
                 {/* khu Category */}
                 <div className="flex flex-col gap-8 sm:col-span-2 lg:col-span-3">
                     <div className="flex flex-col">
-                        <div className="flex flex-col gap-1 w-full items-end justify-center">
-                            <span className="text-neutral-900 text-3xl font-semibold select-none">
-                                Sản phẩm khuyến nghị
-                            </span>
-                            <hr class=" bg-green-400 w-48 h-1 border-0 rounded" />
+                        {customer ? (
+                            <div className="flex flex-col gap-1 w-full items-end justify-center">
+                                <span className="text-neutral-900 text-3xl font-semibold select-none">
+                                    Sản phẩm khuyến nghị
+                                </span>
+                                <hr className=" bg-green-400 w-48 h-1 border-0 rounded" />
 
-                            <span className="text-[#4a5568]">
-                                Chúng tôi mong bạn sẽ thích những mặt hàng mà chúng tôi dành riêng cho bạn.
-                            </span>
-                        </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 p-1">
-                            {/* <CardProduct /> */}
-                        </div>
+                                <span className="text-[#4a5568]">
+                                    Chúng tôi mong bạn sẽ thích những mặt hàng mà chúng tôi dành riêng cho bạn.
+                                </span>
+                            </div>
+                        ) : (
+                            <div className="text-[#4a5568]">
+                                Đăng nhập hoặc đăng ký khách hàng thành viên để áp dụng nhiều ưu đãi giảm giá đặc biệt.
+                            </div>
+                        )}
+                        {customer ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 p-1">
+                                {products.slice(0, 3).map((product, index) => {
+                                    return <CardProduct key={index} product={product} />;
+                                })}
+                            </div>
+                        ) : (
+                            <div className="h-full w-full flex items-center justify-center"></div>
+                        )}
                     </div>
                     <div className="flex flex-col">
                         <div className="flex flex-col gap-1 w-full items-end justify-center">
                             <span className="text-neutral-900 text-3xl font-semibold">Sản phẩm mới</span>
-                            <hr class=" bg-green-400 w-48 h-1 border-0 rounded" />
+                            <hr className=" bg-green-400 w-48 h-1 border-0 rounded" />
 
                             <span className="text-[#4a5568]">Đừng bỏ lỡ những mặt hàng mới ra mắt.</span>
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 p-1 pb-2">
-                            {/* <CardProduct /> */}
+                            {products.slice(0, 3).map((product, index) => {
+                                return <CardProduct key={index} product={product} />;
+                            })}
                         </div>
                     </div>
                 </div>

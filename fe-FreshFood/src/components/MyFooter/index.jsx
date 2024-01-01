@@ -85,7 +85,7 @@ export default function MyFooter() {
                     <div className=" lg:col-span-2">
                         <h6 className="mb-4 flex items-center justify-center font-semibold uppercase md:justify-start">
                             <img src="/mainLogo.png" alt="" className="h-20 w-20" />
-                            Fresh Food UIT
+                            THỰC PHẨM SẠCH UIT
                         </h6>
                         <p className="select-none">
                             Chào mừng bạn đến với Cửa hàng thực phẩm tươi sống! Khám phá những sản phẩm thực phẩm tươi
