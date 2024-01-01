@@ -18,12 +18,37 @@
 }
 
 @layer components {
-    /* .text-editor a {
-        @apply text-primary-dark underline decoration-primary-dark;
+    .btn {
+        @apply flex items-center justify-center rounded text-white;
     }
-    .text-editor ul {
-        @apply list-disc px-5;
-    } */
+    .btn + .btn {
+        @apply ml-2;
+    }
+    .btn.btn-sm {
+        @apply px-4 py-1.5;
+    }
+    .btn.btn-md {
+        @apply min-w-[150px] px-5 py-2;
+    }
+
+    .btn.btn-red {
+        @apply bg-red-500 hover:bg-red-400;
+    }
+    .btn.btn-border-blue {
+        @apply bg-white hover:bg-blue-100 border border-blue-500 text-blue-500;
+    }
+    .btn.btn-blue {
+        @apply bg-blue-500 hover:bg-blue-400;
+    }
+    .btn.btn-green {
+        @apply bg-green-600 hover:bg-green-500;
+    }
+    .btn.btn-yellow {
+        @apply bg-yellow-600 hover:bg-yellow-500;
+    }
+    .btn:disabled {
+        @apply pointer-events-none opacity-50;
+    }
 
     label {
         cursor: pointer;

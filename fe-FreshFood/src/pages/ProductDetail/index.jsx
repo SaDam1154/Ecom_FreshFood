@@ -29,8 +29,7 @@ export default function ProductDetail() {
                 if (resJson.success) {
                     const _product = resJson.product;
                     const ratingAvg = _product.ratings.length
-                        ? _product.ratings.reduce((prev, curr) => prev + curr.score, 0) /
-                          _product.ratings.length
+                        ? _product.ratings.reduce((prev, curr) => prev + curr.score, 0) / _product.ratings.length
                         : 0;
                     _product.ratingAvg = ratingAvg;
                     setProduct(_product);
@@ -58,11 +57,7 @@ export default function ProductDetail() {
                         <div className="mr-6 w-[480px]">
                             <div>
                                 <ProductImageSlide
-                                    images={
-                                        product?.images?.length > 0
-                                            ? product?.images
-                                            : ['/placeholder.png']
-                                    }
+                                    images={product?.images?.length > 0 ? product?.images : ['/placeholder.png']}
                                 />
                             </div>
                         </div>
@@ -109,9 +104,7 @@ export default function ProductDetail() {
                                         )
                                     )}
                                 </div>
-                                <p className="text-gray-600">
-                                    {product?.ratings?.length + ' Đánh giá'}
-                                </p>
+                                <p className="text-gray-600">{product?.ratings?.length + ' Đánh giá'}</p>
                             </div>
                             <p className="mt-3 space-x-1 font-medium">
                                 <span className="text-gray-600">Loại sản phẩm:</span>
@@ -128,18 +121,11 @@ export default function ProductDetail() {
                                 <span className="text-primary-600">{product?.saledQuantity}</span>
                             </p>
 
-                            <p className="text-gray-600 mt-3 max-w-[360px]">
-                                {product?.description}
-                            </p>
+                            <p className="text-gray-600 mt-3 max-w-[360px]">{product?.description}</p>
 
                             {/* ACTION GROUP */}
                             <div className="flex items-center mt-4 space-x-2">
-                                <QuantityInput
-                                    value={qty}
-                                    setValue={setQty}
-                                    min={1}
-                                    max={product?.quantity}
-                                />
+                                <QuantityInput value={qty} setValue={setQty} min={1} max={product?.quantity} />
                                 <button
                                     className="btn bg-primary-600 hover:bg-primary-700 btn-md w-full"
                                     onClick={handleAddToCart}

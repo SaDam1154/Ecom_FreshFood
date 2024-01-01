@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 function CardSection({ img, discount, title, content }) {
     return (
         <div className="flex relative flex-col justify-start items-start w-full h-full">
@@ -24,23 +25,25 @@ function CardSection({ img, discount, title, content }) {
                     </div>
                 </div>
                 <div>
-                    <button className="flex gap-2 lg:ml-4 xl:ml-4 2xl:ml-16 text-base font-semibold relative overflow-hidden rounded-md bg-transparent text-white px-6 pt-8 pb-2  ">
-                        <span className="relative z-10 flex gap-4 ">Shop Now</span>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
-                            />
-                        </svg>
-                    </button>
+                    <Link to="/products">
+                        <button className="flex gap-2 lg:ml-4 xl:ml-4 2xl:ml-16 text-base font-semibold relative overflow-hidden rounded-md bg-transparent text-white px-6 pt-8 pb-2  ">
+                            <span className="relative z-10 flex gap-4 ">Xem sản phẩm</span>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth={1.5}
+                                stroke="currentColor"
+                                className="w-6 h-6"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3"
+                                />
+                            </svg>
+                        </button>
+                    </Link>
                 </div>
             </div>
         </div>

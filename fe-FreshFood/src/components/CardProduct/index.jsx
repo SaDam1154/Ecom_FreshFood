@@ -8,26 +8,39 @@ import {
     Tooltip,
     IconButton,
 } from '@material-tailwind/react';
-
-export function CardProduct() {
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
+import { orderActions } from '../../redux/slices/orderSlice';
+import { orderSelector } from '../../redux/selectors';
+import clsx from 'clsx';
+export function CardProduct({ product }) {
+    const dispatch = useDispatch();
+    const order = useSelector(orderSelector);
+    const [qty, setQty] = useState(1);
+    const [added, setAdded] = useState(false);
+    function handleAddToCart() {
+        if (order.details.find((d) => d.product._id === product._id)) {
+            toast.info('Sản phẩm đã có trong giỏ hàng!');
+            setAdded(true);
+        } else {
+            dispatch(orderActions.addMany({ product, quantity: qty, price: product?.price }));
+            toast.success('Đã thêm sản phẩm vào giỏ hàng!');
+        }
+    }
     return (
         <Card className="group cursor-pointer w-full max-w-[26rem] shadow-lg">
             <CardHeader floated={false} color="blue-gray">
                 <img
-                    src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                    src={product.images[0]}
                     alt="ui/ux review check"
-                    className="transition duration-300 ease-in-out  shadow-none scale-100 group-hover:scale-105 hover:shadow-none  focus:bg-slate-300 cursor-pointer "
+                    className="object-cover h-[300px] w-[384px] transition duration-300 ease-in-out  shadow-none scale-100 group-hover:scale-105 hover:shadow-none  focus:bg-slate-300 cursor-pointer "
                 />
-                <IconButton size="sm" color="white" variant="text" className="!absolute top-4 right-4 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-6 w-6">
-                        <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
-                    </svg>
-                </IconButton>
             </CardHeader>
             <CardBody>
                 <div className="mb-3 flex items-center justify-between">
                     <Typography variant="h5" color="blue-gray" className="font-medium">
-                        Wooden House, Florida
+                        {product.name}
                     </Typography>
                     <Typography color="blue-gray" className="flex items-center gap-1.5 font-normal">
                         <svg
@@ -47,19 +60,21 @@ export function CardProduct() {
                 </div>
                 <Typography color="gray">
                     <div className="flex gap-2 items-center">
-                        <span className="text-2xl font-bold text-green-500">$189</span>
-                        <span className="text-gray-600 text-sm line-through ">$200</span>
-                        {/* <span className='text-sm text-green-500 ml-2'>$200</span> */}
+                        <span className="text-2xl font-bold text-green-500">{product.price}</span>
                     </div>
                 </Typography>
             </CardBody>
             <CardFooter className="pt-0">
                 <Button
+                    onClick={handleAddToCart}
                     ripple={false}
                     fullWidth={true}
-                    className="bg-blue-200 text-gray-900 shadow-none scale-100 hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100 focus:bg-slate-300"
+                    className={clsx(
+                        'bg-blue-200 text-gray-900 shadow-none scale-100 hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100 focus:bg-slate-300',
+                        { 'bg-slate-300': added }
+                    )}
                 >
-                    Add to Cart
+                    Thêm vào giỏ hàng
                 </Button>
             </CardFooter>
         </Card>

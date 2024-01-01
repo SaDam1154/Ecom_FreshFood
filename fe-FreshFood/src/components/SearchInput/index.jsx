@@ -24,7 +24,7 @@ function Search() {
     const [searchPosts, setSearchPosts] = useState([]);
 
     useEffect(() => {
-        // fetch('http://localhost:3000/api/search')
+        // fetch('http://localhost:5000/api/search')
         //     .then((response) => response.json())
         //     .then((data) => {
         //         if (data.error) {
@@ -56,7 +56,7 @@ function Search() {
                 className="rounded-l-lg px-4 py-3 border grow"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                placeholder="Tìm kiếm bài viết..."
+                placeholder="Find Product..."
             />
             <button className="bg-orange-500 px-3 rounded-r-lg text-white">
                 <svg
@@ -111,7 +111,7 @@ function Search() {
                                     d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
                                 />
                             </svg>
-                            <p className="mt-3">Không tìm thấy kết quả!</p>
+                            <p className="mt-3">Not Found!</p>
                         </div>
                     )}
                 </button>

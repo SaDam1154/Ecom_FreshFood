@@ -51,7 +51,7 @@ function Sidebar() {
                     />
                 </svg>
 
-                <span>Deal Today</span>
+                <span>Chương trình khuyến mãi</span>
             </button>
         </div>
     );

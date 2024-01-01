@@ -7,7 +7,7 @@ export default function MyFooter() {
         <footer className="bg-neutral-100 text-center text-neutral-600 dark:bg-neutral-600 dark:text-neutral-200 lg:text-left">
             <div className="flex items-center justify-center border-b-2 border-neutral-200 p-6 dark:border-neutral-500 lg:justify-between">
                 <div className="mr-12 hidden lg:block">
-                    <span>Get connected with us on social networks:</span>
+                    <span>Kết nối với chúng tôi để không bỏ lỡ bất kỳ ưu đãi nào!</span>
                 </div>
                 {/* <!-- Social network icons container --> */}
                 <div className="flex justify-center">
@@ -88,35 +88,27 @@ export default function MyFooter() {
                             Fresh Food UIT
                         </h6>
                         <p className="select-none">
-                            Welcome to Fresh Food Shop! Discover the freshest and finest food
-                            products organized for easy browsing. Join us for a delightful shopping
-                            experience!
+                            Chào mừng bạn đến với Cửa hàng thực phẩm tươi sống! Khám phá những sản phẩm thực phẩm tươi
+                            ngon nhất được tổ chức dành cho duyệt dễ dàng. Hãy cùng chúng tôi trải nghiệm mua sắm thú vị
+                            nhé!
                         </p>
                     </div>
                     {/* <!-- Products section --> */}
                     <div className="">
                         <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
-                            Best Seller
+                            Thành viên
                         </h6>
                         <p className="mb-4">
-                            <a className="text-neutral-600 dark:text-neutral-200">Angular</a>
+                            <a className="text-neutral-600 dark:text-neutral-200">Sa Đam</a>
                         </p>
                         <p className="mb-4">
-                            <a className="text-neutral-600 dark:text-neutral-200">React</a>
-                        </p>
-                        <p className="mb-4">
-                            <a className="text-neutral-600 dark:text-neutral-200">Vue</a>
-                        </p>
-                        <p>
-                            <a className="text-neutral-600 dark:text-neutral-200">Laravel</a>
+                            <a className="text-neutral-600 dark:text-neutral-200">Bùi Tống Minh Châu</a>
                         </p>
                     </div>
 
                     {/* <!-- Contact section --> */}
                     <div>
-                        <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
-                            Contact
-                        </h6>
+                        <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">Contact</h6>
                         <p className="mb-4 flex items-center justify-center md:justify-start">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -178,15 +170,9 @@ export default function MyFooter() {
             {/* <!--Copyright section--> */}
             <div className="bg-neutral-200 p-6 text-center dark:bg-neutral-700">
                 <span>© 2023 Copyright:</span>
-                <a
-                    className="font-semibold text-neutral-600 dark:text-neutral-400"
-                    href="https://tw-elements.com/"
-                >
+                <a className="font-semibold text-neutral-600 dark:text-neutral-400" href="https://tw-elements.com/">
                     TW Elements
                 </a>
-                <button className="opacity-0" onClick={() => dispatch(customerActions.logout())}>
-                    Đăng xuất
-                </button>
             </div>
         </footer>
     );

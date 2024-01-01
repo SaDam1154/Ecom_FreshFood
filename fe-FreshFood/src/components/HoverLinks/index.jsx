@@ -1,23 +1,31 @@
 import { useMotionValue, motion, useSpring, useTransform } from 'framer-motion';
 import React, { useRef } from 'react';
 import { FiArrowRight } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
 
 export default function HoverLinks() {
+    const [productTypes, setProductTypes] = useState([]);
+
+    useEffect(() => {
+        getProductTypes();
+    }, []);
+
+    function getProductTypes() {
+        fetch('http://localhost:5000/api/product-type')
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.success) {
+                    setProductTypes(resJson.productTypes);
+                } else {
+                    setProductTypes([]);
+                }
+            });
+    }
     return (
         <div className="flex flex-col items-center justify-start w-full">
-            <Link heading="Vegetables & Fruit" href="#" />
-            <Link heading="Meats & Seafood" href="#" />
-            <Link heading="Breakfast & Dairy" href="#" />
-            <Link heading="Frozen Foods" href="#" />
-            <Link heading="Biscuits & Snacks" href="#" />
-            <Link heading="Grocery & Staples" href="#" />
-            <Link heading="Wines & Alcohol Drinks" href="#" />
-            <Link heading="Milk & Dairies" href="#" />
-            <Link heading="Pet Foods" href="#" />
-            <Link heading="Beverages" href="#" />
-            <Link heading="Beverages" href="#" />
-            <Link heading="Beverages" href="#" />
-            <Link heading="Beverages" href="#" />
+            {productTypes.map((productType, index) => {
+                return <Link key={index} heading={productType.name} href="#" />;
+            })}
         </div>
     );
 }
@@ -66,19 +74,16 @@ const Link = ({ heading, imgSrc, subheading, href }) => {
                     }}
                     className="relative z-10 block text-base xl:text-base 2xl:text-lg font-semibold text-neutral-950 transition-colors duration-500 group-hover:text-[#0da487] "
                 >
-                    {heading.split('').map((l, i) => (
-                        <motion.span
-                            variants={{
-                                initial: { x: 0 },
-                                whileHover: { x: 16 },
-                            }}
-                            transition={{ type: 'spring' }}
-                            className="inline-block"
-                            key={i}
-                        >
-                            {l}
-                        </motion.span>
-                    ))}
+                    <motion.span
+                        variants={{
+                            initial: { x: 0 },
+                            whileHover: { x: 16 },
+                        }}
+                        transition={{ type: 'spring' }}
+                        className="inline-block"
+                    >
+                        {heading}
+                    </motion.span>
                 </motion.span>
             </div>
 

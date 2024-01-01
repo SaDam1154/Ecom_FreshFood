@@ -32,15 +32,13 @@ export default function Cart() {
                                     />
                                 </svg>
                             </div>
-                            <p className="text-lg font-medium text-gray-700">
-                                Chưa có sản phẩm trong giỏ hàng!
-                            </p>
+                            <p className="text-lg font-medium text-gray-700">Chưa có sản phẩm trong giỏ hàng!</p>
                         </div>
                     )}
                     {order?.details?.map((d, index) => (
                         <div key={index} className="flex py-3 border-b space-x-4 items-center">
                             <img
-                                src="/placeholder.png"
+                                src={d.product.images.length > 0 ? d.product.images[0] : '/placeholder.png'}
                                 className="w-[80px] h-[80px] object-cover rounded"
                             />
                             <div className="flex-1 pr-6">
@@ -100,15 +98,11 @@ export default function Cart() {
                         <div className="mt-3 space-y-2">
                             <div className="flex justify-between">
                                 <span>Số sản phẩm</span>
-                                <span>
-                                    {order?.details?.length}
-                                </span>
+                                <span>{order?.details?.length}</span>
                             </div>
                             <div className="flex justify-between">
                                 <span>Tổng số lượng</span>
-                                <span>
-                                    {order?.details?.reduce((prev, curr) => prev + curr.quantity, 0)}
-                                </span>
+                                <span>{order?.details?.reduce((prev, curr) => prev + curr.quantity, 0)}</span>
                             </div>
                         </div>
                         <div className="flex py-2 mt-2 border-t font-semibold text-lg justify-between">
@@ -126,10 +120,7 @@ export default function Cart() {
                             >
                                 Đặt hàng
                             </Link>
-                            <Link
-                                to="/product"
-                                className="btn btn-md w-full bg-primary-500 hover:bg-primary-400"
-                            >
+                            <Link to="/products" className="btn btn-md w-full bg-primary-500 hover:bg-primary-400">
                                 Tiếp tục mua hàng
                             </Link>
                         </div>

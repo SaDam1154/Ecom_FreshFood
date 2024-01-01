@@ -3,6 +3,7 @@ import FullLayout from '../layouts/FullLayout';
 // Pages ADMIN
 import Cart from '../pages/Cart';
 import Home from '../pages/Home';
+import Products from '../pages/Products';
 import Order from '../pages/Order';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
@@ -15,6 +16,13 @@ const publicRoutes = [
     {
         path: '/',
         component: Home,
+        props: {
+            heading: 'Trang chủ',
+        },
+    },
+    {
+        path: '/products',
+        component: Products,
         props: {
             heading: 'Trang chủ',
         },
