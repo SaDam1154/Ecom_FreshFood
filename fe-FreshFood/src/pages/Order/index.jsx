@@ -154,7 +154,7 @@ export default function Order() {
                         {order?.details?.map((d, index) => (
                             <div key={index} className="flex py-2 space-x-4 items-center">
                                 <img
-                                    src="/placeholder.png"
+                                    src={d?.product?.images?.[0] || "/placeholder.png"}
                                     className="w-[70px] h-[70px] object-cover rounded"
                                 />
                                 <div className="flex-1 pr-6">

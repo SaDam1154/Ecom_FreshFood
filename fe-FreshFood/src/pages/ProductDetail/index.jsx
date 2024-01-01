@@ -149,7 +149,7 @@ export default function ProductDetail() {
                             </div>
                         </div>
                     </div>
-                    <RatingsBlock product={product} />
+                    <RatingsBlock product={product} onChange={getProduct} />
                 </div>
 
                 {/* RIGHT */}

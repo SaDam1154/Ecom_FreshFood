@@ -97,29 +97,22 @@ export default function Cart() {
                 <div className="w-[290px] bg-gray-50 rounded-lg p-4">
                     <p className="text-lg font-medium border-b pb-2">Tổng giỏ hàng</p>
                     <div className="text-gray-600 mt-3">
-                        {customer && (
-                            <div className="">
-                                <span>Phiếu giảm giá</span>
-                                <input
-                                    className="w-full mt-1 p-2 border-primary-600 border-2 rounded"
-                                    placeholder="Nhập mã giảm giá"
-                                />
-                            </div>
-                        )}
                         <div className="mt-3 space-y-2">
                             <div className="flex justify-between">
-                                <span>Tổng giá (VNĐ)</span>
+                                <span>Số sản phẩm</span>
                                 <span>
-                                    <PriceFormat>{order.totalPrice}</PriceFormat>
+                                    {order?.details?.length}
                                 </span>
                             </div>
                             <div className="flex justify-between">
-                                <span>Giảm giá (VNĐ)</span>
-                                <span>0</span>
+                                <span>Tổng số lượng</span>
+                                <span>
+                                    {order?.details?.reduce((prev, curr) => prev + curr.quantity, 0)}
+                                </span>
                             </div>
                         </div>
                         <div className="flex py-2 mt-2 border-t font-semibold text-lg justify-between">
-                            <span>Thành tiền (VNĐ)</span>
+                            <span>Tổng giá (VNĐ)</span>
                             <span className="text-primary-600">
                                 <PriceFormat>{order.totalPrice}</PriceFormat>
                             </span>
