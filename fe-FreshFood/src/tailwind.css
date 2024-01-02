@@ -21,9 +21,6 @@
     .btn {
         @apply flex items-center justify-center rounded text-white;
     }
-    .btn + .btn {
-        @apply ml-2;
-    }
     .btn.btn-sm {
         @apply px-4 py-1.5;
     }
