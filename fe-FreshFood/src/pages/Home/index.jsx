@@ -166,8 +166,8 @@ function Home() {
                             </div>
                         )}
                         {customer ? (
-                            <div className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 p-1'>
-                                {products.slice(0, 3).map((product, index) => {
+                            <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 p-1 pb-2'>
+                                {products.slice(0, 5).map((product, index) => {
                                     return <CardProduct key={index} product={product} />;
                                 })}
                             </div>
