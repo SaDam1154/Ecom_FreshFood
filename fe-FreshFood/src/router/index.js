@@ -29,6 +29,13 @@ const publicRoutes = [
         },
     },
     {
+        path: '/products/:type',
+        component: Products,
+        props: {
+            heading: 'Trang chủ',
+        },
+    },
+    {
         path: '/Login',
         layout: FullLayout,
         component: Login,
