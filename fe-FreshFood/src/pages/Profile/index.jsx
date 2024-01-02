@@ -3,11 +3,13 @@ import * as Yup from 'yup';
 import { toast } from 'react-toastify';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 import { useFormik } from 'formik';
 import { customerSelector } from '../../redux/selectors';
 import { useEffect, useState } from 'react';
 import LoadingForm from '../../components/LoadingForm';
 import { customerActions } from '../../redux/slices/customerSlide';
+import PriceFormat from '../../components/PriceFormat';
 
 const validationSchema = Yup.object({
     name: Yup.string()
@@ -113,7 +115,7 @@ function InfoGroup() {
                     setValidateOnChange(true);
                     form.handleSubmit(e);
                 }}
-                className="mx-auto mt-5 max-w-[700px] rounded-xl border border-slate-300 p-5"
+                className="mx-auto max-w-[700px] rounded-xl border border-slate-300 p-5"
             >
                 <div className="relative flex pt-10">
                     <div
@@ -265,8 +267,207 @@ function InfoGroup() {
     );
 }
 
+function DeliveryStatusCell({ value }) {
+    return (
+        <div className="flex justify-center">
+            <div
+                className={clsx('rounded p-2 py-1 text-xs font-medium ', {
+                    'bg-green-100 text-green-800': value === 'delivered',
+                    'bg-orange-100 text-orange-800': value === 'pending',
+                    'bg-red-100 text-red-800': value === 'aborted',
+                })}
+            >
+                {value === 'delivered' ? 'Đã giao' : value === 'pending' ? 'Đang chờ' : 'Đã huỷ'}
+            </div>
+        </div>
+    );
+}
+
+function OrderList({ orders, onSelect }) {
+    return (
+        <div className="mt-3">
+            <div className="flex space-x-3 py-3 font-medium text-center bg-primary-100 rounded">
+                <div className="flex-1">Ngày</div>
+                <div className="flex-1">Thành tiền</div>
+                <div className="flex-1">Trạng thái</div>
+            </div>
+
+            {orders.length === 0 && (
+                <div className="flex flex-col justify-center items-center space-y-3 py-5">
+                    <div className="text-orange-600">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1}
+                            stroke="currentColor"
+                            className="h-12 w-12"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+                            />
+                        </svg>
+                    </div>
+                    <p className="text-lg font-medium text-gray-700">Chưa có đơn hàng nào!</p>
+                </div>
+            )}
+
+            <div
+                className="max-h-[352px]"
+                style={{
+                    overflowY: 'overlay',
+                }}
+            >
+                {orders.map((order) => (
+                    <div
+                        key={order?.id}
+                        className="flex cursor-pointer hover:bg-gray-50 space-x-3 py-3 text-center rounded"
+                        onClick={() => onSelect(order.id)}
+                    >
+                        <div className="flex-1">
+                            {moment(order.createdAt).format('HH:mm DD/MM/YYYY')}
+                        </div>
+                        <div className="flex-1">
+                            <PriceFormat>{order?.intoMoney}</PriceFormat>
+                        </div>
+                        <div className="flex-1">
+                            <DeliveryStatusCell value={order?.deliveryStatus} />
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function OrderDetail({ order }) {
+    return (
+        <div className="mt-5">
+            <div className="text-gray-600 mt-3">
+                <div className="mt-3 space-y-2">
+                    <div className="flex justify-between">
+                        <span>Tổng giá (VNĐ)</span>
+                        <span>
+                            <PriceFormat>{order?.totalPrice}</PriceFormat>
+                        </span>
+                    </div>
+                    <div className="flex justify-between">
+                        <span>Giảm giá (VNĐ)</span>
+                        <span>
+                            <PriceFormat>{order?.totalPrice - order?.intoMoney}</PriceFormat>
+                        </span>
+                    </div>
+                </div>
+                <div className="flex py-2 mt-2 border-t font-semibold text-lg justify-between">
+                    <span>Thành tiền (VNĐ)</span>
+                    <span className="text-primary-600">
+                        <PriceFormat>{order?.intoMoney}</PriceFormat>
+                    </span>
+                </div>
+            </div>
+            <div className="mt-5">
+                {order?.details?.map((d, index) => (
+                    <div key={index} className="flex py-2 space-x-4 items-center">
+                        <img
+                            src={d?.product?.images?.[0] || '/placeholder.png'}
+                            className="w-[60px] h-[60px] object-cover rounded"
+                        />
+                        <div className="flex-1 pr-6">
+                            <p className="font-medium">{d?.product?.name}</p>
+                            <p className="font-medium text-primary-600">
+                                <PriceFormat>{d?.price}</PriceFormat> VNĐ
+                            </p>
+                        </div>
+                        <p className="text-lg text-gray-600">{'x' + d?.quantity}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
 function OrderGroup() {
-    return <div>Order group</div>;
+    const [selectedOrderId, setSelectedOrderId] = useState(null);
+    const customer = useSelector(customerSelector);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        getOrders();
+    }, [customer]);
+
+    useEffect(() => {
+        if (!selectedOrderId) {
+            setSelectedOrder(null);
+        } else {
+            fetch('http://localhost:5000/api/order/' + selectedOrderId)
+                .then((res) => res.json())
+                .then((resJson) => {
+                    if (resJson.success) {
+                        setSelectedOrder(resJson.order);
+                    } else {
+                        setSelectedOrder(null);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                    setSelectedOrder(null);
+                });
+        }
+    }, [selectedOrderId]);
+
+    function getOrders() {
+        fetch('http://localhost:5000/api/order')
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.success) {
+                    setOrders(
+                        resJson.orders
+                            .filter((o) => o.customer && o.customer === customer._id)
+                            .sort((a, b) => b.id - a.id)
+                    );
+                } else {
+                    setOrders([]);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+                setOrders([]);
+            });
+    }
+
+    return (
+        <div className="rounded-lg border p-5">
+            <div className="flex items-center space-x-3">
+                {selectedOrderId && (
+                    <button onClick={() => setSelectedOrderId(null)}>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+                            />
+                        </svg>
+                    </button>
+                )}
+                <p className="font-semibold text-lg">Đơn hàng</p>
+            </div>
+            {!selectedOrderId ? (
+                <OrderList orders={orders} onSelect={(id) => setSelectedOrderId(id)} />
+            ) : (
+                <OrderDetail order={selectedOrder} />
+            )}
+        </div>
+    );
 }
 
 export default function Profile() {
