@@ -8,7 +8,7 @@ import { orderActions } from '../../redux/slices/orderSlice';
 import { customerSelector, orderSelector } from '../../redux/selectors';
 import PriceFormat from '../../components/PriceFormat';
 import { useEffect, useMemo, useState } from 'react';
-
+import emailjs from '@emailjs/browser';
 const validationSchema = Yup.object({
     phone: Yup.string()
         .required('Trường này bắt buộc')
@@ -106,6 +106,19 @@ export default function Order() {
                 if (resJson.success) {
                     dispatch(orderActions.reset());
                     toast.success('Đặt hàng thành công');
+                    const templateParams = {
+                        Name: 'khachhang',
+                        Link: 'http://localhost:5173/',
+                        reply_to: '20521154@gm.uit.edu.vn',
+                    };
+                    emailjs.send('service_3dwhkaf', 'template_m7a86er', templateParams, 'JcAqZIglb_PsOO35p').then(
+                        (response) => {
+                            console.log('SUCCESS!', response.status, response.text);
+                        },
+                        (err) => {
+                            console.log('FAILED...', err);
+                        }
+                    );
                     setValidateOnChange(false);
                     navigate('/');
                 } else {
@@ -154,7 +167,7 @@ export default function Order() {
                         {order?.details?.map((d, index) => (
                             <div key={index} className="flex py-2 space-x-4 items-center">
                                 <img
-                                    src={d?.product?.images?.[0] || "/placeholder.png"}
+                                    src={d?.product?.images?.[0] || '/placeholder.png'}
                                     className="w-[70px] h-[70px] object-cover rounded"
                                 />
                                 <div className="flex-1 pr-6">
@@ -257,9 +270,7 @@ export default function Order() {
                                         'border-gray-300 bg-gray-100': !coupon.canUse,
                                     })}
                                 >
-                                    <p className="font-medium text-gray-700">
-                                        {coupon.description}
-                                    </p>
+                                    <p className="font-medium text-gray-700">{coupon.description}</p>
                                     <div className="flex space-x-3">
                                         <div className="space-x-1">
                                             <span className="text-gray-600">Giảm:</span>

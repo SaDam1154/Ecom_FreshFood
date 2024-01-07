@@ -78,10 +78,8 @@ export default function MyFooter() {
                 </div>
             </div>
 
-            {/* <!-- Main container div: holds the entire content of the footer, including four sections (TW Elements, Products, Useful links, and Contact), with responsive styling and appropriate padding/margins. --> */}
             <div className="mx-6 py-10 text-center md:text-left">
                 <div className="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-                    {/* <!-- TW Elements section --> */}
                     <div className=" lg:col-span-2">
                         <h6 className="mb-4 flex items-center justify-center font-semibold uppercase md:justify-start">
                             <img src="/mainLogo.png" alt="" className="h-20 w-20" />
@@ -171,7 +169,7 @@ export default function MyFooter() {
             <div className="bg-neutral-200 p-6 text-center dark:bg-neutral-700">
                 <span>© 2023 Copyright:</span>
                 <a className="font-semibold text-neutral-600 dark:text-neutral-400" href="https://tw-elements.com/">
-                    TW Elements
+                    UIT ThucPhamSach
                 </a>
             </div>
         </footer>
