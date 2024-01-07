@@ -10,6 +10,9 @@ export const customerSlice = createSlice({
             return action.payload;
         },
         logout: () => null,
+        update: (state, action) => {
+            return action.payload;
+        },
     },
 });
 

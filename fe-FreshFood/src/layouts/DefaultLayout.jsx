@@ -4,11 +4,14 @@ import MyFooter from '../components/MyFooter';
 
 function DefaultLayout({ children }) {
     return (
-        <div className='h-full overflow-hidden'>
-            <Header />
-            <div className='w-full h-auto overflow-x-hidden overflow-y-auto'>{children}</div>
-            <div className='h-10'></div>
-            <MyFooter />
+        <div className='h-full flex flex-col overflow-hidden'>
+            <div>
+                <Header />
+            </div>
+            <div className='grow flex flex-col gap-3 justify-between w-full h-full min-h-auto overflow-x-hidden overflow-y-auto'>
+                <div className=''>{children}</div>
+                <MyFooter />
+            </div>
         </div>
     );
 }

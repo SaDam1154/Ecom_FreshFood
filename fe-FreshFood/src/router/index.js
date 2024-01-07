@@ -8,6 +8,7 @@ import Order from '../pages/Order';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import ProductDetail from '../pages/ProductDetail';
+import Profile from '../pages/Profile';
 //PAGE CUSTOMER
 
 // Public routes
@@ -22,6 +23,13 @@ const publicRoutes = [
     },
     {
         path: '/products',
+        component: Products,
+        props: {
+            heading: 'Trang chủ',
+        },
+    },
+    {
+        path: '/products/:type',
         component: Products,
         props: {
             heading: 'Trang chủ',
@@ -48,6 +56,10 @@ const publicRoutes = [
     {
         path: 'order',
         component: Order,
+    },
+    {
+        path: 'profile',
+        component: Profile,
     },
 ];
 
