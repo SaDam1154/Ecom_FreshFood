@@ -107,8 +107,8 @@ export default function Order() {
                     dispatch(orderActions.reset());
                     toast.success('Đặt hàng thành công');
                     const templateParams = {
-                        Name: 'khachhang',
-                        Link: 'http://localhost:5173/',
+                        Name: customer.name,
+                        Link: 'http://localhost:5173/profile',
                         reply_to: '20521154@gm.uit.edu.vn',
                     };
                     emailjs.send('service_3dwhkaf', 'template_m7a86er', templateParams, 'JcAqZIglb_PsOO35p').then(
