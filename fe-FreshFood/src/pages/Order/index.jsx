@@ -111,7 +111,7 @@ export default function Order() {
                         Address: customer.address,
                         Phone: customer.phone,
                         TotalPrice: order.totalPrice,
-                        DiscountPercent: order.totalPrice,
+                        DiscountPercent: coupon?.canUse ? coupon?._id : null,
                         IntoMoney: intoMoney,
                         Link: 'http://localhost:5173/profile',
                         reply_to: '20521154@gm.uit.edu.vn',
