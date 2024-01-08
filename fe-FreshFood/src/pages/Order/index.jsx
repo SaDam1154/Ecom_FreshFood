@@ -108,6 +108,11 @@ export default function Order() {
                     toast.success('Đặt hàng thành công');
                     const templateParams = {
                         Name: customer.name,
+                        Address: customer.address,
+                        Phone: customer.phone,
+                        TotalPrice: order.totalPrice,
+                        DiscountPercent: order.totalPrice,
+                        IntoPrice: intoMoney,
                         Link: 'http://localhost:5173/profile',
                         reply_to: '20521154@gm.uit.edu.vn',
                     };
