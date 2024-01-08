@@ -23,7 +23,7 @@ function Signup() {
     const [loading, setLoading] = useState(false);
     const [validateOnChange, setValidateOnChange] = useState(false);
     const [image, setImage] = useState(null);
-
+    const navigate = useNavigate();
     const showSuccessNoti = () => toast.success('Thêm khách hàng thành công!');
     const showErorrNoti = () => toast.error('Có lỗi xảy ra!');
 
@@ -69,6 +69,7 @@ function Signup() {
                 form.resetForm();
                 setValidateOnChange(false);
                 setImage(null);
+                navigate('/login');
             } else if (resJson.message === 'phone already exists') {
                 toast.error('Số điện thoại đã tồn tại');
             } else {
@@ -91,18 +92,13 @@ function Signup() {
         <div>
             <section className="bg-gray-200">
                 <div className="mx-auto flex flex-col items-center justify-center px-6 py-4 md:h-screen lg:py-0">
-                    <p
-                        href="#"
-                        className="flex items-center text-2xl font-semibold text-green-600 select-none"
-                    >
+                    <Link to="/" className="flex items-center text-2xl font-semibold text-green-600 select-none">
                         <img className="mr-2 h-16 w-16" src="/mainLogo.png" alt="logo" />
                         Fresh Food
-                    </p>
+                    </Link>
                     <div className=" w-[548px] rounded-lg bg-white shadow">
                         <div className="space-y-4 p-8">
-                            <h1 className="text-center text-2xl font-semibold text-gray-900">
-                                Đăng ký thành viên
-                            </h1>
+                            <h1 className="text-center text-2xl font-semibold text-gray-900">Đăng ký thành viên</h1>
                             <form
                                 onSubmit={(e) => {
                                     setValidateOnChange(true);
@@ -148,10 +144,7 @@ function Signup() {
                                         )}
                                     </div>
                                     <div className="flex flex-col grow">
-                                        <label
-                                            htmlFor="phone"
-                                            className="mb-1 block font-medium text-gray-900 "
-                                        >
+                                        <label htmlFor="phone" className="mb-1 block font-medium text-gray-900 ">
                                             Số điện thoại*
                                         </label>
                                         <input
@@ -173,10 +166,7 @@ function Signup() {
                                         >
                                             {form.errors.phone || 'No message'}
                                         </span>
-                                        <label
-                                            htmlFor="password"
-                                            className="mb-1 block font-medium text-gray-900 "
-                                        >
+                                        <label htmlFor="password" className="mb-1 block font-medium text-gray-900 ">
                                             Mật khẩu *
                                         </label>
                                         <input
@@ -201,10 +191,7 @@ function Signup() {
                                     </div>
                                 </div>
                                 <div>
-                                    <label
-                                        htmlFor="name"
-                                        className="mb-1 block font-medium text-gray-900 "
-                                    >
+                                    <label htmlFor="name" className="mb-1 block font-medium text-gray-900 ">
                                         Họ và tên *
                                     </label>
                                     <input
@@ -229,10 +216,7 @@ function Signup() {
                                 </div>
 
                                 <div className="mb-2">
-                                    <label
-                                        htmlFor="address"
-                                        className="mb-1 block font-medium text-gray-900 "
-                                    >
+                                    <label htmlFor="address" className="mb-1 block font-medium text-gray-900 ">
                                         Địa chỉ *
                                     </label>
                                     <textarea
@@ -255,11 +239,7 @@ function Signup() {
                                     </span>
                                 </div>
 
-                                <button
-                                    type="submit"
-                                    className="btn btn-blue btn-md mt-4 w-full"
-                                    disabled={loading}
-                                >
+                                <button type="submit" className="btn btn-blue btn-md mt-4 w-full" disabled={loading}>
                                     {!loading ? (
                                         <span>Đăng ký</span>
                                     ) : (

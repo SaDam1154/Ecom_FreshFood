@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { customerActions } from '../../redux/slices/customerSlide';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-
+import { Link } from 'react-router-dom';
 const validationSchema = Yup.object({
     phone: Yup.string().required('Vui lòng nhập số điện thoại!'),
     password: Yup.string().required('Vui lòng nhập nhập mật khẩu!'),
@@ -61,10 +61,10 @@ function Login() {
         <div>
             <section className="bg-gray-200">
                 <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
-                    <p href="#" className="mb-6 flex items-center text-2xl font-semibold text-green-600 select-none">
+                    <Link to="/" className="mb-6 flex items-center text-2xl font-semibold text-green-600 select-none">
                         <img className="mr-2 h-16 w-16" src="/mainLogo.png" alt="logo" />
                         Fresh Food
-                    </p>
+                    </Link>
                     <div className=" w-[448px] rounded-lg bg-white shadow">
                         <div className="space-y-4 p-8">
                             <h1 className="text-center text-2xl font-semibold text-gray-900">Đăng nhập</h1>
