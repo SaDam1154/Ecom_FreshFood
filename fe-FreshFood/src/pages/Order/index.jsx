@@ -112,7 +112,7 @@ export default function Order() {
                         Phone: customer.phone,
                         TotalPrice: order.totalPrice,
                         DiscountPercent: order.totalPrice,
-                        IntoPrice: intoMoney,
+                        IntoMoney: intoMoney,
                         Link: 'http://localhost:5173/profile',
                         reply_to: '20521154@gm.uit.edu.vn',
                     };
