@@ -20,11 +20,9 @@ export function CardProduct({ product }) {
     const dispatch = useDispatch();
     const order = useSelector(orderSelector);
     const [qty, setQty] = useState(1);
-    const [added, setAdded] = useState(false);
     function handleAddToCart() {
         if (order.details.find((d) => d.product._id === product._id)) {
             toast.info('Sản phẩm đã có trong giỏ hàng!');
-            setAdded(true);
         } else {
             dispatch(orderActions.addMany({ product, quantity: qty, price: product?.price }));
             toast.success('Đã thêm sản phẩm vào giỏ hàng!');

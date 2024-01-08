@@ -12,9 +12,11 @@ function Home() {
     const dispatch = useDispatch();
     const customer = useSelector(customerSelector);
     const [products, setProducts] = useState([]);
-
+    const [productsRec, setProductsRec] = useState([]);
+    console.log(customer);
     useEffect(() => {
         getProducts();
+        getProductsRec();
     }, []);
 
     function getProducts() {
@@ -25,6 +27,18 @@ function Home() {
                     setProducts(resJson.products);
                 } else {
                     setProducts([]);
+                }
+            });
+    }
+    function getProductsRec() {
+        fetch('http://localhost:5000/api/recommend/' + customer._id)
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.success) {
+                    setProductsRec(resJson.products);
+                    console.log(resJson.products);
+                } else {
+                    setProductsRec(products);
                 }
             });
     }
@@ -92,7 +106,7 @@ function Home() {
                             </h2>
                             <h3 className="text-[28px] text-[#0da487] font-bold cursor-hover">Bộ sưu tập hạt</h3>
                             <span className="text-[#4a5568] w-3/5">Chúng tôi cung cấp rau và trái cây hữu cơ.</span>
-                            <Link>
+                            <Link to="/products">
                                 <button className="text-red  relative overflow-hidden  rounded-md bg-transparent  text-[#222222]  ">
                                     <div className="flex items-center justify-start relative z-10 gap-4 text-sm sm:text-base lg:text-base xl:text-lg 2xl:text-xl ">
                                         <span>Xem sản phẩm</span>
@@ -125,7 +139,7 @@ function Home() {
                                     Bắt đầu mua sắm hàng ngày của bạn với một số Organic food
                                 </p>
                             </span>
-                            <Link>
+                            <Link to="/products">
                                 <button className="text-red  relative overflow-hidden  rounded-md bg-transparent  text-[#222222]  ">
                                     <div className="flex items-center justify-start relative z-10 gap-4 text-sm sm:text-base lg:text-base xl:text-lg 2xl:text-xl ">
                                         <span>Xem sản phẩm</span>
@@ -185,9 +199,11 @@ function Home() {
                         )}
                         {customer ? (
                             <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-3 p-1 pb-2">
-                                {products.slice(0, 8).map((product, index) => {
-                                    return <CardProduct key={index} product={product} />;
-                                })}
+                                {productsRec
+                                    .map((product, index) => {
+                                        if (product) return <CardProduct key={index} product={product} />;
+                                    })
+                                    .slice(0, 8)}
                             </div>
                         ) : (
                             <div className="h-full w-full flex items-center justify-center"></div>
