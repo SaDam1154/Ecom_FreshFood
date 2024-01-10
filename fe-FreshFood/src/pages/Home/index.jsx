@@ -31,7 +31,7 @@ function Home() {
             });
     }
     function getProductsRec() {
-        fetch('http://localhost:5000/api/recommend/' + customer._id)
+        fetch('http://localhost:5000/api/recommend/' + customer?._id)
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {
