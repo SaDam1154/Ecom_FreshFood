@@ -43,26 +43,26 @@ function Products() {
     }
 
     return (
-        <div className="flex flex-col w-full h-auto p-8 sm:px-12 lg:px-20 xl:px-28 overflow-y-scroll overflow-x-hidden items-center justify-start">
+        <div className="flex h-auto w-full flex-col items-center justify-start overflow-x-hidden overflow-y-scroll p-8 sm:px-12 lg:px-20 xl:px-28">
             {/* khu Sản phẩm */}
-            <div className="w-full h-full grid grid-cols-1 xl:grid-cols-4  2xl:grid-cols-5  3xl:grid-cols-6">
+            <div className="3xl:grid-cols-6 grid h-full w-full grid-cols-1  xl:grid-cols-4  2xl:grid-cols-5">
                 {/* khu Category */}
-                <div className="flex flex-col jite gap-2 bg-slate-100 rounded-2xl p-1 lg:p-2 mr-1 sm:mr-2 lg:mr-3 xl:mr-4 2xl:mr-5">
-                    <div className="flex flex-col w-full items-start justify-center gap-1">
-                        <span className="text-3xl font-semibold select-none">Category</span>
-                        <hr className=" bg-green-400 w-12 h-1 border-0 rounded" />
+                <div className="jite mr-1 flex flex-col gap-2 rounded-2xl bg-slate-100 p-1 sm:mr-2 lg:mr-3 lg:p-2 xl:mr-4 2xl:mr-5">
+                    <div className="flex w-full flex-col items-start justify-center gap-1">
+                        <span className="select-none text-3xl font-semibold">Category</span>
+                        <hr className=" h-1 w-12 rounded border-0 bg-green-400" />
                     </div>
                     <HoverLinks />
                 </div>
                 {/* khu Category */}
                 {products ? (
-                    <div className="flex flex-col gap-8 sm:col-span-2 xl:col-span-3 2xl:col-span-4 3xl:col-span-5">
+                    <div className="3xl:col-span-5 flex flex-col gap-8 sm:col-span-2 xl:col-span-3 2xl:col-span-4">
                         <div className="flex flex-col">
-                            <div className="flex flex-col gap-1 w-full items-end justify-center">
-                                <span className="text-neutral-900 text-3xl font-semibold select-none">
+                            <div className="flex w-full flex-col items-end justify-center gap-1">
+                                <span className="select-none text-3xl font-semibold text-neutral-900">
                                     {type ? typeName : 'Tất cả sản phẩm'}
                                 </span>
-                                <hr className=" bg-green-400 w-48 h-1 border-0 rounded" />
+                                <hr className=" h-1 w-48 rounded border-0 bg-green-400" />
 
                                 <span className="text-[#4a5568]">
                                     {type
@@ -74,7 +74,7 @@ function Products() {
                                         : 'Lựa chọn sản phẩm tươi ngon với giá cả phải chăng.'}
                                 </span>
                             </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 3xl:grid-cols-5 gap-3 p-1 pb-2">
+                            <div className="3xl:grid-cols-5 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
                                 {type ? (
                                     products.filter((products) => {
                                         return products.type._id == type;
@@ -84,10 +84,12 @@ function Products() {
                                                 return products.type._id == type;
                                             })
                                             .map((product, index) => {
-                                                return <CardProduct key={index} product={product} />;
+                                                return (
+                                                    <CardProduct key={index} product={product} />
+                                                );
                                             })
                                     ) : (
-                                        <div className="h-full w-full flex justify-center items-center">
+                                        <div className="flex h-full w-full items-center justify-center">
                                             Vui lòng quay lại sau!!!
                                         </div>
                                     )

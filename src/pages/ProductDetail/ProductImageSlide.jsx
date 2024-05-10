@@ -62,7 +62,7 @@ export default function ProductImageSlide({ images }) {
             </div>
 
             {/* THUMBNAIL SLIDE */}
-            <div className="group relative mt-1 -mx-2">
+            <div className="group relative -mx-2 mt-1">
                 <Swiper
                     ref={thumbnailSwiperRef}
                     slidesPerView={SLIDES_PER_VIEW_THUMSNAIL}
@@ -85,9 +85,9 @@ export default function ProductImageSlide({ images }) {
                                         className={clsx(
                                             'h-full w-full cursor-pointer rounded object-cover',
                                             {
-                                                'ring-primary-700 ring-2': index === currentSlide,
+                                                'ring-2 ring-primary-700': index === currentSlide,
                                                 'opacity-70': index !== currentSlide,
-                                            }
+                                            },
                                         )}
                                     />
                                 </div>

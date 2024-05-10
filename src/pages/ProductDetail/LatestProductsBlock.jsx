@@ -28,13 +28,13 @@ export default function LatestProductBlock({ product }) {
     }
 
     return products?.length ? (
-        <div className="bg-gray-50 rounded-lg p-5">
+        <div className="rounded-lg bg-gray-50 p-5">
             <p className="text-xl font-medium">Sản phẩm mới nhất</p>
             <div className="mt-6 space-y-4">
                 {products.map((p, index) => (
                     <Link to={'/product/' + p?.id} className="flex space-x-2" key={index}>
                         <img
-                            className="w-[70px] h-[70px] rounded object-cover"
+                            className="h-[70px] w-[70px] rounded object-cover"
                             src={p?.images?.length ? p?.images[0] : '/placeholder.png'}
                         />
                         <div>

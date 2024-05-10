@@ -7,10 +7,30 @@ import 'react-alice-carousel/lib/alice-carousel.css';
 const handleDragStart = (e) => e.preventDefault();
 
 const items = [
-    <CardSection img={'/4.jpg'} discount={'5% OFF'} title={'Ưu đãi hàng ngày'} content={'Thực phẩm mới ra lò'} />,
-    <CardSection img={'/5.jpg'} discount={'5% OFF'} title={'Ưu đãi hàng ngày'} content={'Thực phẩm mới ra lò'} />,
-    <CardSection img={'/6.jpg'} discount={'5% OFF'} title={'Ưu đãi hàng ngày'} content={'Thực phẩm mới ra lò'} />,
-    <CardSection img={'/7.jpg'} discount={'5% OFF'} title={'Ưu đãi hàng ngày'} content={'Thực phẩm mới ra lò'} />,
+    <CardSection
+        img={'/4.jpg'}
+        discount={'5% OFF'}
+        title={'Ưu đãi hàng ngày'}
+        content={'Thực phẩm mới ra lò'}
+    />,
+    <CardSection
+        img={'/5.jpg'}
+        discount={'5% OFF'}
+        title={'Ưu đãi hàng ngày'}
+        content={'Thực phẩm mới ra lò'}
+    />,
+    <CardSection
+        img={'/6.jpg'}
+        discount={'5% OFF'}
+        title={'Ưu đãi hàng ngày'}
+        content={'Thực phẩm mới ra lò'}
+    />,
+    <CardSection
+        img={'/7.jpg'}
+        discount={'5% OFF'}
+        title={'Ưu đãi hàng ngày'}
+        content={'Thực phẩm mới ra lò'}
+    />,
 ];
 
 function MyCarousel() {

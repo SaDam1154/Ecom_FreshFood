@@ -86,9 +86,9 @@ export default function MyFooter() {
                             THỰC PHẨM SẠCH UIT
                         </h6>
                         <p className="select-none">
-                            Chào mừng bạn đến với Cửa hàng thực phẩm tươi sống! Khám phá những sản phẩm thực phẩm tươi
-                            ngon nhất được tổ chức dành cho duyệt dễ dàng. Hãy cùng chúng tôi trải nghiệm mua sắm thú vị
-                            nhé!
+                            Chào mừng bạn đến với Cửa hàng thực phẩm tươi sống! Khám phá những sản
+                            phẩm thực phẩm tươi ngon nhất được tổ chức dành cho duyệt dễ dàng. Hãy
+                            cùng chúng tôi trải nghiệm mua sắm thú vị nhé!
                         </p>
                     </div>
                     {/* <!-- Products section --> */}
@@ -100,13 +100,17 @@ export default function MyFooter() {
                             <a className="text-neutral-600 dark:text-neutral-200">Sa Đam</a>
                         </p>
                         <p className="mb-4">
-                            <a className="text-neutral-600 dark:text-neutral-200">Bùi Tống Minh Châu</a>
+                            <a className="text-neutral-600 dark:text-neutral-200">
+                                Bùi Tống Minh Châu
+                            </a>
                         </p>
                     </div>
 
                     {/* <!-- Contact section --> */}
                     <div>
-                        <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">Contact</h6>
+                        <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
+                            Contact
+                        </h6>
                         <p className="mb-4 flex items-center justify-center md:justify-start">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +172,10 @@ export default function MyFooter() {
             {/* <!--Copyright section--> */}
             <div className="bg-neutral-200 p-6 text-center dark:bg-neutral-700">
                 <span>© 2023 Copyright:</span>
-                <a className="font-semibold text-neutral-600 dark:text-neutral-400" href="https://tw-elements.com/">
+                <a
+                    className="font-semibold text-neutral-600 dark:text-neutral-400"
+                    href="https://tw-elements.com/"
+                >
                     UIT ThucPhamSach
                 </a>
             </div>

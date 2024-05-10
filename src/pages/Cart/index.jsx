@@ -13,9 +13,9 @@ export default function Cart() {
     return (
         <div className="px-[8vw] py-10">
             <div className="flex items-start">
-                <div className="flex-1 mr-10">
+                <div className="mr-10 flex-1">
                     {order?.details?.length === 0 && (
-                        <div className="flex flex-col justify-center items-center space-y-3 py-5">
+                        <div className="flex flex-col items-center justify-center space-y-3 py-5">
                             <div className="text-orange-600">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -32,14 +32,20 @@ export default function Cart() {
                                     />
                                 </svg>
                             </div>
-                            <p className="text-lg font-medium text-gray-700">Chưa có sản phẩm trong giỏ hàng!</p>
+                            <p className="text-lg font-medium text-gray-700">
+                                Chưa có sản phẩm trong giỏ hàng!
+                            </p>
                         </div>
                     )}
                     {order?.details?.map((d, index) => (
-                        <div key={index} className="flex py-3 border-b space-x-4 items-center">
+                        <div key={index} className="flex items-center space-x-4 border-b py-3">
                             <img
-                                src={d.product.images.length > 0 ? d.product.images[0] : '/placeholder.png'}
-                                className="w-[80px] h-[80px] object-cover rounded"
+                                src={
+                                    d.product.images.length > 0
+                                        ? d.product.images[0]
+                                        : '/placeholder.png'
+                                }
+                                className="h-[80px] w-[80px] rounded object-cover"
                             />
                             <div className="flex-1 pr-6">
                                 <p className="font-medium">{d?.product?.name}</p>
@@ -54,7 +60,7 @@ export default function Cart() {
                                         orderActions.updateQuantity({
                                             _id: d?.product?._id,
                                             quantity: q,
-                                        })
+                                        }),
                                     )
                                 }
                                 min={1}
@@ -62,13 +68,13 @@ export default function Cart() {
                             />
                             <div className="w-[180px] px-6">
                                 <p className="text-gray-600">Tổng giá</p>
-                                <p className="text-gray-900 text-lg font-medium">
+                                <p className="text-lg font-medium text-gray-900">
                                     <PriceFormat>{d?.price * d?.quantity}</PriceFormat> VNĐ
                                 </p>
                             </div>
                             <div className="ml-4">
                                 <button
-                                    className="text-red-500 flex px-3 items-center space-x-2 hover:text-red-600"
+                                    className="flex items-center space-x-2 px-3 text-red-500 hover:text-red-600"
                                     onClick={() => dispatch(orderActions.remove(d?.product?._id))}
                                 >
                                     <svg
@@ -77,7 +83,7 @@ export default function Cart() {
                                         viewBox="0 0 24 24"
                                         strokeWidth={1.5}
                                         stroke="currentColor"
-                                        className="w-6 h-6"
+                                        className="h-6 w-6"
                                     >
                                         <path
                                             strokeLinecap="round"
@@ -92,9 +98,9 @@ export default function Cart() {
                         </div>
                     ))}
                 </div>
-                <div className="w-[290px] bg-gray-50 rounded-lg p-4">
-                    <p className="text-lg font-medium border-b pb-2">Tổng giỏ hàng</p>
-                    <div className="text-gray-600 mt-3">
+                <div className="w-[290px] rounded-lg bg-gray-50 p-4">
+                    <p className="border-b pb-2 text-lg font-medium">Tổng giỏ hàng</p>
+                    <div className="mt-3 text-gray-600">
                         <div className="mt-3 space-y-2">
                             <div className="flex justify-between">
                                 <span>Số sản phẩm</span>
@@ -102,10 +108,15 @@ export default function Cart() {
                             </div>
                             <div className="flex justify-between">
                                 <span>Tổng số lượng</span>
-                                <span>{order?.details?.reduce((prev, curr) => prev + curr.quantity, 0)}</span>
+                                <span>
+                                    {order?.details?.reduce(
+                                        (prev, curr) => prev + curr.quantity,
+                                        0,
+                                    )}
+                                </span>
                             </div>
                         </div>
-                        <div className="flex py-2 mt-2 border-t font-semibold text-lg justify-between">
+                        <div className="mt-2 flex justify-between border-t py-2 text-lg font-semibold">
                             <span>Tổng giá (VNĐ)</span>
                             <span className="text-primary-600">
                                 <PriceFormat>{order.totalPrice}</PriceFormat>
@@ -120,7 +131,10 @@ export default function Cart() {
                             >
                                 Đặt hàng
                             </Link>
-                            <Link to="/products" className="btn btn-md w-full bg-primary-500 hover:bg-primary-400">
+                            <Link
+                                to="/products"
+                                className="btn btn-md w-full bg-primary-500 hover:bg-primary-400"
+                            >
                                 Tiếp tục mua hàng
                             </Link>
                         </div>

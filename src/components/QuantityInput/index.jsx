@@ -11,9 +11,9 @@ export default function QuantityInput({ value, setValue, min, max }) {
     }
 
     return (
-        <div className="flex items-center p-1 rounded-md bg-gray-100">
+        <div className="flex items-center rounded-md bg-gray-100 p-1">
             <button
-                className="w-8 h-8 rounded bg-white flex items-center justify-center text-primary-600"
+                className="flex h-8 w-8 items-center justify-center rounded bg-white text-primary-600"
                 onClick={() => handleSetValue(value - 1)}
             >
                 <svg
@@ -22,18 +22,18 @@ export default function QuantityInput({ value, setValue, min, max }) {
                     viewBox="0 0 24 24"
                     strokeWidth={2}
                     stroke="currentColor"
-                    className="w-4 h-4"
+                    className="h-4 w-4"
                 >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
                 </svg>
             </button>
             <input
-                className="w-16 text-center bg-transparent h-8 text-gray-600"
+                className="h-8 w-16 bg-transparent text-center text-gray-600"
                 onChange={(e) => handleSetValue(e.target.value)}
                 value={value}
             />
             <button
-                className="w-8 h-8 rounded bg-white flex items-center justify-center text-primary-600"
+                className="flex h-8 w-8 items-center justify-center rounded bg-white text-primary-600"
                 onClick={() => handleSetValue(value + 1)}
             >
                 <svg
@@ -42,7 +42,7 @@ export default function QuantityInput({ value, setValue, min, max }) {
                     viewBox="0 0 24 24"
                     strokeWidth={2}
                     stroke="currentColor"
-                    className="w-4 h-4"
+                    className="h-4 w-4"
                 >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>

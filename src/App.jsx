@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css';
 function App() {
     return (
         <Router>
-            <div className='App h-full'>
+            <div className="App h-full">
                 <Routes>
                     {publicRoutes.map((route, index) => {
                         const Page = route.component;

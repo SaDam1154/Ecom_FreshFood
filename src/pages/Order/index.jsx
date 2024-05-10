@@ -116,14 +116,21 @@ export default function Order() {
                         Link: 'http://localhost:5173/profile',
                         reply_to: '20521154@gm.uit.edu.vn',
                     };
-                    emailjs.send('service_3dwhkaf', 'template_m7a86er', templateParams, 'JcAqZIglb_PsOO35p').then(
-                        (response) => {
-                            console.log('SUCCESS!', response.status, response.text);
-                        },
-                        (err) => {
-                            console.log('FAILED...', err);
-                        }
-                    );
+                    emailjs
+                        .send(
+                            'service_3dwhkaf',
+                            'template_m7a86er',
+                            templateParams,
+                            'JcAqZIglb_PsOO35p',
+                        )
+                        .then(
+                            (response) => {
+                                console.log('SUCCESS!', response.status, response.text);
+                            },
+                            (err) => {
+                                console.log('FAILED...', err);
+                            },
+                        );
                     setValidateOnChange(false);
                     navigate('/');
                 } else {
@@ -142,10 +149,10 @@ export default function Order() {
         <div className="px-[8vw] py-10">
             <div className="flex space-x-6">
                 {/* CART */}
-                <div className="w-[400px] bg-gray-50 p-4 rounded-lg">
+                <div className="w-[400px] rounded-lg bg-gray-50 p-4">
                     <div className="">
-                        <p className="text-lg font-medium border-b pb-2 mt-5">Tổng giỏ hàng</p>
-                        <div className="text-gray-600 mt-3">
+                        <p className="mt-5 border-b pb-2 text-lg font-medium">Tổng giỏ hàng</p>
+                        <div className="mt-3 text-gray-600">
                             <div className="mt-3 space-y-2">
                                 <div className="flex justify-between">
                                     <span>Tổng giá (VNĐ)</span>
@@ -160,7 +167,7 @@ export default function Order() {
                                     </span>
                                 </div>
                             </div>
-                            <div className="flex py-2 mt-2 border-t font-semibold text-lg justify-between">
+                            <div className="mt-2 flex justify-between border-t py-2 text-lg font-semibold">
                                 <span>Thành tiền (VNĐ)</span>
                                 <span className="text-primary-600">
                                     <PriceFormat>{intoMoney}</PriceFormat>
@@ -170,10 +177,10 @@ export default function Order() {
                     </div>
                     <div>
                         {order?.details?.map((d, index) => (
-                            <div key={index} className="flex py-2 space-x-4 items-center">
+                            <div key={index} className="flex items-center space-x-4 py-2">
                                 <img
                                     src={d?.product?.images?.[0] || '/placeholder.png'}
-                                    className="w-[70px] h-[70px] object-cover rounded"
+                                    className="h-[70px] w-[70px] rounded object-cover"
                                 />
                                 <div className="flex-1 pr-6">
                                     <p className="font-medium">{d?.product?.name}</p>
@@ -275,7 +282,9 @@ export default function Order() {
                                         'border-gray-300 bg-gray-100': !coupon.canUse,
                                     })}
                                 >
-                                    <p className="font-medium text-gray-700">{coupon.description}</p>
+                                    <p className="font-medium text-gray-700">
+                                        {coupon.description}
+                                    </p>
                                     <div className="flex space-x-3">
                                         <div className="space-x-1">
                                             <span className="text-gray-600">Giảm:</span>

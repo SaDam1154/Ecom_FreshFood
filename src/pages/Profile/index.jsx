@@ -139,7 +139,7 @@ function InfoGroup() {
                         />
                         {image?.url && isEdit && (
                             <button
-                                className="absolute top-1 right-1 rounded-full border bg-white px-2 py-2 text-red-600 hover:text-red-400"
+                                className="absolute right-1 top-1 rounded-full border bg-white px-2 py-2 text-red-600 hover:text-red-400"
                                 onClick={() => setImage(null)}
                             >
                                 <svg
@@ -234,7 +234,7 @@ function InfoGroup() {
                     <LoadingForm loading={loading} />
                 </div>
 
-                <div className="mt-6 flex items-center justify-end border-t pt-6 space-x-3">
+                <div className="mt-6 flex items-center justify-end space-x-3 border-t pt-6">
                     {isEdit ? (
                         <>
                             <button
@@ -246,7 +246,7 @@ function InfoGroup() {
                             </button>
                             <button
                                 type="submit"
-                                className="btn bg-primary-600 hover:bg-primary-700 btn-md"
+                                className="btn btn-md bg-primary-600 hover:bg-primary-700"
                                 disabled={loading}
                             >
                                 <span>Cập nhật</span>
@@ -286,14 +286,14 @@ function DeliveryStatusCell({ value }) {
 function OrderList({ orders, onSelect }) {
     return (
         <div className="mt-3">
-            <div className="flex space-x-3 py-3 font-medium text-center bg-primary-100 rounded">
+            <div className="flex space-x-3 rounded bg-primary-100 py-3 text-center font-medium">
                 <div className="flex-1">Ngày</div>
                 <div className="flex-1">Thành tiền</div>
                 <div className="flex-1">Trạng thái</div>
             </div>
 
             {orders.length === 0 && (
-                <div className="flex flex-col justify-center items-center space-y-3 py-5">
+                <div className="flex flex-col items-center justify-center space-y-3 py-5">
                     <div className="text-orange-600">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -323,7 +323,7 @@ function OrderList({ orders, onSelect }) {
                 {orders.map((order) => (
                     <div
                         key={order?.id}
-                        className="flex cursor-pointer hover:bg-gray-50 space-x-3 py-3 text-center rounded"
+                        className="flex cursor-pointer space-x-3 rounded py-3 text-center hover:bg-gray-50"
                         onClick={() => onSelect(order.id)}
                     >
                         <div className="flex-1">
@@ -345,7 +345,7 @@ function OrderList({ orders, onSelect }) {
 function OrderDetail({ order }) {
     return (
         <div className="mt-5">
-            <div className="text-gray-600 mt-3">
+            <div className="mt-3 text-gray-600">
                 <div className="mt-3 space-y-2">
                     <div className="flex justify-between">
                         <span>Tổng giá (VNĐ)</span>
@@ -360,7 +360,7 @@ function OrderDetail({ order }) {
                         </span>
                     </div>
                 </div>
-                <div className="flex py-2 mt-2 border-t font-semibold text-lg justify-between">
+                <div className="mt-2 flex justify-between border-t py-2 text-lg font-semibold">
                     <span>Thành tiền (VNĐ)</span>
                     <span className="text-primary-600">
                         <PriceFormat>{order?.intoMoney}</PriceFormat>
@@ -369,10 +369,10 @@ function OrderDetail({ order }) {
             </div>
             <div className="mt-5">
                 {order?.details?.map((d, index) => (
-                    <div key={index} className="flex py-2 space-x-4 items-center">
+                    <div key={index} className="flex items-center space-x-4 py-2">
                         <img
                             src={d?.product?.images?.[0] || '/placeholder.png'}
-                            className="w-[60px] h-[60px] object-cover rounded"
+                            className="h-[60px] w-[60px] rounded object-cover"
                         />
                         <div className="flex-1 pr-6">
                             <p className="font-medium">{d?.product?.name}</p>
@@ -426,7 +426,7 @@ function OrderGroup() {
                     setOrders(
                         resJson.orders
                             .filter((o) => o.customer && o.customer === customer._id)
-                            .sort((a, b) => b.id - a.id)
+                            .sort((a, b) => b.id - a.id),
                     );
                 } else {
                     setOrders([]);
@@ -449,7 +449,7 @@ function OrderGroup() {
                             viewBox="0 0 24 24"
                             strokeWidth={1.5}
                             stroke="currentColor"
-                            className="w-6 h-6"
+                            className="h-6 w-6"
                         >
                             <path
                                 strokeLinecap="round"
@@ -459,7 +459,7 @@ function OrderGroup() {
                         </svg>
                     </button>
                 )}
-                <p className="font-semibold text-lg">Đơn hàng</p>
+                <p className="text-lg font-semibold">Đơn hàng</p>
             </div>
             {!selectedOrderId ? (
                 <OrderList orders={orders} onSelect={(id) => setSelectedOrderId(id)} />
@@ -472,8 +472,8 @@ function OrderGroup() {
 
 export default function Profile() {
     return (
-        <div className="px-[8vw] py-6 flex">
-            <div className="flex-1 mr-6">
+        <div className="flex px-[8vw] py-6">
+            <div className="mr-6 flex-1">
                 <InfoGroup />
             </div>
             <div className="flex-1">

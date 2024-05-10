@@ -61,13 +61,18 @@ function Login() {
         <div>
             <section className="bg-gray-200">
                 <div className="mx-auto flex flex-col items-center justify-center px-6 py-8 md:h-screen lg:py-0">
-                    <Link to="/" className="mb-6 flex items-center text-2xl font-semibold text-green-600 select-none">
+                    <Link
+                        to="/"
+                        className="mb-6 flex select-none items-center text-2xl font-semibold text-green-600"
+                    >
                         <img className="mr-2 h-16 w-16" src="/mainLogo.png" alt="logo" />
                         Fresh Food
                     </Link>
                     <div className=" w-[448px] rounded-lg bg-white shadow">
                         <div className="space-y-4 p-8">
-                            <h1 className="text-center text-2xl font-semibold text-gray-900">Đăng nhập</h1>
+                            <h1 className="text-center text-2xl font-semibold text-gray-900">
+                                Đăng nhập
+                            </h1>
                             <form
                                 onSubmit={(e) => {
                                     setValidateOnChange(true);
@@ -75,7 +80,10 @@ function Login() {
                                 }}
                             >
                                 <div className="mb-2">
-                                    <label htmlFor="phone" className="mb-1 block font-medium text-gray-900 ">
+                                    <label
+                                        htmlFor="phone"
+                                        className="mb-1 block font-medium text-gray-900 "
+                                    >
                                         Số điện thoại
                                     </label>
                                     <input
@@ -91,15 +99,21 @@ function Login() {
                                         placeholder="Số điện thoại"
                                     />
                                     <span
-                                        className={clsx('text-sm text-red-500 opacity-0 select-none', {
-                                            'opacity-100': form.errors.phone,
-                                        })}
+                                        className={clsx(
+                                            'select-none text-sm text-red-500 opacity-0',
+                                            {
+                                                'opacity-100': form.errors.phone,
+                                            },
+                                        )}
                                     >
                                         {form.errors.phone || 'No message'}
                                     </span>
                                 </div>
                                 <div className="mb-2">
-                                    <label htmlFor="password" className="mb-1 block font-medium text-gray-900 ">
+                                    <label
+                                        htmlFor="password"
+                                        className="mb-1 block font-medium text-gray-900 "
+                                    >
                                         Mật khẩu
                                     </label>
                                     <input
@@ -115,15 +129,22 @@ function Login() {
                                         })}
                                     />
                                     <span
-                                        className={clsx('text-sm text-red-500 opacity-0 select-none', {
-                                            'opacity-100': form.errors.password,
-                                        })}
+                                        className={clsx(
+                                            'select-none text-sm text-red-500 opacity-0',
+                                            {
+                                                'opacity-100': form.errors.password,
+                                            },
+                                        )}
                                     >
                                         {form.errors.password || 'No message'}
                                     </span>
                                 </div>
 
-                                <button type="submit" className="btn btn-blue btn-md mt-4 w-full" disabled={loading}>
+                                <button
+                                    type="submit"
+                                    className="btn btn-blue btn-md mt-4 w-full"
+                                    disabled={loading}
+                                >
                                     {!loading ? (
                                         <span>Đăng nhập</span>
                                     ) : (

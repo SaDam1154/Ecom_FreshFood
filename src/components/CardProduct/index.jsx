@@ -29,13 +29,13 @@ export function CardProduct({ product }) {
         }
     }
     return (
-        <Card className="group flex flex-col justify-between cursor-pointer w-full max-w-[26rem] border-[1px] shadow-lg">
+        <Card className="group flex w-full max-w-[26rem] cursor-pointer flex-col justify-between border-[1px] shadow-lg">
             <Link to={'/product/' + product.id}>
                 <CardHeader floated={false} color="blue-gray">
                     <img
                         src={product.images[0]}
                         alt="ui/ux review check"
-                        className="object-cover h-[200px] w-[384px]  lg:h-[230px] 2xl:h-[260px] transition duration-300 ease-in-out  shadow-none scale-100 group-hover:scale-105 hover:shadow-none  focus:bg-slate-300 cursor-pointer "
+                        className="h-[200px] w-[384px] scale-100  cursor-pointer object-cover shadow-none transition duration-300  ease-in-out hover:shadow-none focus:bg-slate-300 group-hover:scale-105  lg:h-[230px] 2xl:h-[260px] "
                     />
                 </CardHeader>
                 <CardBody className="grow">
@@ -43,7 +43,10 @@ export function CardProduct({ product }) {
                         <Typography variant="h5" color="blue-gray" className="font-medium">
                             {product.name}
                         </Typography>
-                        <Typography color="blue-gray" className="flex items-center gap-1.5 font-normal">
+                        <Typography
+                            color="blue-gray"
+                            className="flex items-center gap-1.5 font-normal"
+                        >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -60,7 +63,7 @@ export function CardProduct({ product }) {
                         </Typography>
                     </div>
                     <Typography color="gray">
-                        <div className="flex gap-2 items-center">
+                        <div className="flex items-center gap-2">
                             <span className="text-lg font-bold text-green-500">
                                 <PriceFormat>{product?.price}</PriceFormat> VNĐ
                             </span>
@@ -74,8 +77,12 @@ export function CardProduct({ product }) {
                     ripple={false}
                     fullWidth={true}
                     className={clsx(
-                        'bg-blue-200 text-gray-900 shadow-none scale-100 hover:scale-105 hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100 focus:bg-slate-300',
-                        { 'bg-slate-300': order.details.find((d) => d.product._id === product._id) }
+                        'scale-100 bg-blue-200 text-gray-900 shadow-none hover:scale-105 hover:shadow-none focus:scale-105 focus:bg-slate-300 focus:shadow-none active:scale-100',
+                        {
+                            'bg-slate-300': order.details.find(
+                                (d) => d.product._id === product._id,
+                            ),
+                        },
                     )}
                 >
                     Thêm vào giỏ hàng

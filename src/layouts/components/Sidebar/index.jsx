@@ -2,7 +2,7 @@ import StaggeredDropDown from './StaggeredDropDown.jsx';
 import { Dropdown } from 'flowbite-react';
 function Sidebar() {
     return (
-        <div className="flex justify-between items-center w-full h-20 py-3">
+        <div className="flex h-20 w-full items-center justify-between py-3">
             {/* <button className="flex justify-center items-center gap-3 bg-green-500 rounded-lg p-3 text-white">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -35,14 +35,14 @@ function Sidebar() {
                 </Dropdown>
             </div> */}
 
-            <button className="flex justify-center items-center gap-3 bg-green-300 rounded-lg p-3 text-green-600">
+            <button className="flex items-center justify-center gap-3 rounded-lg bg-green-300 p-3 text-green-600">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-6 h-6"
+                    className="h-6 w-6"
                 >
                     <path
                         strokeLinecap="round"

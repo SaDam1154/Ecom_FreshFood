@@ -19,7 +19,7 @@ export const orderSlice = createSlice({
         add: (state, action) => {
             //add
             const indexDetail = state.details.findIndex(
-                (detail) => detail.product._id === action.payload.product._id
+                (detail) => detail.product._id === action.payload.product._id,
             );
             if (indexDetail !== -1) {
                 state.details[indexDetail].quantity += 1;
@@ -36,7 +36,7 @@ export const orderSlice = createSlice({
         addMany: (state, action) => {
             //add
             const indexDetail = state.details.findIndex(
-                (detail) => detail.product._id === action.payload.product._id
+                (detail) => detail.product._id === action.payload.product._id,
             );
             if (indexDetail !== -1) {
                 return state;
@@ -59,7 +59,7 @@ export const orderSlice = createSlice({
         // payload: {_id, quantity}
         updateQuantity: (state, action) => {
             const indexDetail = state.details.findIndex(
-                (detail) => detail.product._id === action.payload._id
+                (detail) => detail.product._id === action.payload._id,
             );
             if (indexDetail !== -1) {
                 if (state.details[indexDetail].product.quantity < Number(action.payload.quantity)) {

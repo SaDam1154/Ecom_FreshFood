@@ -44,14 +44,17 @@ export default function HoverLinks({ home }) {
         y.set(yPct);
     };
     return (
-        <div className="flex flex-col items-center justify-start w-full">
-            <Link to={'/products'} className="cursor-pointer group relative flex items-center justify-between w-full">
+        <div className="flex w-full flex-col items-center justify-start">
+            <Link
+                to={'/products'}
+                className="group relative flex w-full cursor-pointer items-center justify-between"
+            >
                 <motion.div
                     ref={ref}
                     onMouseMove={handleMouseMove}
                     initial="initial"
                     whileHover="whileHover"
-                    className="group relative flex items-center justify-between w-full px-1 lg:px-2 xl:px-3  border-b-2 border-neutral-700  transition-colors duration-500 hover:border-[#0da487] hover:text-[]"
+                    className="group relative flex w-full items-center justify-between border-b-2 border-neutral-700 px-1  transition-colors duration-500  hover:border-[#0da487] hover:text-[] lg:px-2 xl:px-3"
                 >
                     <div>
                         <motion.span
@@ -64,7 +67,7 @@ export default function HoverLinks({ home }) {
                                 staggerChildren: 0.075,
                                 delayChildren: 0.25,
                             }}
-                            className="relative z-10 block text-base xl:text-base 2xl:text-lg font-semibold text-neutral-950 transition-colors duration-500 group-hover:text-[#0da487] "
+                            className="relative z-10 block text-base font-semibold text-neutral-950 transition-colors duration-500 group-hover:text-[#0da487] xl:text-base 2xl:text-lg "
                         >
                             <motion.span
                                 variants={{
@@ -91,9 +94,9 @@ export default function HoverLinks({ home }) {
                             },
                         }}
                         transition={{ type: 'spring' }}
-                        className="relative z-10 py-1 sm:py-2 xl:py-3 px-1 sm:px-2 "
+                        className="relative z-10 px-1 py-1 sm:px-2 sm:py-2 xl:py-3 "
                     >
-                        <FiArrowRight className="text-xl sm:text-xl lg:text-2xl 2xl:text-4xl text-neutral-950  group-hover:text-[#0da487]" />
+                        <FiArrowRight className="text-xl text-neutral-950 group-hover:text-[#0da487] sm:text-xl lg:text-2xl  2xl:text-4xl" />
                     </motion.div>
                 </motion.div>
             </Link>
@@ -102,14 +105,14 @@ export default function HoverLinks({ home }) {
                     <Link
                         key={index}
                         to={'/products/' + productType._id}
-                        className="cursor-pointer group relative flex items-center justify-between w-full"
+                        className="group relative flex w-full cursor-pointer items-center justify-between"
                     >
                         <motion.div
                             ref={ref}
                             onMouseMove={handleMouseMove}
                             initial="initial"
                             whileHover="whileHover"
-                            className="group relative flex items-center justify-between w-full px-1 lg:px-2 xl:px-3  border-b-2 border-neutral-700  transition-colors duration-500 hover:border-[#0da487] hover:text-[]"
+                            className="group relative flex w-full items-center justify-between border-b-2 border-neutral-700 px-1  transition-colors duration-500  hover:border-[#0da487] hover:text-[] lg:px-2 xl:px-3"
                         >
                             <div>
                                 <motion.span
@@ -122,7 +125,7 @@ export default function HoverLinks({ home }) {
                                         staggerChildren: 0.075,
                                         delayChildren: 0.25,
                                     }}
-                                    className="relative z-10 block text-base xl:text-base 2xl:text-lg font-semibold text-neutral-950 transition-colors duration-500 group-hover:text-[#0da487] "
+                                    className="relative z-10 block text-base font-semibold text-neutral-950 transition-colors duration-500 group-hover:text-[#0da487] xl:text-base 2xl:text-lg "
                                 >
                                     <motion.span
                                         variants={{
@@ -149,9 +152,9 @@ export default function HoverLinks({ home }) {
                                     },
                                 }}
                                 transition={{ type: 'spring' }}
-                                className="relative z-10 py-1 sm:py-2 xl:py-3 px-1 sm:px-2 "
+                                className="relative z-10 px-1 py-1 sm:px-2 sm:py-2 xl:py-3 "
                             >
-                                <FiArrowRight className="text-xl sm:text-xl lg:text-2xl 2xl:text-4xl text-neutral-950  group-hover:text-[#0da487]" />
+                                <FiArrowRight className="text-xl text-neutral-950 group-hover:text-[#0da487] sm:text-xl lg:text-2xl  2xl:text-4xl" />
                             </motion.div>
                         </motion.div>
                     </Link>
