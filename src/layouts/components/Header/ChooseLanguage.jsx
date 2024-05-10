@@ -30,7 +30,7 @@ export default function ChooseLanguage() {
                 <span>{lang}</span>
             </button>
 
-            <div className="invisible absolute -right-[4px] top-full w-[200px] overflow-hidden rounded-md bg-white shadow group-hover:visible">
+            <div className="invisible absolute -right-[4px] top-full z-50 w-[200px] overflow-hidden rounded-md bg-white shadow group-hover:visible">
                 <button
                     className={clsx(
                         'flex w-full items-center justify-center py-3 hover:bg-green-100',
