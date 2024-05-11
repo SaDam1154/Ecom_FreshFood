@@ -15,6 +15,11 @@
     textarea {
         @apply !outline-none !ring-0;
     }
+
+    .search-result-item em {
+        font-style: normal;
+        @apply bg-green-200;
+    }
 }
 
 @layer components {
@@ -32,7 +37,7 @@
         @apply bg-red-500 hover:bg-red-400;
     }
     .btn.btn-border-blue {
-        @apply bg-white hover:bg-blue-100 border border-blue-500 text-blue-500;
+        @apply border border-blue-500 bg-white text-blue-500 hover:bg-blue-100;
     }
     .btn.btn-blue {
         @apply bg-blue-500 hover:bg-blue-400;

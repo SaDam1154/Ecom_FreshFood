@@ -1,5 +1,9 @@
 {
+    "common": {
+        "category": "Danh mục"
+    },
     "header": {
-        "searchPlaceholder": "Tìm sản phẩm theo tên, danh mục,..."
+        "searchPlaceholder": "Tìm sản phẩm theo tên, danh mục,...",
+        "searchNotFound": "Không tìm thấy sản phẩm"
     }
 }

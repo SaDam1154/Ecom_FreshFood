@@ -1,5 +1,9 @@
 {
+    "common": {
+        "category": "Category"
+    },
     "header": {
-        "searchPlaceholder": "Find products by name, category,..."
+        "searchPlaceholder": "Find products by name, category,...",
+        "searchNotFound": "Not found product"
     }
 }

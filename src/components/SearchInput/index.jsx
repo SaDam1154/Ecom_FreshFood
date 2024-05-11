@@ -1,59 +1,35 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-
-function stringToSlug(str) {
-    // remove accents
-    var from = 'àáãảạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệđùúủũụưừứửữựòóỏõọôồốổỗộơờớởỡợìíỉĩịäëïîöüûñçýỳỹỵỷ',
-        tooo = 'aaaaaaaaaaaaaaaaaeeeeeeeeeeeduuuuuuuuuuuoooooooooooooooooiiiiiaeiiouuncyyyyy';
-    for (var i = 0, l = from.length; i < l; i++) {
-        str = str.replace(RegExp(from[i], 'gi'), tooo[i]);
-    }
-
-    str = str
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9\-]/g, '-')
-        .replace(/-+/g, '-');
-
-    return str;
-}
+import useDebounce from '../../hooks/useDebouce';
 
 function Search() {
-    const [products, setProducts] = useState([]);
     const [searchInput, setSearchInput] = useState('');
+    const searchInputValue = useDebounce(searchInput, 300);
     const [searchProducts, setSearchProducts] = useState([]);
     const { t } = useTranslation();
 
-    useEffect(() => {
-        fetch('http://localhost:5000/api/product')
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.error) {
-                    console.error(data.error);
-                    setProducts([]);
-                }
-                setProducts(data.products);
-            })
-            .catch((error) => {
-                console.error(error);
-                setProducts([]);
-            });
-    }, []);
+    useEffect(() => {}, []);
 
     useEffect(() => {
-        if (!searchInput) {
+        if (!searchInputValue) {
             setSearchProducts([]);
             return;
         }
-        const newSearchProducts = products
-            .filter((product) => stringToSlug(product.name).includes(stringToSlug(searchInput)))
-            .slice(0, 5);
-        setSearchProducts(newSearchProducts);
-    }, [products, searchInput]);
+
+        fetch('http://localhost:5000/api/product/search?q=' + searchInputValue)
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.success) {
+                    setSearchProducts(resJson.products);
+                } else {
+                    setSearchProducts([]);
+                }
+            });
+    }, [searchInputValue]);
 
     return (
-        <div className="group relative mx-2 flex w-[500px] max-w-[500px] grow">
+        <div className="group relative mx-2 flex w-[600px] max-w-[600px] grow">
             <input
                 className="grow rounded-l-lg border px-4 py-3"
                 value={searchInput}
@@ -78,23 +54,40 @@ function Search() {
             </button>
 
             {/* PANEL */}
-            {searchInput && (
-                <button className="absolute left-0 right-0 top-14  z-30 hidden min-h-[200px] cursor-auto flex-col space-y-2 rounded-lg border bg-white p-3 shadow-md group-focus-within:flex">
+            {searchInputValue && (
+                <div className="absolute left-0 right-0 top-14 z-30 hidden max-h-[500px] min-h-[200px] cursor-auto flex-col overflow-auto rounded-lg border bg-white shadow-md group-focus-within:flex">
                     {searchProducts.length > 0 ? (
                         searchProducts.map((product) => (
                             <Link
                                 to={'/product/' + product.id}
-                                key={product._id}
-                                className="flex w-full cursor-pointer items-start justify-start gap-3 rounded-md border border-gray-300 px-3 py-2 text-left hover:shadow"
+                                key={product.id}
+                                className="search-result-item flex w-full cursor-pointer items-start justify-start space-x-3 border-b p-3 text-left hover:bg-gray-50"
                             >
                                 <div className="flex items-center justify-between">
-                                    <img className="h-20 w-20" src={product?.images[0]} />
+                                    <img className="h-20 w-20 rounded" src={product?.images[0]} />
                                 </div>
                                 <div className="flex h-full flex-col justify-between">
-                                    <h2 className="line-clamp-1 font-bold">{product?.name}</h2>
+                                    <h2
+                                        className="line-clamp-1 font-bold"
+                                        dangerouslySetInnerHTML={{ __html: product?.name || '' }}
+                                    />
                                     <p className="mt-1 line-clamp-1 text-sm leading-4 text-gray-600">
-                                        {product?.description}
+                                        <span className="font-semibold">
+                                            {t('common.category') + ': '}
+                                        </span>
+                                        <span
+                                            className=""
+                                            dangerouslySetInnerHTML={{
+                                                __html: product?.type || '',
+                                            }}
+                                        />
                                     </p>
+                                    <p
+                                        className="mt-1 line-clamp-1 text-sm leading-4 text-gray-600"
+                                        dangerouslySetInnerHTML={{
+                                            __html: product?.description || '',
+                                        }}
+                                    />
                                 </div>
                             </Link>
                         ))
@@ -114,10 +107,10 @@ function Search() {
                                     d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
                                 />
                             </svg>
-                            <p className="mt-3">Not Found!</p>
+                            <p className="mt-3">{t('header.searchNotFound')}</p>
                         </div>
                     )}
-                </button>
+                </div>
             )}
         </div>
     );
