@@ -63,9 +63,8 @@ function Search() {
                                 key={product.id}
                                 className="search-result-item flex w-full cursor-pointer items-start justify-start space-x-3 border-b p-3 text-left hover:bg-gray-50"
                             >
-                                <div className="flex items-center justify-between">
-                                    <img className="h-20 w-20 rounded" src={product?.images[0]} />
-                                </div>
+                                <img className="h-20 w-20 rounded" src={product?.images[0]} />
+
                                 <div className="flex h-full flex-col justify-between">
                                     <h2
                                         className="line-clamp-1 font-bold"
@@ -73,7 +72,7 @@ function Search() {
                                     />
                                     <p className="mt-1 line-clamp-1 text-sm leading-4 text-gray-600">
                                         <span className="font-semibold">
-                                            {t('common.category') + ': '}
+                                            {t('common.Category') + ': '}
                                         </span>
                                         <span
                                             className=""

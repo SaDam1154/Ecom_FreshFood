@@ -7,12 +7,14 @@ import { useState, useEffect } from 'react';
 import { customerSelector } from '../../redux/selectors';
 import { customerActions } from '../../redux/slices/customerSlide';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 function Home() {
     const dispatch = useDispatch();
     const customer = useSelector(customerSelector);
     const [products, setProducts] = useState([]);
     const [productsRec, setProductsRec] = useState([]);
+    const { t } = useTranslation();
     console.log(customer);
     useEffect(() => {
         getProducts();
@@ -56,30 +58,30 @@ function Home() {
                     />
                     <div className="z-10 flex w-[60%] flex-col gap-3 xl:gap-10 2xl:gap-8">
                         <div className="z-10 flex gap-3 text-sm lg:text-base 2xl:text-xl ">
-                            <h6 className="text-[#4a5568]">Ưu đãi thành viên</h6>
+                            <h6 className="text-[#4a5568]">{t('homepage.banner1.topNote')}</h6>
                             <span className="cursor-hover rounded-full bg-gradient-to-r from-[rgba(255,114,114,0.15)] via-transparent to-transparent px-2 font-medium text-[#ff4f4f] ">
                                 10% Off
                             </span>
                         </div>
                         <div className=" cursor-hover text-xl font-semibold  uppercase text-[#4a5568] sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl">
                             <span className=" sm:leading-[40px] lg:leading-[44px] xl:leading-[48px] 2xl:leading-[52px]">
-                                Khách hàng
+                                {t('homepage.banner1.title1')}
                                 <span className="cursor-hover font-extrabold text-[#0da487] sm:leading-[48px] lg:leading-[52px] xl:leading-[56px] 2xl:leading-[60px]">
                                     {' '}
-                                    thành viên
+                                    {t('homepage.banner1.title2')}
                                 </span>
                             </span>
                         </div>
                         <div>
                             <p className="w-[75%] text-sm font-normal text-[#4a5568] sm:text-base lg:text-base xl:text-lg 2xl:text-xl">
-                                Đăng nhập hoặc đăng ký khách hàng để áp dụng mã "thanhvien".
+                                {t('homepage.banner1.description')}
                             </p>
                         </div>
                         <div>
                             <Link to="/products">
                                 <button className="text-red hover:before:bg-redborder-red-500 bord er relative overflow-hidden rounded-md border-red-500 bg-white px-6 py-4 text-red-500 shadow-2xl transition-all before:absolute before:bottom-0 before:left-0 before:top-0 before:z-0 before:h-full before:w-0 before:bg-red-500 before:transition-all before:duration-500 hover:text-white hover:shadow-red-500 hover:before:left-0 hover:before:w-full">
                                     <span className="relative z-10 flex gap-4 text-sm sm:text-base lg:text-base xl:text-lg 2xl:text-xl ">
-                                        Xem sản phẩm
+                                        {t('common.ViewProducts')}
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
@@ -113,15 +115,15 @@ function Home() {
                                 45% <span className="discount cursor-hover text-base ">OFF</span>
                             </h2>
                             <h3 className="cursor-hover text-[28px] font-bold text-[#0da487]">
-                                Bộ sưu tập hạt
+                                {t('homepage.banner2.title')}
                             </h3>
                             <span className="w-3/5 text-[#4a5568]">
-                                Chúng tôi cung cấp rau và trái cây hữu cơ.
+                                {t('homepage.banner2.description')}
                             </span>
                             <Link to="/products">
                                 <button className="text-red  relative overflow-hidden  rounded-md bg-transparent  text-[#222222]  ">
                                     <div className="relative z-10 flex items-center justify-start gap-4 text-sm sm:text-base lg:text-base xl:text-lg 2xl:text-xl ">
-                                        <span>Xem sản phẩm</span>
+                                        <span>{t('common.ViewProducts')}</span>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
@@ -149,20 +151,20 @@ function Home() {
                         />
                         <div className="z-10 flex flex-col gap-3">
                             <h3 className="cursor-hover text-[28px] font-bold text-[#0da487]">
-                                Sức khỏe
+                                {t('homepage.banner3.title1')}
                             </h3>
                             <h2 className="cursor-hover text-[20px] font-semibold text-[#ff4f4f]">
-                                Đồ bổ dưỡng
+                                {t('homepage.banner3.title2')}
                             </h2>
                             <span className="w-3/5 text-[#4a5568]">
                                 <p className="organic cursor-hover">
-                                    Bắt đầu mua sắm hàng ngày của bạn với một số Organic food
+                                    {t('homepage.banner3.description')}
                                 </p>
                             </span>
                             <Link to="/products">
                                 <button className="text-red  relative overflow-hidden  rounded-md bg-transparent  text-[#222222]  ">
                                     <div className="relative z-10 flex items-center justify-start gap-4 text-sm sm:text-base lg:text-base xl:text-lg 2xl:text-xl ">
-                                        <span>Xem sản phẩm</span>
+                                        <span>{t('common.ViewProducts')}</span>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"

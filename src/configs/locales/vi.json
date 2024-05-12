@@ -1,9 +1,34 @@
 {
     "common": {
-        "category": "Danh mục"
+        "Category": "Danh mục",
+        "Login": "Đăng nhập",
+        "SignUp": "Đăng ký",
+        "ViewProducts": "Xem sản phẩm"
     },
     "header": {
         "searchPlaceholder": "Tìm sản phẩm theo tên, danh mục,...",
         "searchNotFound": "Không tìm thấy sản phẩm"
+    },
+    "homepage": {
+        "discount": "Chương trình khuyến mãi",
+        "banner1": {
+            "topNote": "Ưu đãi thành viên",
+            "title1": "KHÁCH HÀNG",
+            "title2": "THÀNH VIÊN",
+            "description": "Đăng nhập hoặc đăng ký khách hàng để áp dụng mã \"thanhvien\"."
+        },
+        "banner2": {
+            "title": "Bộ sưu tập hạt",
+            "description": "Chúng tôi cung cấp rau và trái cây hữu cơ."
+        },
+        "banner3": {
+            "title1": "Sức khỏe",
+            "title2": "Đồ bổ dưỡng",
+            "description": "Bắt đầu mua sắm hàng ngày của bạn với một số Organic food"
+        },
+        "banner4": {
+            "title": "Ưu đãi hàng ngày",
+            "description": "Thực phẩm mới ra lò"
+        }
     }
 }

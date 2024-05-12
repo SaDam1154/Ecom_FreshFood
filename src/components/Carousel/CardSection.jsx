@@ -1,5 +1,7 @@
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 function CardSection({ img, discount, title, content }) {
+    const { t } = useTranslation();
     return (
         <div className="relative flex h-full w-full flex-col items-start justify-start">
             <img
@@ -27,7 +29,9 @@ function CardSection({ img, discount, title, content }) {
                 <div>
                     <Link to="/products">
                         <button className="relative flex gap-2 overflow-hidden rounded-md bg-transparent px-6 pb-2 pt-8 text-base font-semibold text-white lg:ml-2 xl:ml-2 2xl:ml-10  ">
-                            <span className="relative z-10 flex gap-4 ">Xem sản phẩm</span>
+                            <span className="relative z-10 flex gap-4 ">
+                                {t('common.ViewProducts')}
+                            </span>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"

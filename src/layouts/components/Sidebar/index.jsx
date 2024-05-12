@@ -1,6 +1,8 @@
+import { useTranslation } from 'react-i18next';
 import StaggeredDropDown from './StaggeredDropDown.jsx';
 import { Dropdown } from 'flowbite-react';
 function Sidebar() {
+    const { t } = useTranslation();
     return (
         <div className="flex h-20 w-full items-center justify-between py-3">
             {/* <button className="flex justify-center items-center gap-3 bg-green-500 rounded-lg p-3 text-white">
@@ -51,7 +53,7 @@ function Sidebar() {
                     />
                 </svg>
 
-                <span>Chương trình khuyến mãi</span>
+                <span>{t('homepage.discount')}</span>
             </button>
         </div>
     );

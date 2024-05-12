@@ -1,9 +1,34 @@
 {
     "common": {
-        "category": "Category"
+        "Category": "Category",
+        "Login": "Log in",
+        "SignUp": "Sign Up",
+        "ViewProducts": "View Products"
     },
     "header": {
-        "searchPlaceholder": "Find products by name, category,...",
-        "searchNotFound": "Not found product"
+        "searchPlaceholder": "Search for products by name, category,...",
+        "searchNotFound": "Product not found"
+    },
+    "homepage": {
+        "discount": "Discount Program",
+        "banner1": {
+            "topNote": "Member Benefits",
+            "title1": "CUSTOMER",
+            "title2": "MEMBER",
+            "description": "Log in or sign up as a customer to apply code \"member\"."
+        },
+        "banner2": {
+            "title": "Seed Collection",
+            "description": "We offer organic vegetables and fruits."
+        },
+        "banner3": {
+            "title1": "Health",
+            "title2": "Nutrition",
+            "description": "Start your daily shopping with some Organic food."
+        },
+        "banner4": {
+            "title": "Daily Deals",
+            "description": "Freshly baked goods"
+        }
     }
 }

@@ -4,9 +4,11 @@ import { customerSelector } from '../../../redux/selectors';
 import { customerActions } from '../../../redux/slices/customerSlide';
 import { useDispatch, useSelector } from 'react-redux';
 import ChooseLanguage from './ChooseLanguage';
+import { useTranslation } from 'react-i18next';
 function Header() {
     const dispatch = useDispatch();
     const customer = useSelector(customerSelector);
+    const { t } = useTranslation();
     const showLogoutNoti = () => toast.info('Đã đăng xuất!');
     return (
         <div className="top-0 z-50 flex select-none bg-white shadow-lg shadow-slate-100">
@@ -104,12 +106,12 @@ function Header() {
 
                             <Link to={'/signup'} className="px-4 ">
                                 <button className="btn btn-sm btn-border-blue">
-                                    <span>Sign Up</span>
+                                    <span>{t('common.SignUp')}</span>
                                 </button>
                             </Link>
                             <Link to={'/login'} className="px-4 ">
                                 <button className="btn btn-sm btn-blue">
-                                    <span>Log In</span>
+                                    <span>{t('common.Login')}</span>
                                 </button>
                             </Link>
                         </div>
