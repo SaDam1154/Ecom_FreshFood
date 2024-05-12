@@ -4,9 +4,9 @@ import enTranslate from './en.json';
 import viTranslate from './vi.json';
 
 i18n.use(initReactI18next).init({
-    fallbackLng: 'En',
+    fallbackLng: 'Vi',
     debug: true,
-    lng: 'En',
+    lng: 'Vi',
     resources: {
         En: {
             translation: enTranslate,
