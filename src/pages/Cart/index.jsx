@@ -5,11 +5,13 @@ import PriceFormat from '../../components/PriceFormat';
 import QuantityInput from '../../components/QuantityInput';
 import { orderActions } from '../../redux/slices/orderSlice';
 import { customerSelector, orderSelector } from '../../redux/selectors';
+import { useTranslation } from 'react-i18next';
 
 export default function Cart() {
     const dispatch = useDispatch();
     const order = useSelector(orderSelector);
     const customer = useSelector(customerSelector);
+    const { t } = useTranslation();
     return (
         <div className="px-[8vw] py-10">
             <div className="flex items-start">
@@ -33,7 +35,7 @@ export default function Cart() {
                                 </svg>
                             </div>
                             <p className="text-lg font-medium text-gray-700">
-                                Chưa có sản phẩm trong giỏ hàng!
+                                {t('cartpage.noproduct')}
                             </p>
                         </div>
                     )}
@@ -67,7 +69,7 @@ export default function Cart() {
                                 max={d?.product?.quantity}
                             />
                             <div className="w-[180px] px-6">
-                                <p className="text-gray-600">Tổng giá</p>
+                                <p className="text-gray-600"> {t('cartpage.totalPrice')}</p>
                                 <p className="text-lg font-medium text-gray-900">
                                     <PriceFormat>{d?.price * d?.quantity}</PriceFormat> VNĐ
                                 </p>
@@ -92,22 +94,22 @@ export default function Cart() {
                                         />
                                     </svg>
 
-                                    <span>Xoá</span>
+                                    <span> {t('cartpage.delete')}</span>
                                 </button>
                             </div>
                         </div>
                     ))}
                 </div>
                 <div className="w-[290px] rounded-lg bg-gray-50 p-4">
-                    <p className="border-b pb-2 text-lg font-medium">Tổng giỏ hàng</p>
+                    <p className="border-b pb-2 text-lg font-medium"> {t('cartpage.totalCart')}</p>
                     <div className="mt-3 text-gray-600">
                         <div className="mt-3 space-y-2">
                             <div className="flex justify-between">
-                                <span>Số sản phẩm</span>
+                                <span> {t('cartpage.totalProduct')}</span>
                                 <span>{order?.details?.length}</span>
                             </div>
                             <div className="flex justify-between">
-                                <span>Tổng số lượng</span>
+                                <span> {t('cartpage.totalQuantity')}</span>
                                 <span>
                                     {order?.details?.reduce(
                                         (prev, curr) => prev + curr.quantity,
@@ -117,7 +119,7 @@ export default function Cart() {
                             </div>
                         </div>
                         <div className="mt-2 flex justify-between border-t py-2 text-lg font-semibold">
-                            <span>Tổng giá (VNĐ)</span>
+                            <span> {t('cartpage.totalPrice')} (VNĐ)</span>
                             <span className="text-primary-600">
                                 <PriceFormat>{order.totalPrice}</PriceFormat>
                             </span>
@@ -129,13 +131,13 @@ export default function Cart() {
                                     'pointer-events-none opacity-50': order?.totalPrice === 0,
                                 })}
                             >
-                                Đặt hàng
+                                {t('cartpage.order')}
                             </Link>
                             <Link
                                 to="/products"
                                 className="btn btn-md w-full bg-primary-500 hover:bg-primary-400"
                             >
-                                Tiếp tục mua hàng
+                                {t('cartpage.continue')}
                             </Link>
                         </div>
                     </div>

@@ -9,6 +9,13 @@
         "searchPlaceholder": "Search for products by name, category,...",
         "searchNotFound": "Product not found"
     },
+    "footer": {
+        "connect": "Connect with us to not miss any deals!",
+        "title": "UIT CLEAN FOOD",
+        "description": "Welcome to the Fresh Food Store! Explore the freshest food products conveniently organized for easy browsing. Let's have a fun shopping experience together!",
+        "members": "MEMBERS",
+        "contact": "CONTACT"
+    },
     "homepage": {
         "discount": "Discount Program",
         "banner1": {
@@ -30,5 +37,15 @@
             "title": "Daily Deals",
             "description": "Freshly baked goods"
         }
+    },
+    "cartpage": {
+        "noproduct": "No products in the cart yet!",
+        "totalPrice": "Total Price",
+        "totalCart": "Total Cart",
+        "totalProduct": "Total Products",
+        "totalQuantity": "Total Quantity",
+        "order": "Place Order",
+        "continue": "Continue Shopping",
+        "delete": "Delete"
     }
 }

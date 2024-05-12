@@ -9,6 +9,13 @@
         "searchPlaceholder": "Tìm sản phẩm theo tên, danh mục,...",
         "searchNotFound": "Không tìm thấy sản phẩm"
     },
+    "footer": {
+        "connect": "Kết nối với chúng tôi để không bỏ lỡ bất kỳ ưu đãi nào!",
+        "title": "THỰC PHẨM SẠCH UIT",
+        "description": "Chào mừng bạn đến với Cửa hàng thực phẩm tươi sống! Khám phá những sản phẩm thực phẩm tươi ngon nhất được tổ chức dành cho duyệt dễ dàng. Hãy cùng chúng tôi trải nghiệm mua sắm thú vị nhé!",
+        "members": "THÀNH VIÊN",
+        "contact": "LIÊN HỆ"
+    },
     "homepage": {
         "discount": "Chương trình khuyến mãi",
         "banner1": {
@@ -30,5 +37,15 @@
             "title": "Ưu đãi hàng ngày",
             "description": "Thực phẩm mới ra lò"
         }
+    },
+    "cartpage": {
+        "noproduct": "Chưa có sản phẩm trong giỏ hàng!",
+        "totalPrice": "Tổng giá",
+        "totalCart": "Tổng giỏ hàng",
+        "totalProduct": "Số sản phẩm",
+        "totalQuantity": "Tổng số lượng",
+        "order": "Đặt hàng",
+        "continue": "Tiếp tục mua hàng",
+        "delete": "Xoá"
     }
 }

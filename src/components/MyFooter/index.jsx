@@ -1,13 +1,15 @@
 import { useDispatch } from 'react-redux';
 import { customerActions } from '../../redux/slices/customerSlide';
+import { useTranslation } from 'react-i18next';
 
 export default function MyFooter() {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
     return (
         <footer className="bg-neutral-100 text-center text-neutral-600 dark:bg-neutral-600 dark:text-neutral-200 lg:text-left">
             <div className="flex items-center justify-center border-b-2 border-neutral-200 p-6 dark:border-neutral-500 lg:justify-between">
                 <div className="mr-12 hidden lg:block">
-                    <span>Kết nối với chúng tôi để không bỏ lỡ bất kỳ ưu đãi nào!</span>
+                    <span>{t('footer.connect')}</span>
                 </div>
                 {/* <!-- Social network icons container --> */}
                 <div className="flex justify-center">
@@ -83,18 +85,14 @@ export default function MyFooter() {
                     <div className=" lg:col-span-2">
                         <h6 className="mb-4 flex items-center justify-center font-semibold uppercase md:justify-start">
                             <img src="/mainLogo.png" alt="" className="h-20 w-20" />
-                            THỰC PHẨM SẠCH UIT
+                            {t('footer.title')}
                         </h6>
-                        <p className="select-none">
-                            Chào mừng bạn đến với Cửa hàng thực phẩm tươi sống! Khám phá những sản
-                            phẩm thực phẩm tươi ngon nhất được tổ chức dành cho duyệt dễ dàng. Hãy
-                            cùng chúng tôi trải nghiệm mua sắm thú vị nhé!
-                        </p>
+                        <p className="select-none">{t('footer.description')}</p>
                     </div>
                     {/* <!-- Products section --> */}
                     <div className="">
                         <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
-                            Thành viên
+                            {t('footer.members')}
                         </h6>
                         <p className="mb-4">
                             <a className="text-neutral-600 dark:text-neutral-200">Sa Đam</a>
@@ -109,7 +107,7 @@ export default function MyFooter() {
                     {/* <!-- Contact section --> */}
                     <div>
                         <h6 className="mb-4 flex justify-center font-semibold uppercase md:justify-start">
-                            Contact
+                            {t('footer.contact')}
                         </h6>
                         <p className="mb-4 flex items-center justify-center md:justify-start">
                             <svg
