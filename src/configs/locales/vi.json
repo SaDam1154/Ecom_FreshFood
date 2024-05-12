@@ -3,7 +3,8 @@
         "Category": "Danh mục",
         "Login": "Đăng nhập",
         "SignUp": "Đăng ký",
-        "ViewProducts": "Xem sản phẩm"
+        "ViewProducts": "Xem sản phẩm",
+        "AddToCart": "Thêm vào giỏ hàng"
     },
     "header": {
         "searchPlaceholder": "Tìm sản phẩm theo tên, danh mục,...",
@@ -36,7 +37,11 @@
         "banner4": {
             "title": "Ưu đãi hàng ngày",
             "description": "Thực phẩm mới ra lò"
-        }
+        },
+        "recommend": "Sản phẩm khuyến nghị",
+        "recommendDiscription": "Chúng tôi mong bạn sẽ thích những mặt hàng mà chúng tôi dành riêng cho bạn.",
+        "newProducts": "Sản phẩm mới",
+        "newProductsDescription": "Đừng bỏ lỡ những mặt hàng mới ra mắt."
     },
     "cartpage": {
         "noproduct": "Chưa có sản phẩm trong giỏ hàng!",

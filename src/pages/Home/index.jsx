@@ -195,7 +195,9 @@ function Home() {
                 {/* khu Category */}
                 <div className="jite mx-1 flex flex-col gap-2 rounded-2xl bg-slate-100 p-1 sm:mx-2 lg:mx-3 lg:p-2 xl:mx-4 2xl:mx-5">
                     <div className="flex w-full flex-col items-start justify-center gap-1">
-                        <span className="select-none text-3xl font-semibold">Category</span>
+                        <span className="select-none text-3xl font-semibold">
+                            {t('common.Category')}
+                        </span>
                         <hr className=" h-1 w-12 rounded border-0 bg-green-400" />
                     </div>
                     <HoverLinks home={true} />
@@ -206,13 +208,12 @@ function Home() {
                         {customer ? (
                             <div className="flex w-full flex-col items-end justify-center gap-1">
                                 <span className="select-none text-3xl font-semibold text-neutral-900">
-                                    Sản phẩm khuyến nghị
+                                    {t('homepage.recommend')}
                                 </span>
                                 <hr className=" h-1 w-48 rounded border-0 bg-green-400" />
 
                                 <span className="text-[#4a5568]">
-                                    Chúng tôi mong bạn sẽ thích những mặt hàng mà chúng tôi dành
-                                    riêng cho bạn.
+                                    {t('homepage.recommendDescription')}
                                 </span>
                             </div>
                         ) : (
@@ -237,12 +238,12 @@ function Home() {
                     <div className="flex flex-col">
                         <div className="flex w-full flex-col items-end justify-center gap-1">
                             <span className="text-3xl font-semibold text-neutral-900">
-                                Sản phẩm mới
+                                {t('homepage.newProducts')}
                             </span>
                             <hr className=" h-1 w-48 rounded border-0 bg-green-400" />
 
                             <span className="text-[#4a5568]">
-                                Đừng bỏ lỡ những mặt hàng mới ra mắt.
+                                {t('homepage.newProductsDescription')}
                             </span>
                         </div>
                         <div className="3xl:grid-cols-5 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">

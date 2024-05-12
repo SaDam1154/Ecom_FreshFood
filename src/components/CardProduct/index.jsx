@@ -16,10 +16,12 @@ import { orderSelector } from '../../redux/selectors';
 import PriceFormat from '../PriceFormat';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 export function CardProduct({ product }) {
     const dispatch = useDispatch();
     const order = useSelector(orderSelector);
     const [qty, setQty] = useState(1);
+    const { t } = useTranslation();
     function handleAddToCart() {
         if (order.details.find((d) => d.product._id === product._id)) {
             toast.info('Sản phẩm đã có trong giỏ hàng!');
@@ -85,7 +87,7 @@ export function CardProduct({ product }) {
                         },
                     )}
                 >
-                    Thêm vào giỏ hàng
+                    {t('common.AddToCart')}
                 </Button>
             </CardFooter>
         </Card>

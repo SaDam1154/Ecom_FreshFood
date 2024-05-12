@@ -3,7 +3,8 @@
         "Category": "Category",
         "Login": "Log in",
         "SignUp": "Sign Up",
-        "ViewProducts": "View Products"
+        "ViewProducts": "View Products",
+        "AddToCart": "Add To Cart"
     },
     "header": {
         "searchPlaceholder": "Search for products by name, category,...",
@@ -36,7 +37,11 @@
         "banner4": {
             "title": "Daily Deals",
             "description": "Freshly baked goods"
-        }
+        },
+        "recommend": "Recommended Products",
+        "recommendDescription": "We hope you'll enjoy the items we've curated just for you.",
+        "newProducts": "New Products",
+        "newProductsDescription": "Don't miss out on the latest arrivals."
     },
     "cartpage": {
         "noproduct": "No products in the cart yet!",
