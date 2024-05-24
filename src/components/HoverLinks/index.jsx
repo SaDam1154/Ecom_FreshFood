@@ -3,8 +3,13 @@ import React, { useRef } from 'react';
 import { FiArrowRight } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { langSelector } from '../../redux/selectors';
+
 export default function HoverLinks({ home }) {
     const [productTypes, setProductTypes] = useState([]);
+    const lang = useSelector(langSelector);
+
     var linkTo = '/';
     if (home) linkTo = '/products/';
 
@@ -77,7 +82,7 @@ export default function HoverLinks({ home }) {
                                 transition={{ type: 'spring' }}
                                 className="inline-block"
                             >
-                                Tất cả
+                                {lang == 'Vi' ? 'Tất cả' : 'All'}
                             </motion.span>
                         </motion.span>
                     </div>
@@ -135,7 +140,7 @@ export default function HoverLinks({ home }) {
                                         transition={{ type: 'spring' }}
                                         className="inline-block"
                                     >
-                                        {productType.name}
+                                        {lang == 'Vi' ? productType.name : productType.nameEN}
                                     </motion.span>
                                 </motion.span>
                             </div>

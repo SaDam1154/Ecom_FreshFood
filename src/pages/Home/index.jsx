@@ -4,7 +4,7 @@ import HoverLinks from '../../components/HoverLinks';
 import { CardProduct } from '../../components/CardProduct';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { customerSelector } from '../../redux/selectors';
+import { customerSelector, langSelector } from '../../redux/selectors';
 import { customerActions } from '../../redux/slices/customerSlide';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 function Home() {
     const dispatch = useDispatch();
     const customer = useSelector(customerSelector);
+    const lang = useSelector(langSelector);
     const [products, setProducts] = useState([]);
     const [productsRec, setProductsRec] = useState([]);
     const { t } = useTranslation();
@@ -217,19 +218,14 @@ function Home() {
                                 </span>
                             </div>
                         ) : (
-                            <div className="text-[#4a5568]">
-                                Đăng nhập hoặc đăng ký khách hàng thành viên để áp dụng nhiều ưu đãi
-                                giảm giá đặc biệt.
-                            </div>
+                            <div className="text-[#4a5568]">{t('homepage.pleaseSignUp')}</div>
                         )}
                         {customer ? (
                             <div className="3xl:grid-cols-5 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                                {productsRec
-                                    .map((product, index) => {
-                                        if (product)
-                                            return <CardProduct key={index} product={product} />;
-                                    })
-                                    .slice(0, 8)}
+                                {productsRec.map((product, index) => {
+                                    if (product)
+                                        return <CardProduct key={index} product={product} />;
+                                })}
                             </div>
                         ) : (
                             <div className="flex h-full w-full items-center justify-center"></div>

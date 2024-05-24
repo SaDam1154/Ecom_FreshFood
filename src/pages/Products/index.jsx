@@ -5,8 +5,13 @@ import { CardProduct } from '../../components/CardProduct';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { customerSelector, langSelector } from '../../redux/selectors';
+import { useTranslation } from 'react-i18next';
 function Products() {
     const { type } = useParams();
+    const lang = useSelector(langSelector);
+    const { t } = useTranslation();
     const [products, setProducts] = useState(null);
     const [typeName, setTypeName] = useState(null);
     const [count, setCount] = useState(0);
@@ -15,7 +20,7 @@ function Products() {
     }, []);
     useEffect(() => {
         getTypes();
-    }, [type]);
+    }, [type, lang]);
 
     function getTypes() {
         fetch('http://localhost:5000/api/product-type')
@@ -23,7 +28,8 @@ function Products() {
             .then((resJson) => {
                 if (resJson.success) {
                     resJson.productTypes.map((t) => {
-                        if (t._id == type) setTypeName(t.name);
+                        if (t._id == type)
+                            lang == 'Vi' ? setTypeName(t.name) : setTypeName(t.nameEN);
                     });
                 } else {
                     setTypes([]);
@@ -49,7 +55,9 @@ function Products() {
                 {/* khu Category */}
                 <div className="jite mr-1 flex flex-col gap-2 rounded-2xl bg-slate-100 p-1 sm:mr-2 lg:mr-3 lg:p-2 xl:mr-4 2xl:mr-5">
                     <div className="flex w-full flex-col items-start justify-center gap-1">
-                        <span className="select-none text-3xl font-semibold">Category</span>
+                        <span className="select-none text-3xl font-semibold">
+                            {t('common.Category')}
+                        </span>
                         <hr className=" h-1 w-12 rounded border-0 bg-green-400" />
                     </div>
                     <HoverLinks />
@@ -60,7 +68,7 @@ function Products() {
                         <div className="flex flex-col">
                             <div className="flex w-full flex-col items-end justify-center gap-1">
                                 <span className="select-none text-3xl font-semibold text-neutral-900">
-                                    {type ? typeName : 'Tất cả sản phẩm'}
+                                    {type ? (lang == 'Vi' ? typeName : typeName) : t('product.all')}
                                 </span>
                                 <hr className=" h-1 w-48 rounded border-0 bg-green-400" />
 
@@ -69,9 +77,9 @@ function Products() {
                                         ? products.filter((products) => {
                                               return products.type._id == type;
                                           }).length > 0
-                                            ? 'Lựa chọn sản phẩm tươi ngon với giá cả phải chăng.'
-                                            : 'Hiện chưa có sản phẩm loại này!!!.'
-                                        : 'Lựa chọn sản phẩm tươi ngon với giá cả phải chăng.'}
+                                            ? t('product.description')
+                                            : t('product.blank')
+                                        : t('product.description')}
                                 </span>
                             </div>
                             <div className="3xl:grid-cols-5 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
@@ -90,7 +98,7 @@ function Products() {
                                             })
                                     ) : (
                                         <div className="flex h-full w-full items-center justify-center">
-                                            Vui lòng quay lại sau!!!
+                                            {t('product.later')}
                                         </div>
                                     )
                                 ) : (

@@ -17,6 +17,12 @@
         "members": "MEMBERS",
         "contact": "CONTACT"
     },
+    "product": {
+        "all": "All Product",
+        "description": "Choose fresh products at affordable prices.",
+        "blank": "Currently there is no product of this type!!!.",
+        "later": "Please come back later!!!"
+    },
     "homepage": {
         "discount": "Discount Program",
         "banner1": {
@@ -41,7 +47,8 @@
         "recommend": "Recommended Products",
         "recommendDescription": "We hope you'll enjoy the items we've curated just for you.",
         "newProducts": "New Products",
-        "newProductsDescription": "Don't miss out on the latest arrivals."
+        "newProductsDescription": "Don't miss out on the latest arrivals.",
+        "pleaseSignUp": "Log in or register as a member to apply for many special discounts."
     },
     "cartpage": {
         "noproduct": "No products in the cart yet!",

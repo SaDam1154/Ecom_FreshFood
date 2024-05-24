@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { orderActions } from '../../redux/slices/orderSlice';
-import { orderSelector } from '../../redux/selectors';
+import { orderSelector, langSelector } from '../../redux/selectors';
 import PriceFormat from '../PriceFormat';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
@@ -20,16 +20,25 @@ import { useTranslation } from 'react-i18next';
 export function CardProduct({ product }) {
     const dispatch = useDispatch();
     const order = useSelector(orderSelector);
+    const lang = useSelector(langSelector);
     const [qty, setQty] = useState(1);
     const { t } = useTranslation();
     function handleAddToCart() {
         if (order.details.find((d) => d.product._id === product._id)) {
             toast.info('Sản phẩm đã có trong giỏ hàng!');
+            console.log(lang);
         } else {
             dispatch(orderActions.addMany({ product, quantity: qty, price: product?.price }));
             toast.success('Đã thêm sản phẩm vào giỏ hàng!');
+            console.log(lang);
         }
     }
+    useEffect(() => {
+        // Thực hiện các hành động cần thiết khi lang thay đổi
+        // Ví dụ: console.log('Lang has changed', lang);
+        // Hoặc thực hiện cập nhật state nếu cần
+        console.log(lang?.value);
+    }, [lang.value]); // Lang được đưa vào dependency array
     return (
         <Card className="group flex w-full max-w-[26rem] cursor-pointer flex-col justify-between border-[1px] shadow-lg">
             <Link to={'/product/' + product.id}>
@@ -43,7 +52,8 @@ export function CardProduct({ product }) {
                 <CardBody className="grow">
                     <div className="flex items-center justify-between">
                         <Typography variant="h5" color="blue-gray" className="font-medium">
-                            {product.name}
+                            {/* {product.name} */}
+                            {lang == 'Vi' ? product.name : product.nameEN}
                         </Typography>
                         <Typography
                             color="blue-gray"

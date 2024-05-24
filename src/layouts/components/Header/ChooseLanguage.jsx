@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
+import { langActions } from '../../../redux/slices/langSlide';
+import { langSelector } from '../../../redux/selectors';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function ChooseLanguage() {
     const [lang, setLang] = useState('Vi');
     const { i18n } = useTranslation();
+    const dispatch = useDispatch();
+    const language = useSelector(langSelector);
 
     useEffect(() => {
         i18n.changeLanguage(lang);
@@ -38,7 +43,9 @@ export default function ChooseLanguage() {
                             'font-semibold': lang === 'Vi',
                         },
                     )}
-                    onClick={() => setLang('Vi')}
+                    onClick={() => {
+                        setLang('Vi'), dispatch(langActions.vi());
+                    }}
                 >
                     Tiếng Việt
                 </button>
@@ -49,7 +56,9 @@ export default function ChooseLanguage() {
                             'font-semibold': lang === 'En',
                         },
                     )}
-                    onClick={() => setLang('En')}
+                    onClick={() => {
+                        setLang('En'), dispatch(langActions.en());
+                    }}
                 >
                     English
                 </button>

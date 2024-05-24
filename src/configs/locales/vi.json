@@ -17,6 +17,12 @@
         "members": "THÀNH VIÊN",
         "contact": "LIÊN HỆ"
     },
+    "product": {
+        "all": "Tất cả sản phẩm",
+        "description": "Lựa chọn sản phẩm tươi ngon với giá cả phải chăng.",
+        "blank": "Hiện chưa có sản phẩm loại này!!!.",
+        "later": "Vui lòng quay lại sau!!!"
+    },
     "homepage": {
         "discount": "Chương trình khuyến mãi",
         "banner1": {
@@ -39,9 +45,10 @@
             "description": "Thực phẩm mới ra lò"
         },
         "recommend": "Sản phẩm khuyến nghị",
-        "recommendDiscription": "Chúng tôi mong bạn sẽ thích những mặt hàng mà chúng tôi dành riêng cho bạn.",
+        "recommendDescription": "Chúng tôi mong bạn sẽ thích những mặt hàng mà chúng tôi dành riêng cho bạn.",
         "newProducts": "Sản phẩm mới",
-        "newProductsDescription": "Đừng bỏ lỡ những mặt hàng mới ra mắt."
+        "newProductsDescription": "Đừng bỏ lỡ những mặt hàng mới ra mắt.",
+        "pleaseSignUp": "Đăng nhập hoặc đăng ký khách hàng thành viên để áp dụng nhiều ưu đãi giảm giá đặc biệt."
     },
     "cartpage": {
         "noproduct": "Chưa có sản phẩm trong giỏ hàng!",
