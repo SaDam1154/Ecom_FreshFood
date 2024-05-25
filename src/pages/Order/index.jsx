@@ -26,6 +26,7 @@ export default function Order() {
     const [coupon, setCoupon] = useState(null);
     const [validateOnChange, setValidateOnChange] = useState(false);
     const [coupons, setCoupons] = useState([]);
+    const [paymentMethod, setPaymentMethod] = useState('cash');
     const navigate = useNavigate();
 
     const form = useFormik({
@@ -76,30 +77,92 @@ export default function Order() {
     }, [coupon, order]);
 
     function handleFormsubmit(values) {
-        setLoading(true);
+        try {
+            if (paymentMethod === 'cash') {
+                handlePayViaCash(values);
+            } else if (paymentMethod === 'zalopay') {
+                handlePayViaZaloPay(values);
+            }
+        } catch (e) {
+            console.log(error);
+            toast.error('Có lỗi xảy ra');
+        }
+    }
+
+    function handlePayViaCash(values) {
         const details = order.details.map((d) => ({
             product: d.product._id,
             quantity: d.quantity,
             price: d.price,
         }));
-        fetch('http://localhost:5000/api/order', {
+        const _order = {
+            customerId: customer?._id,
+            deliveryStatus: 'pending',
+            paymentStatus: 'unpaid',
+            details: details,
+            receivedMoney: order.totalPrice,
+            totalPrice: order.totalPrice,
+            intoMoney: intoMoney,
+            coupon: coupon?.canUse ? coupon?._id : null,
+            exchangeMoney: 0,
+            phone: values.phone,
+            address: values.address,
+        };
+        createOrder(_order);
+    }
+
+    async function handlePayViaZaloPay(values) {
+        setLoading(true);
+        // Store order to local storage
+        const details = order.details.map((d) => ({
+            product: d.product._id,
+            quantity: d.quantity,
+            price: d.price,
+        }));
+        const pendingOrder = {
+            customerId: customer?._id,
+            customer: customer,
+            deliveryStatus: 'pending',
+            paymentStatus: 'paid',
+            details: details,
+            receivedMoney: order.totalPrice,
+            totalPrice: order.totalPrice,
+            intoMoney: intoMoney,
+            coupon: coupon?.canUse ? coupon?._id : null,
+            exchangeMoney: 0,
+            phone: values.phone,
+            address: values.address,
+        };
+        localStorage.setItem('pendingOrder', JSON.stringify(pendingOrder));
+
+        // redirect to gateway
+        const res = await fetch('http://localhost:5000/api/payment/create-trans', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                customerId: customer?._id,
-                deliveryStatus: 'pending',
-                paymentStatus: 'unpaid',
-                details: details,
-                receivedMoney: order.totalPrice,
-                totalPrice: order.totalPrice,
-                intoMoney: intoMoney,
-                coupon: coupon?.canUse ? coupon?._id : null,
-                exchangeMoney: 0,
-                phone: values.phone,
-                address: values.address,
+                method: 'ZALOPAY',
+                amount: intoMoney,
+                redirecturl: window.location.href,
             }),
+        });
+        const resJson = await res.json();
+        if (!resJson.success) {
+            throw new Error();
+        }
+        const url = resJson.trans.orderUrl;
+        window.location = url;
+    }
+
+    function createOrder(_order) {
+        setLoading(true);
+        fetch('http://localhost:5000/api/order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(_order),
         })
             .then((res) => res.json())
             .then((resJson) => {
@@ -107,12 +170,12 @@ export default function Order() {
                     dispatch(orderActions.reset());
                     toast.success('Đặt hàng thành công');
                     const templateParams = {
-                        Name: customer.name,
-                        Address: customer.address,
-                        Phone: customer.phone,
-                        TotalPrice: order.totalPrice,
-                        DiscountPercent: coupon?.canUse ? coupon?._id : null,
-                        IntoMoney: intoMoney,
+                        Name: _order?.customer?.name,
+                        Address: _order?.customer?.address,
+                        Phone: _order?.customer?.phone,
+                        TotalPrice: _order.totalPrice,
+                        DiscountPercent: _order?.coupon,
+                        IntoMoney: _order?.intoMoney,
                         Link: 'http://localhost:5173/profile',
                         reply_to: '20521154@gm.uit.edu.vn',
                     };
@@ -145,6 +208,19 @@ export default function Order() {
                 setLoading(false);
             });
     }
+
+    useEffect(() => {
+        const pendingOrder = localStorage.getItem('pendingOrder');
+        localStorage.removeItem('pendingOrder');
+        const url = new URL(window.location.href);
+        const status = url.searchParams.get('status');
+        if (pendingOrder && status == 1) {
+            createOrder(JSON.parse(pendingOrder));
+        } else if (status && status != 1) {
+            navigate('/');
+            toast.error('Có lỗi xảy ra');
+        }
+    }, []);
     return (
         <div className="px-[8vw] py-10">
             <div className="flex space-x-6">
@@ -307,6 +383,73 @@ export default function Order() {
                             )}
                         </div>
                     )}
+
+                    <div className="mb-4">
+                        <label className="label">Phương thức thanh toán</label>
+                        <div className="flex space-x-3">
+                            <button
+                                type="button"
+                                className={clsx(
+                                    'flex flex-1 items-center space-x-4 rounded border p-3',
+                                    {
+                                        'border-green-600 bg-green-50': paymentMethod === 'cash',
+                                    },
+                                )}
+                                onClick={() => setPaymentMethod('cash')}
+                            >
+                                <div className="text-green-500">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        className="h-8 w-8"
+                                    >
+                                        <path d="M12 7.5a2.25 2.25 0 1 0 0 4.5 2.25 2.25 0 0 0 0-4.5Z" />
+                                        <path
+                                            fillRule="evenodd"
+                                            d="M1.5 4.875C1.5 3.839 2.34 3 3.375 3h17.25c1.035 0 1.875.84 1.875 1.875v9.75c0 1.036-.84 1.875-1.875 1.875H3.375A1.875 1.875 0 0 1 1.5 14.625v-9.75ZM8.25 9.75a3.75 3.75 0 1 1 7.5 0 3.75 3.75 0 0 1-7.5 0ZM18.75 9a.75.75 0 0 0-.75.75v.008c0 .414.336.75.75.75h.008a.75.75 0 0 0 .75-.75V9.75a.75.75 0 0 0-.75-.75h-.008ZM4.5 9.75A.75.75 0 0 1 5.25 9h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H5.25a.75.75 0 0 1-.75-.75V9.75Z"
+                                            clipRule="evenodd"
+                                        />
+                                        <path d="M2.25 18a.75.75 0 0 0 0 1.5c5.4 0 10.63.722 15.6 2.075 1.19.324 2.4-.558 2.4-1.82V18.75a.75.75 0 0 0-.75-.75H2.25Z" />
+                                    </svg>
+                                </div>
+                                <div className="text-left">
+                                    <p className="text-lg font-semibold">
+                                        Thanh toán khi nhận hàng
+                                    </p>
+                                    <p className="text-gray-700">Thanh toán khi nhận hàng</p>
+                                </div>
+                            </button>
+
+                            <button
+                                type="button"
+                                className={clsx(
+                                    'flex flex-1 items-center space-x-4 rounded border p-3',
+                                    {
+                                        'border-green-600 bg-green-50': paymentMethod === 'zalopay',
+                                    },
+                                )}
+                                onClick={() => setPaymentMethod('zalopay')}
+                            >
+                                <div className="text-blue-500">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        className="h-8 w-8"
+                                    >
+                                        <path d="M2.273 5.625A4.483 4.483 0 0 1 5.25 4.5h13.5c1.141 0 2.183.425 2.977 1.125A3 3 0 0 0 18.75 3H5.25a3 3 0 0 0-2.977 2.625ZM2.273 8.625A4.483 4.483 0 0 1 5.25 7.5h13.5c1.141 0 2.183.425 2.977 1.125A3 3 0 0 0 18.75 6H5.25a3 3 0 0 0-2.977 2.625ZM5.25 9a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h13.5a3 3 0 0 0 3-3v-6a3 3 0 0 0-3-3H15a.75.75 0 0 0-.75.75 2.25 2.25 0 0 1-4.5 0A.75.75 0 0 0 9 9H5.25Z" />
+                                    </svg>
+                                </div>
+                                <div className="text-left">
+                                    <p className="text-lg font-semibold">ZaloPay</p>
+                                    <p className="text-gray-700">
+                                        Quét QR đa năng, thẻ ATM hoặc thẻ quốc tế
+                                    </p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
                     <button
                         type="submit"
                         className={clsx('btn btn-md mt-2 w-full bg-red-500 hover:bg-red-400')}
