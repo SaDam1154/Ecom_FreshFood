@@ -1,6 +1,8 @@
 import Sidebar from '../../layouts/components/Sidebar';
 import MyCarousel from '../../components/Carousel';
 import HoverLinks from '../../components/HoverLinks';
+import ChatIcon from '../../components/ChatIcon';
+import ChatBox from '../../components/ChatBox';
 import { CardProduct } from '../../components/CardProduct';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -8,7 +10,7 @@ import { customerSelector, langSelector } from '../../redux/selectors';
 import { customerActions } from '../../redux/slices/customerSlide';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-
+import { checkAndCreateUser, checkConversation } from '../../configs/firebase/firebaseUtils';
 function Home() {
     const dispatch = useDispatch();
     const customer = useSelector(customerSelector);
@@ -39,12 +41,27 @@ function Home() {
             .then((resJson) => {
                 if (resJson.success) {
                     setProductsRec(resJson.products);
-                    console.log(resJson.products);
                 } else {
                     setProductsRec(products);
                 }
             });
     }
+    const [isChatOpen, setIsChatOpen] = useState(false);
+    const [idBox, setIdBox] = useState('');
+
+    const handleChatIconClick = async () => {
+        await checkAndCreateUser(customer); // Đảm bảo user đã được tạo
+        const conversationId = await checkConversation(customer); // Đảm bảo conversationId đã được trả về
+        console.log(conversationId);
+        setIdBox(conversationId);
+        setIsChatOpen(!isChatOpen);
+        console.log('Click in Chat');
+    };
+
+    const handleChatBoxClose = () => {
+        setIsChatOpen(false);
+        console.log('Click in Chat');
+    };
     return (
         <div className="flex h-auto w-full flex-col items-center justify-start overflow-x-hidden overflow-y-scroll px-8 sm:px-12 lg:px-20 xl:px-28">
             <Sidebar></Sidebar>
@@ -249,6 +266,18 @@ function Home() {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="fixed bottom-4 right-4 z-50">
+                {/* {customer && <ChatIcon onClick={handleChatIconClick} />}
+                {customer && isChatOpen && (
+                    <ChatBox
+                        onClose={handleChatBoxClose}
+                        start={true}
+                        senderId={customer._id}
+                        conversationId={idBox}
+                        customerId={customer._id}
+                    />
+                )} */}
             </div>
         </div>
     );
