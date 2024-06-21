@@ -105,6 +105,7 @@ export default function Order() {
             intoMoney: intoMoney,
             coupon: coupon?.canUse ? coupon?._id : null,
             exchangeMoney: 0,
+            name: customer?.name,
             phone: values.phone,
             address: values.address,
         };
@@ -121,7 +122,6 @@ export default function Order() {
         }));
         const pendingOrder = {
             customerId: customer?._id,
-            customer: customer,
             deliveryStatus: 'pending',
             paymentStatus: 'paid',
             details: details,
@@ -130,6 +130,7 @@ export default function Order() {
             intoMoney: intoMoney,
             coupon: coupon?.canUse ? coupon?._id : null,
             exchangeMoney: 0,
+            name: customer?.name,
             phone: values.phone,
             address: values.address,
         };
@@ -170,12 +171,14 @@ export default function Order() {
                     dispatch(orderActions.reset());
                     toast.success('Đặt hàng thành công');
                     const templateParams = {
-                        Name: _order?.customer?.name,
-                        Address: _order?.customer?.address,
-                        Phone: _order?.customer?.phone,
-                        TotalPrice: _order.totalPrice,
-                        DiscountPercent: _order?.coupon,
-                        IntoMoney: _order?.intoMoney,
+                        Subject: 'Shop Thực Phẩm Sạch đã nhận đơn hàng.',
+                        Title: 'Cảm ơn bạn đã đặt hàng tại',
+                        Name: _order?.name,
+                        Address: _order?.address,
+                        Phone: _order?.phone,
+                        TotalPrice: _order.totalPrice || '0',
+                        DiscountPercent: _order?.coupon || '0',
+                        IntoMoney: _order?.intoMoney || '0',
                         Link: 'http://localhost:5173/profile',
                         reply_to: '20521154@gm.uit.edu.vn',
                     };
