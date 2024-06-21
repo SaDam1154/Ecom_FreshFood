@@ -173,6 +173,7 @@ export default function Order() {
                     const templateParams = {
                         Subject: 'Shop Thực Phẩm Sạch đã nhận đơn hàng.',
                         Title: 'Cảm ơn bạn đã đặt hàng tại',
+                        Status: 'Đang chờ xử lý',
                         Name: _order?.name,
                         Address: _order?.address,
                         Phone: _order?.phone,
