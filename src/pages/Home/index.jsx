@@ -130,7 +130,9 @@ function Home() {
                         />
                         <div className="z-10 flex flex-col gap-3">
                             <h2 className="cursor-hover text-xl text-[#ff4f4f] sm:text-2xl lg:text-3xl xl:text-4xl 2xl:text-[42px]">
-                                45% <span className="discount cursor-hover text-base ">OFF</span>
+                                <span className="discount cursor-hover text-xl text-red-600 ">
+                                    Best seller
+                                </span>
                             </h2>
                             <h3 className="cursor-hover text-[28px] font-bold text-[#0da487]">
                                 {t('homepage.banner2.title')}
