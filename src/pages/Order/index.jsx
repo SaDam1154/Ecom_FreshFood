@@ -200,7 +200,7 @@ export default function Order() {
                         Address: _order?.address,
                         Phone: _order?.phone,
                         TotalPrice: _order.totalPrice || '0',
-                        DiscountPercent: _order?.coupon || '0',
+                        DiscountPercent: _order?.totalPrice - _order?.intoMoney || '0',
                         IntoMoney: _order?.intoMoney || '0',
                         Link: 'http://localhost:5173/profile',
                         reply_to: '20521154@gm.uit.edu.vn',
