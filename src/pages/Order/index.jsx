@@ -24,8 +24,10 @@ export default function Order() {
     const [loading, setLoading] = useState(false);
     const [couponInput, setCouponInput] = useState('');
     const [coupon, setCoupon] = useState(null);
+    const [voucher, setVoucher] = useState(null);
     const [validateOnChange, setValidateOnChange] = useState(false);
     const [coupons, setCoupons] = useState([]);
+    const [vouchers, setVouchers] = useState([]);
     const [paymentMethod, setPaymentMethod] = useState('cash');
     const navigate = useNavigate();
 
@@ -39,6 +41,10 @@ export default function Order() {
         validateOnBlur: false,
         validateOnChange: validateOnChange,
     });
+
+    useEffect(() => {
+        getVouchers();
+    }, []);
 
     useEffect(() => {
         const coupon = coupons.find((c) => c.name === couponInput);
@@ -76,6 +82,22 @@ export default function Order() {
         return order?.totalPrice - (order?.totalPrice * coupon?.discountPercent) / 100;
     }, [coupon, order]);
 
+    const intoMoneyByVoucher = useMemo(() => {
+        if (!voucher) {
+            return order?.totalPrice;
+        }
+        if (voucher.discount.type === 'percent') {
+            return (
+                order?.totalPrice -
+                Math.min((order?.totalPrice * voucher.discount?.value) / 100, voucher.limit)
+            );
+        } else {
+            return order?.totalPrice - voucher.discount.value > 0
+                ? order?.totalPrice - voucher.discount.value
+                : 0;
+        }
+    }, [voucher, order]);
+
     function handleFormsubmit(values) {
         try {
             if (paymentMethod === 'cash') {
@@ -102,7 +124,7 @@ export default function Order() {
             details: details,
             receivedMoney: order.totalPrice,
             totalPrice: order.totalPrice,
-            intoMoney: intoMoney,
+            intoMoney: intoMoneyByVoucher,
             coupon: coupon?.canUse ? coupon?._id : null,
             exchangeMoney: 0,
             name: customer?.name,
@@ -127,7 +149,7 @@ export default function Order() {
             details: details,
             receivedMoney: order.totalPrice,
             totalPrice: order.totalPrice,
-            intoMoney: intoMoney,
+            intoMoney: intoMoneyByVoucher,
             coupon: coupon?.canUse ? coupon?._id : null,
             exchangeMoney: 0,
             name: customer?.name,
@@ -225,6 +247,19 @@ export default function Order() {
             toast.error('Có lỗi xảy ra');
         }
     }, []);
+
+    function getVouchers() {
+        fetch('http://localhost:5000/api/voucher')
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.success) {
+                    setVouchers(resJson.vouchers);
+                    console.log(resJson.vouchers);
+                } else {
+                    setVouchers([]);
+                }
+            });
+    }
     return (
         <div className="px-[8vw] py-10">
             <div className="flex space-x-6">
@@ -243,14 +278,16 @@ export default function Order() {
                                 <div className="flex justify-between">
                                     <span>Giảm giá (VNĐ)</span>
                                     <span>
-                                        <PriceFormat>{order.totalPrice - intoMoney}</PriceFormat>
+                                        <PriceFormat>
+                                            {order.totalPrice - intoMoneyByVoucher}
+                                        </PriceFormat>
                                     </span>
                                 </div>
                             </div>
                             <div className="mt-2 flex justify-between border-t py-2 text-lg font-semibold">
                                 <span>Thành tiền (VNĐ)</span>
                                 <span className="text-primary-600">
-                                    <PriceFormat>{intoMoney}</PriceFormat>
+                                    <PriceFormat>{intoMoneyByVoucher}</PriceFormat>
                                 </span>
                             </div>
                         </div>
@@ -343,7 +380,7 @@ export default function Order() {
                     </div>
                     {customer && (
                         <div className="mb-4 flex space-x-3">
-                            <div className="w-[200px]">
+                            {/* <div className="w-[200px]">
                                 <label className="label" htmlFor="coupon">
                                     Mã giảm giá
                                 </label>
@@ -384,7 +421,62 @@ export default function Order() {
                                         )}
                                     </div>
                                 </div>
-                            )}
+                            )} */}
+
+                            <div>
+                                <label className="label" htmlFor="coupon">
+                                    Phiếu giảm giá
+                                </label>
+
+                                <div className="flex flex-wrap">
+                                    {[...vouchers]?.map((_voucher) => (
+                                        <div
+                                            className={clsx(
+                                                'mb-2 mr-2 w-64 cursor-pointer rounded border-2 px-4 py-2',
+                                                {
+                                                    'border-green-600':
+                                                        voucher?.id === _voucher?.id,
+                                                    // 'border-gray-300 bg-gray-100': !coupon.canUse,
+                                                },
+                                            )}
+                                            onClick={() => {
+                                                if (voucher?.id === _voucher?.id) {
+                                                    setVoucher(null);
+                                                } else {
+                                                    setVoucher(_voucher);
+                                                }
+                                            }}
+                                        >
+                                            <p className="font-medium text-gray-700">
+                                                {_voucher.description}
+                                            </p>
+                                            <div className="space-x-1">
+                                                <span className="text-gray-600">Giảm:</span>
+                                                <span className="font-bold text-green-600">
+                                                    {_voucher.discount.value +
+                                                        (_voucher.discount.type === 'percent'
+                                                            ? '%'
+                                                            : 'VNĐ')}
+                                                </span>
+
+                                                {_voucher.discount.type === 'percent' && (
+                                                    <>
+                                                        <span className="text-gray-600">
+                                                            , Tối đa:
+                                                        </span>
+                                                        <span className="font-bold text-green-600">
+                                                            <PriceFormat>
+                                                                {_voucher.limit}
+                                                            </PriceFormat>
+                                                            {'VNĐ'}
+                                                        </span>
+                                                    </>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     )}
 
@@ -436,14 +528,11 @@ export default function Order() {
                                 onClick={() => setPaymentMethod('zalopay')}
                             >
                                 <div className="text-blue-500">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 24 24"
-                                        fill="currentColor"
+                                    <img
                                         className="h-8 w-8"
-                                    >
-                                        <path d="M2.273 5.625A4.483 4.483 0 0 1 5.25 4.5h13.5c1.141 0 2.183.425 2.977 1.125A3 3 0 0 0 18.75 3H5.25a3 3 0 0 0-2.977 2.625ZM2.273 8.625A4.483 4.483 0 0 1 5.25 7.5h13.5c1.141 0 2.183.425 2.977 1.125A3 3 0 0 0 18.75 6H5.25a3 3 0 0 0-2.977 2.625ZM5.25 9a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h13.5a3 3 0 0 0 3-3v-6a3 3 0 0 0-3-3H15a.75.75 0 0 0-.75.75 2.25 2.25 0 0 1-4.5 0A.75.75 0 0 0 9 9H5.25Z" />
-                                    </svg>
+                                        alt="Logo ZaloPay"
+                                        src="https://play-lh.googleusercontent.com/MXoXRQvKYcPzk0AITb6nVJUxZMaWYESXar_HwK8KXbGMboZPQjcwVBcVtXlpOkfD7PM=w240-h480-rw"
+                                    />
                                 </div>
                                 <div className="text-left">
                                     <p className="text-lg font-semibold">ZaloPay</p>
