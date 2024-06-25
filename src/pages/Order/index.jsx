@@ -249,17 +249,32 @@ export default function Order() {
     }, []);
 
     function getVouchers() {
-        fetch('http://localhost:5000/api/voucher')
+        fetch('http://localhost:5000/api/voucher/get-active-by-customer-id/' + customer?.id)
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {
-                    setVouchers(resJson.vouchers);
+                    setVouchers(
+                        resJson.vouchers.filter((voucher) => validateVoucher(voucher, order)),
+                    );
                     console.log(resJson.vouchers);
                 } else {
                     setVouchers([]);
                 }
+            })
+            .catch((e) => {
+                setVouchers([]);
             });
     }
+
+    function validateVoucher(voucher, order) {
+        // TODO: given voucher and order, return true if voucher can be used
+        return true;
+    }
+
+    function calcDiscount(voucher, order) {
+        // TODO: given voucher and order, return discount amount
+    }
+
     return (
         <div className="px-[8vw] py-10">
             <div className="flex space-x-6">
