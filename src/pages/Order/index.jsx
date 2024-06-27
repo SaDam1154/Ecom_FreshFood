@@ -9,6 +9,8 @@ import { customerSelector, orderSelector } from '../../redux/selectors';
 import PriceFormat from '../../components/PriceFormat';
 import { useEffect, useMemo, useState } from 'react';
 import emailjs from '@emailjs/browser';
+import ReactDOMServer from 'react-dom/server';
+import EmailTemplate from './template.jsx';
 const validationSchema = Yup.object({
     phone: Yup.string()
         .required('Trường này bắt buộc')
@@ -192,17 +194,32 @@ export default function Order() {
                 if (resJson.success) {
                     dispatch(orderActions.reset());
                     toast.success('Đặt hàng thành công');
+                    // const templateParams = {
+                    //     Subject: 'Shop Thực Phẩm Sạch đã nhận đơn hàng.',
+                    //     Title: 'Cảm ơn bạn đã đặt hàng tại',
+                    //     Status: 'Đang chờ xử lý',
+                    //     Name: _order?.name,
+                    //     Address: _order?.address,
+                    //     Phone: _order?.phone,
+                    //     TotalPrice: _order.totalPrice || '0',
+                    //     DiscountPercent: _order?.totalPrice - _order?.intoMoney || '0',
+                    //     IntoMoney: _order?.intoMoney || '0',
+                    //     Link: 'http://localhost:5173/profile',
+                    //     reply_to: '20521154@gm.uit.edu.vn',
+                    // };
+                    const template = {
+                        status: 'Đang chờ xử lý',
+                        orderProduct: order,
+                        order: _order,
+                        link: 'http://localhost:5173/profile',
+                        reply_to: '20521154@gm.uit.edu.vn',
+                    };
+                    const templateHTML = ReactDOMServer.renderToStaticMarkup(
+                        <EmailTemplate template={template} />,
+                    );
                     const templateParams = {
-                        Subject: 'Shop Thực Phẩm Sạch đã nhận đơn hàng.',
-                        Title: 'Cảm ơn bạn đã đặt hàng tại',
-                        Status: 'Đang chờ xử lý',
-                        Name: _order?.name,
-                        Address: _order?.address,
-                        Phone: _order?.phone,
-                        TotalPrice: _order.totalPrice || '0',
-                        DiscountPercent: _order?.totalPrice - _order?.intoMoney || '0',
-                        IntoMoney: _order?.intoMoney || '0',
-                        Link: 'http://localhost:5173/profile',
+                        Subject: 'FreshFood Shop cảm ơn quý khách đã mua sản phẩm!',
+                        HTMLContent: templateHTML,
                         reply_to: '20521154@gm.uit.edu.vn',
                     };
                     emailjs
