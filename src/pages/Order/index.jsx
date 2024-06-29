@@ -88,16 +88,7 @@ export default function Order() {
         if (!voucher) {
             return order?.totalPrice;
         }
-        if (voucher.discount.type === 'percent') {
-            return (
-                order?.totalPrice -
-                Math.min((order?.totalPrice * voucher.discount?.value) / 100, voucher.limit)
-            );
-        } else {
-            return order?.totalPrice - voucher.discount.value > 0
-                ? order?.totalPrice - voucher.discount.value
-                : 0;
-        }
+        return order?.totalPrice - calcDiscount(voucher, order);
     }, [voucher, order]);
 
     function handleFormsubmit(values) {
@@ -289,7 +280,20 @@ export default function Order() {
     }
 
     function calcDiscount(voucher, order) {
-        // TODO: given voucher and order, return discount amount
+        let targetsPrice;
+        if (voucher.discountTargets === null) {
+            targetsPrice = order.totalPrice;
+        } else {
+            targetsPrice = voucher.discountTargets?.reduce((prev, curr) => {
+                const _detail = order.details.find((d) => d?.product?.id === curr);
+                return prev + (_detail ? _detail.price * _detail?.quantity : 0);
+            }, 0);
+        }
+        if (voucher.discount.type === 'percent') {
+            return Math.min((targetsPrice * voucher.discount?.value) / 100, voucher.limit);
+        } else {
+            return targetsPrice - voucher.discount.value > 0 ? voucher.discount.value : 0;
+        }
     }
 
     return (
