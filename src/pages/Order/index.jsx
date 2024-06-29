@@ -275,8 +275,24 @@ export default function Order() {
     }
 
     function validateVoucher(voucher, order) {
-        // TODO: given voucher and order, return true if voucher can be used
-        return true;
+        console.log(voucher, order);
+        if (voucher.orderCondition.targets === null) {
+            return order.totalPrice >= voucher.orderCondition.condition.value;
+        }
+        if (voucher.orderCondition.condition.type === 'amount') {
+            const targetsPrice = voucher.orderCondition?.targets?.reduce((prev, curr) => {
+                const _detail = order.details.find((d) => d?.product?.id === curr);
+                return prev + (_detail ? _detail.price * _detail?.quantity : 0);
+            }, 0);
+            return targetsPrice >= voucher.orderCondition.condition.value;
+        }
+
+        const targetsQuantity = voucher.orderCondition?.targets?.reduce((prev, curr) => {
+            const _detail = order.details.find((d) => d?.product?.id === curr);
+            return prev + (_detail?.quantity || 0);
+        }, 0);
+
+        return targetsQuantity >= voucher.orderCondition.value;
     }
 
     function calcDiscount(voucher, order) {
