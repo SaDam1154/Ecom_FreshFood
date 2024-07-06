@@ -31,6 +31,7 @@ export default function Order() {
     const [coupons, setCoupons] = useState([]);
     const [vouchers, setVouchers] = useState([]);
     const [paymentMethod, setPaymentMethod] = useState('cash');
+    const [promotions, setPromotions] = useState([]);
     const navigate = useNavigate();
 
     const form = useFormik({
@@ -46,6 +47,7 @@ export default function Order() {
 
     useEffect(() => {
         getVouchers();
+        getPromotions();
     }, []);
 
     useEffect(() => {
@@ -171,6 +173,34 @@ export default function Order() {
         window.location = url;
     }
 
+    function applyPromotion() {
+        promotions
+            ?.filter((p) => validatePromotion(p))
+            ?.forEach((p) => {
+                console.log('pro');
+                const promises = p?.vouchers?.map(async (v) => {
+                    fetch('http://localhost:5000/api/customer-voucher', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            customerId: customer?.id,
+                            voucherId: v,
+                        }),
+                    }).then((res) => res.json());
+                });
+
+                Promise.all(promises).then((result) => {
+                    toast.success(`Nhận ${result?.length} voucher: ` + p?.description);
+                });
+            });
+    }
+
+    function deleteVoucher() {
+        fetch('http://localhost:5000/api/customer-voucher/' + voucher?.id, {
+            method: 'DELETE',
+        }).then((res) => res.json());
+    }
+
     function createOrder(_order) {
         setLoading(true);
         fetch('http://localhost:5000/api/order', {
@@ -183,6 +213,8 @@ export default function Order() {
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {
+                    applyPromotion();
+                    voucher && deleteVoucher();
                     dispatch(orderActions.reset());
                     toast.success('Đặt hàng thành công');
                     // const templateParams = {
@@ -274,6 +306,19 @@ export default function Order() {
             });
     }
 
+    function getPromotions() {
+        fetch('http://localhost:5000/api/promotion-program')
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.success) {
+                    setPromotions(resJson.promotionPrograms);
+                    console.log(resJson.promotionPrograms);
+                } else {
+                    setPromotions([]);
+                }
+            });
+    }
+
     function validateVoucher(voucher, order) {
         console.log(voucher, order);
         if (voucher.orderCondition.targets === null) {
@@ -293,6 +338,29 @@ export default function Order() {
         }, 0);
 
         return targetsQuantity >= voucher.orderCondition.value;
+    }
+
+    function validatePromotion(promotion) {
+        if (!promotion.orderCondition) {
+            return false;
+        }
+        if (promotion.orderCondition.targets === null) {
+            return order?.intoMoney >= promotion.orderCondition.condition.value;
+        }
+        if (promotion.orderCondition.condition.type === 'amount') {
+            const targetsPrice = promotion.orderCondition?.targets?.reduce((prev, curr) => {
+                const _detail = order.details.find((d) => d?.product?.id === curr);
+                return prev + (_detail ? _detail.price * _detail?.quantity : 0);
+            }, 0);
+            return targetsPrice >= promotion.orderCondition.condition.value;
+        }
+
+        const targetsQuantity = promotion.orderCondition?.targets?.reduce((prev, curr) => {
+            const _detail = order.details.find((d) => d?.product?.id === curr);
+            return prev + (_detail?.quantity || 0);
+        }, 0);
+
+        return targetsQuantity >= promotion.orderCondition.condition.value;
     }
 
     function calcDiscount(voucher, order) {
@@ -432,56 +500,18 @@ export default function Order() {
                     </div>
                     {customer && (
                         <div className="mb-4 flex space-x-3">
-                            {/* <div className="w-[200px]">
-                                <label className="label" htmlFor="coupon">
-                                    Mã giảm giá
-                                </label>
-                                <input
-                                    type="text"
-                                    id="coupon"
-                                    className={clsx('text-input')}
-                                    value={couponInput}
-                                    onChange={(e) => setCouponInput(e.target.value)}
-                                />
-                            </div>
-                            {coupon && (
-                                <div
-                                    className={clsx('flex-1 rounded border px-4 py-2', {
-                                        'border-green-600': coupon.canUse,
-                                        'border-gray-300 bg-gray-100': !coupon.canUse,
-                                    })}
-                                >
-                                    <p className="font-medium text-gray-700">
-                                        {coupon.description}
-                                    </p>
-                                    <div className="flex space-x-3">
-                                        <div className="space-x-1">
-                                            <span className="text-gray-600">Giảm:</span>
-                                            <span className="font-bold text-green-600">
-                                                {coupon.discountPercent + '%'}
-                                            </span>
-                                        </div>
-
-                                        {coupon.canUse ? (
-                                            <div className="rounded bg-green-100 px-2 py-1 text-xs font-medium text-green-800">
-                                                Có thể dùng
-                                            </div>
-                                        ) : (
-                                            <div className="rounded bg-red-100 px-2 py-1 text-xs font-medium text-red-800">
-                                                Hết lượt dùng
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            )} */}
-
                             <div>
                                 <label className="label" htmlFor="coupon">
                                     Phiếu giảm giá
                                 </label>
 
                                 <div className="flex flex-wrap">
-                                    {[...vouchers]?.map((_voucher) => (
+                                    {vouchers?.length === 0 && (
+                                        <div className="text-orange-500">
+                                            Không có phiếu giảm giá phù hợp
+                                        </div>
+                                    )}
+                                    {vouchers?.map((_voucher) => (
                                         <div
                                             className={clsx(
                                                 'mb-2 mr-2 w-72 cursor-pointer rounded border-2 px-4 py-2',
