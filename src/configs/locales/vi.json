@@ -44,6 +44,8 @@
             "title": "Ưu đãi hàng ngày",
             "description": "Thực phẩm mới ra lò"
         },
+        "favorites": "Sản phẩm yêu thích",
+        "favoritesDescription": "Danh sách những sản phẩm bạn đã yêu thích",
         "recommend": "Sản phẩm khuyến nghị",
         "recommendDescription": "Chúng tôi mong bạn sẽ thích những mặt hàng mà chúng tôi dành riêng cho bạn.",
         "newProducts": "Sản phẩm mới",

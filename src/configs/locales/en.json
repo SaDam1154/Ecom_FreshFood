@@ -44,6 +44,8 @@
             "title": "Daily Deals",
             "description": "Freshly baked goods"
         },
+        "favorites": "Favorite Products",
+        "favoritesDescription": "List of products you've loved",
         "recommend": "Recommended Products",
         "recommendDescription": "We hope you'll enjoy the items we've curated just for you.",
         "newProducts": "New Products",

@@ -13,6 +13,14 @@ export const customerSlice = createSlice({
         update: (state, action) => {
             return action.payload;
         },
+        addToFavorites: (state, action) => {
+            const productId = action.payload;
+            state.listFavorite.push(productId);
+        },
+        removeFromFavorites: (state, action) => {
+            const productId = action.payload;
+            state.listFavorite = state.listFavorite.filter((id) => id !== productId);
+        },
     },
 });
 

@@ -3,11 +3,23 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     details: [], // {product, quantity}
     totalPrice: 0,
+    intoMoney: 0,
+    priceDiscounted: 0,
 };
 
 function updateTotalPrice(state) {
     state.totalPrice = state.details.reduce((prevPrice, currDetail) => {
         return prevPrice + currDetail.quantity * currDetail.price;
+    }, 0);
+}
+function updateIntoPrice(state) {
+    state.intoMoney = state.details.reduce((prevPrice, currDetail) => {
+        return prevPrice + currDetail.quantity * currDetail.priceDiscounted;
+    }, 0);
+}
+function updatePriceDiscounted(state) {
+    state.priceDiscounted = state.details.reduce((prevPrice, currDetail) => {
+        return prevPrice + currDetail.quantity * (currDetail.price - currDetail.priceDiscounted);
     }, 0);
 }
 
@@ -31,6 +43,8 @@ export const orderSlice = createSlice({
                 });
             }
             updateTotalPrice(state);
+            updateIntoPrice(state);
+            updatePriceDiscounted(state);
         },
 
         addMany: (state, action) => {

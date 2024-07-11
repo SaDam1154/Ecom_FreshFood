@@ -11,18 +11,32 @@ import { customerActions } from '../../redux/slices/customerSlide';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { checkAndCreateUser, checkConversation } from '../../configs/firebase/firebaseUtils';
+import { toast } from 'react-toastify';
+
 function Home() {
     const dispatch = useDispatch();
     const customer = useSelector(customerSelector);
-    const lang = useSelector(langSelector);
+    const { t } = useTranslation();
+
     const [products, setProducts] = useState([]);
     const [productsRec, setProductsRec] = useState([]);
-    const { t } = useTranslation();
-    console.log(customer);
+    const [favorites, setFavorites] = useState([]);
+    const [isChatOpen, setIsChatOpen] = useState(false);
+    const [idBox, setIdBox] = useState('');
+
     useEffect(() => {
         getProducts();
         getProductsRec();
     }, []);
+
+    useEffect(() => {
+        if (customer) {
+            getFavorites();
+        }
+        console.log(customer?.listFavorite, 'đây là cus');
+        console.log(favorites, 'đây là fa');
+        console.log(productsRec, 'đây là Rec');
+    }, [customer]);
 
     function getProducts() {
         fetch('http://localhost:5000/api/product')
@@ -35,6 +49,7 @@ function Home() {
                 }
             });
     }
+
     function getProductsRec() {
         fetch('http://localhost:5000/api/recommend/' + customer?._id)
             .then((res) => res.json())
@@ -46,8 +61,18 @@ function Home() {
                 }
             });
     }
-    const [isChatOpen, setIsChatOpen] = useState(false);
-    const [idBox, setIdBox] = useState('');
+
+    function getFavorites() {
+        fetch(`http://localhost:5000/api/customer/${customer.id}/favorites`)
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.success) {
+                    setFavorites(resJson.favorites);
+                } else {
+                    setFavorites([]);
+                }
+            });
+    }
 
     const handleChatIconClick = async () => {
         await checkAndCreateUser(customer); // Đảm bảo user đã được tạo
@@ -224,6 +249,55 @@ function Home() {
                 </div>
                 {/* khu Category */}
                 <div className="3xl:col-span-5 flex flex-col gap-4 sm:col-span-2 xl:col-span-3 2xl:col-span-4">
+                    {!customer && (
+                        <div className="text-[#4a5568]">{t('homepage.pleaseSignUp')}</div>
+                    )}
+                    <div className="flex flex-col">
+                        <div className="flex w-full flex-col items-end justify-center gap-1">
+                            <span className="text-3xl font-semibold text-neutral-900">
+                                {t('homepage.newProducts')}
+                            </span>
+                            <hr className=" h-1 w-48 rounded border-0 bg-green-400" />
+
+                            <span className="text-[#4a5568]">
+                                {t('homepage.newProductsDescription')}
+                            </span>
+                        </div>
+                        <div className="3xl:grid-cols-4 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
+                            {products
+                                .sort((a, b) => b.id - a.id)
+                                .slice(0, 6)
+                                .map((product, index) => {
+                                    return <CardProduct key={index} product={product} />;
+                                })}
+                        </div>
+                    </div>
+                    <div className="flex flex-col">
+                        {customer ? (
+                            <div className="flex w-full flex-col items-end justify-center gap-1">
+                                <span className="select-none text-3xl font-semibold text-neutral-900">
+                                    {t('homepage.favorites')}
+                                </span>
+                                <hr className=" h-1 w-48 rounded border-0 bg-green-400" />
+
+                                <span className="text-[#4a5568]">
+                                    {t('homepage.favoritesDescription')}
+                                </span>
+                            </div>
+                        ) : (
+                            <div className="text-[#4a5568]">{t('homepage.pleaseSignUp')}</div>
+                        )}
+                        {customer ? (
+                            <div className="3xl:grid-cols-4 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
+                                {favorites.map((product, index) => {
+                                    if (product)
+                                        return <CardProduct key={index} product={product} />;
+                                })}
+                            </div>
+                        ) : (
+                            <div className="flex h-full w-full items-center justify-center"></div>
+                        )}
+                    </div>
                     <div className="flex flex-col">
                         {customer ? (
                             <div className="flex w-full flex-col items-end justify-center gap-1">
@@ -240,7 +314,7 @@ function Home() {
                             <div className="text-[#4a5568]">{t('homepage.pleaseSignUp')}</div>
                         )}
                         {customer ? (
-                            <div className="3xl:grid-cols-5 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                            <div className="3xl:grid-cols-4 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
                                 {productsRec.map((product, index) => {
                                     if (product)
                                         return <CardProduct key={index} product={product} />;
@@ -249,23 +323,6 @@ function Home() {
                         ) : (
                             <div className="flex h-full w-full items-center justify-center"></div>
                         )}
-                    </div>
-                    <div className="flex flex-col">
-                        <div className="flex w-full flex-col items-end justify-center gap-1">
-                            <span className="text-3xl font-semibold text-neutral-900">
-                                {t('homepage.newProducts')}
-                            </span>
-                            <hr className=" h-1 w-48 rounded border-0 bg-green-400" />
-
-                            <span className="text-[#4a5568]">
-                                {t('homepage.newProductsDescription')}
-                            </span>
-                        </div>
-                        <div className="3xl:grid-cols-5 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-                            {products.slice(0, 8).map((product, index) => {
-                                return <CardProduct key={index} product={product} />;
-                            })}
-                        </div>
                     </div>
                 </div>
             </div>

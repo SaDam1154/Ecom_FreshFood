@@ -17,12 +17,22 @@ import PriceFormat from '../PriceFormat';
 import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-export function CardProduct({ product }) {
+import { HeartIcon as SolidHeartIcon, StarIcon as SolidStarIcon } from '@heroicons/react/24/solid';
+import {
+    HeartIcon as OutlineHeartIcon,
+    StarIcon as OutlineStarIcon,
+} from '@heroicons/react/24/outline';
+import { customerSelector } from '../../redux/selectors';
+import { customerActions } from '../../redux/slices/customerSlide';
+
+export function CardProduct({ product, onFavoriteToggle }) {
     const dispatch = useDispatch();
     const order = useSelector(orderSelector);
     const lang = useSelector(langSelector);
     const [qty, setQty] = useState(1);
     const { t } = useTranslation();
+    const customer = useSelector(customerSelector);
+
     function handleAddToCart() {
         if (order.details.find((d) => d.product._id === product._id)) {
             toast.info('Sản phẩm đã có trong giỏ hàng!');
@@ -33,56 +43,104 @@ export function CardProduct({ product }) {
             console.log(lang);
         }
     }
+
+    const handleAddToFavorites = (product) => {
+        const isInFavorites = customer.listFavorite?.find((fav) => fav === product._id);
+        const endpoint = isInFavorites
+            ? `remove-from-favorites/${product._id}`
+            : `add-to-favorites/${product._id}`;
+
+        fetch(`http://localhost:5000/api/customer/${customer.id}/${endpoint}`, {
+            method: 'POST',
+        })
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.success) {
+                    if (isInFavorites) {
+                        dispatch(customerActions.removeFromFavorites(product._id));
+                        toast.success('Đã xóa sản phẩm khỏi danh sách yêu thích!');
+                    } else {
+                        dispatch(customerActions.addToFavorites(product._id));
+                        toast.success('Đã thêm sản phẩm vào danh sách yêu thích!');
+                    }
+                } else {
+                    toast.error('Đã xảy ra lỗi khi thực hiện thao tác!');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                toast.error('Đã xảy ra lỗi khi thực hiện thao tác!');
+            });
+    };
+
     useEffect(() => {
-        // Thực hiện các hành động cần thiết khi lang thay đổi
-        // Ví dụ: console.log('Lang has changed', lang);
-        // Hoặc thực hiện cập nhật state nếu cần
         console.log(lang?.value);
-    }, [lang.value]); // Lang được đưa vào dependency array
+    }, [lang.value]);
+
     return (
         <Card className="group flex w-full max-w-[26rem] cursor-pointer flex-col justify-between border-[1px] shadow-lg">
-            <Link to={'/product/' + product.id}>
+            <div className="z-10 flex flex-1 flex-col">
                 <CardHeader floated={false} color="blue-gray">
-                    <img
-                        src={product.images[0]}
-                        alt="ui/ux review check"
-                        className="h-[200px] w-[384px] scale-100  cursor-pointer object-cover shadow-none transition duration-300  ease-in-out hover:shadow-none focus:bg-slate-300 group-hover:scale-105  lg:h-[230px] 2xl:h-[260px] "
-                    />
+                    <Link to={'/product/' + product.id}>
+                        <img
+                            src={product.images[0]}
+                            alt="ui/ux review check"
+                            className="h-[200px] w-[384px] scale-100 cursor-pointer object-cover shadow-none transition duration-300 ease-in-out hover:shadow-none focus:bg-slate-300 group-hover:scale-105 lg:h-[230px] 2xl:h-[260px]"
+                        />
+                    </Link>
                 </CardHeader>
-                <CardBody className="grow">
-                    <div className="flex items-center justify-between">
-                        <Typography variant="h5" color="blue-gray" className="font-medium">
-                            {/* {product.name} */}
-                            {lang == 'Vi' ? product.name : product.nameEN}
-                        </Typography>
-                        <Typography
-                            color="blue-gray"
-                            className="flex items-center gap-1.5 font-normal"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                className="-mt-0.5 h-5 w-5 text-yellow-300"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                            5.0
-                        </Typography>
-                    </div>
-                    <Typography color="gray">
-                        <div className="flex items-center gap-2">
-                            <span className="text-lg font-bold text-green-500">
-                                <PriceFormat>{product?.price}</PriceFormat> VNĐ
-                            </span>
+                <CardBody className="flex flex-1 justify-between">
+                    <Link to={'/product/' + product.id}>
+                        <div className="flex  flex-col items-start justify-start ">
+                            <Typography variant="h5" color="blue-gray" className="font-medium">
+                                {lang == 'Vi' ? product.name : product.nameEN}
+                            </Typography>
+                            {product?.discount?.type != 'noDiscount' && (
+                                <div className="mt-2 flex items-center gap-2">
+                                    <span className="text-sm font-semibold text-red-500 line-through">
+                                        <PriceFormat>{product?.price}</PriceFormat> VNĐ
+                                    </span>
+                                </div>
+                            )}
+                            <div className="flex items-center gap-2">
+                                <span className="text-lg font-bold text-green-500">
+                                    <PriceFormat>{product?.priceDiscounted}</PriceFormat> VNĐ
+                                </span>
+                            </div>
                         </div>
+                    </Link>
+                    <Typography
+                        color="gray"
+                        className="z-50 flex flex-col items-center justify-start"
+                    >
+                        <Typography>
+                            {product.ratings?.length ? (
+                                <div className="flex items-center gap-1.5 font-normal   ">
+                                    <SolidStarIcon className="h-6 w-6 text-yellow-300" />
+                                    {product.ratings.reduce((prev, curr) => prev + curr.score, 0) /
+                                        product.ratings?.length}
+                                </div>
+                            ) : (
+                                <div className="flex items-center gap-1.5 font-normal   ">
+                                    <OutlineStarIcon className="h-6 w-6 text-yellow-300" />0
+                                </div>
+                            )}
+                        </Typography>
+
+                        <IconButton
+                            onClick={() => handleAddToFavorites(product)}
+                            className=" h-6 w-6 border-none shadow-none"
+                        >
+                            {customer &&
+                            customer?.listFavorite?.find((fav) => fav === product._id) ? (
+                                <SolidHeartIcon className="h-6 w-6 text-red-500" />
+                            ) : (
+                                <OutlineHeartIcon className="h-6 w-6 text-gray-400" />
+                            )}
+                        </IconButton>
                     </Typography>
                 </CardBody>
-            </Link>
+            </div>
             <CardFooter className="pt-0">
                 <Button
                     onClick={handleAddToCart}
