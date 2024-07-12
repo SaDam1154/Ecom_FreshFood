@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "@emailjs/browser": "^3.11.0",
+        "@headlessui/react": "^2.1.2",
         "@heroicons/react": "^2.1.4",
         "@material-tailwind/react": "^2.1.8",
         "@reduxjs/toolkit": "^2.0.1",
@@ -24,6 +25,7 @@
         "framer-motion": "^10.16.16",
         "i18next": "^23.11.3",
         "moment": "^2.30.1",
+        "rc-slider": "^10.6.2",
         "react": "^18.2.0",
         "react-alice-carousel": "^2.8.0",
         "react-dom": "^18.2.0",
