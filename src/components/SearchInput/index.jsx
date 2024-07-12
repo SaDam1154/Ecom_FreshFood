@@ -7,9 +7,24 @@ function Search() {
     const [searchInput, setSearchInput] = useState('');
     const searchInputValue = useDebounce(searchInput, 300);
     const [searchProducts, setSearchProducts] = useState([]);
+    const [productTypes, setProductTypes] = useState([]);
+    const [type, setType] = useState("all");
     const { t } = useTranslation();
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        fetch('http://localhost:5000/api/product-type')
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.success) {
+                    setProductTypes(resJson.productTypes);
+                } else {
+                    setProductTypes([]);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
 
     useEffect(() => {
         if (!searchInputValue) {
@@ -21,12 +36,22 @@ function Search() {
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {
-                    setSearchProducts(resJson.products);
+                    setSearchProducts(resJson.products.filter(filterType));
                 } else {
                     setSearchProducts([]);
                 }
             });
-    }, [searchInputValue]);
+    }, [searchInputValue, type]);
+
+    function filterType(product) {
+        if (type === "all") {
+            return true;
+        }
+        if (product.type === type) {
+            return true;
+        }
+        return false;
+    }
 
     return (
         <div className="group relative mx-2 flex w-[600px] max-w-[600px] grow">
@@ -36,6 +61,16 @@ function Search() {
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder={t('header.searchPlaceholder')}
             />
+            <select onChange={(e) => setType(e.target.value)} value={type} className='border-gray-200 border'>
+                <option value="all">
+                    Tất cả
+                </option>
+                {productTypes.map((productType) => (
+                    <option key={productType.name} value={productType.name}>
+                        {productType.name}
+                    </option>
+                ))}
+            </select>
             <button className="rounded-r-lg bg-orange-500 px-3 text-white">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
