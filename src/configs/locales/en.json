@@ -48,6 +48,10 @@
         "favoritesDescription": "List of products you've loved",
         "recommend": "Recommended Products",
         "recommendDescription": "We hope you'll enjoy the items we've curated just for you.",
+        "hotProducts": "Best Selling Products",
+        "hotProductsDescription": "This is the list of the most purchased products in our store",
+        "saleProducts": "Discounted Products",
+        "saleProductsDescription": "This is the list of products currently on sale in our store",
         "newProducts": "New Products",
         "newProductsDescription": "Don't miss out on the latest arrivals.",
         "pleaseSignUp": "Log in or register as a member to apply for many special discounts."
@@ -55,6 +59,8 @@
     "cartpage": {
         "noproduct": "No products in the cart yet!",
         "totalPrice": "Total Price",
+        "totalMoney": "Total money",
+        "intoMoney": "Into money",
         "totalCart": "Total Cart",
         "totalProduct": "Total Products",
         "totalQuantity": "Total Quantity",

@@ -38,7 +38,14 @@ export function CardProduct({ product, onFavoriteToggle }) {
             toast.info('Sản phẩm đã có trong giỏ hàng!');
             console.log(lang);
         } else {
-            dispatch(orderActions.addMany({ product, quantity: qty, price: product?.price }));
+            dispatch(
+                orderActions.addMany({
+                    product,
+                    quantity: qty,
+                    price: product?.price,
+                    priceDiscounted: product?.priceDiscounted,
+                }),
+            );
             toast.success('Đã thêm sản phẩm vào giỏ hàng!');
             console.log(lang);
         }
@@ -90,23 +97,24 @@ export function CardProduct({ product, onFavoriteToggle }) {
                     </Link>
                 </CardHeader>
                 <CardBody className="flex flex-1 justify-between">
-                    <Link to={'/product/' + product.id}>
-                        <div className="flex  flex-col items-start justify-start ">
-                            <Typography variant="h5" color="blue-gray" className="font-medium">
-                                {lang == 'Vi' ? product.name : product.nameEN}
-                            </Typography>
-                            {product?.discount?.type != 'noDiscount' && (
-                                <div className="mt-2 flex items-center gap-2">
-                                    <span className="text-sm font-semibold text-red-500 line-through">
-                                        <PriceFormat>{product?.price}</PriceFormat> VNĐ
-                                    </span>
-                                </div>
-                            )}
-                            <div className="flex items-center gap-2">
-                                <span className="text-lg font-bold text-green-500">
-                                    <PriceFormat>{product?.priceDiscounted}</PriceFormat> VNĐ
+                    <Link
+                        to={'/product/' + product.id}
+                        className="flex flex-1 flex-col items-start justify-start"
+                    >
+                        <Typography variant="h5" color="blue-gray" className="font-medium">
+                            {lang == 'Vi' ? product.name : product.nameEN}
+                        </Typography>
+                        {product?.discount?.type != 'noDiscount' && (
+                            <div className="mt-2 flex items-center gap-2">
+                                <span className="text-sm font-semibold text-red-500 line-through">
+                                    <PriceFormat>{product?.price}</PriceFormat> VNĐ
                                 </span>
                             </div>
+                        )}
+                        <div className="flex items-center gap-2">
+                            <span className="text-lg font-bold text-green-500">
+                                <PriceFormat>{product?.priceDiscounted}</PriceFormat> VNĐ
+                            </span>
                         </div>
                     </Link>
                     <Typography

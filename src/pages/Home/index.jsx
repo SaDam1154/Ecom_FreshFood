@@ -255,6 +255,46 @@ function Home() {
                     <div className="flex flex-col">
                         <div className="flex w-full flex-col items-end justify-center gap-1">
                             <span className="text-3xl font-semibold text-neutral-900">
+                                {t('homepage.hotProducts')}
+                            </span>
+                            <hr className=" h-1 w-48 rounded border-0 bg-green-400" />
+
+                            <span className="text-[#4a5568]">
+                                {t('homepage.hotProductsDescription')}
+                            </span>
+                        </div>
+                        <div className="3xl:grid-cols-4 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
+                            {products
+                                .sort((a, b) => b.saledQuantity - a.saledQuantity)
+                                .slice(0, 6)
+                                .map((product, index) => {
+                                    return <CardProduct key={index} product={product} />;
+                                })}
+                        </div>
+                    </div>
+                    <div className="flex flex-col">
+                        <div className="flex w-full flex-col items-end justify-center gap-1">
+                            <span className="text-3xl font-semibold text-neutral-900">
+                                {t('homepage.saleProducts')}
+                            </span>
+                            <hr className=" h-1 w-48 rounded border-0 bg-green-400" />
+
+                            <span className="text-[#4a5568]">
+                                {t('homepage.saleProductsDescription')}
+                            </span>
+                        </div>
+                        <div className="3xl:grid-cols-4 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
+                            {products
+                                .filter((product) => product.discount.type !== 'noDiscount')
+                                .slice(0, 6)
+                                .map((product, index) => {
+                                    return <CardProduct key={index} product={product} />;
+                                })}
+                        </div>
+                    </div>
+                    <div className="flex flex-col">
+                        <div className="flex w-full flex-col items-end justify-center gap-1">
+                            <span className="text-3xl font-semibold text-neutral-900">
                                 {t('homepage.newProducts')}
                             </span>
                             <hr className=" h-1 w-48 rounded border-0 bg-green-400" />
@@ -272,6 +312,7 @@ function Home() {
                                 })}
                         </div>
                     </div>
+
                     <div className="flex flex-col">
                         {customer ? (
                             <div className="flex w-full flex-col items-end justify-center gap-1">

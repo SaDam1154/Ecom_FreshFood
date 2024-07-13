@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 export default function Cart() {
     const dispatch = useDispatch();
     const order = useSelector(orderSelector);
+    console.log(order);
     const customer = useSelector(customerSelector);
     const { t } = useTranslation();
     return (
@@ -51,8 +52,15 @@ export default function Cart() {
                             />
                             <div className="flex-1 pr-6">
                                 <p className="font-medium">{d?.product?.name}</p>
-                                <p className="font-medium text-primary-600">
-                                    <PriceFormat>{d?.price}</PriceFormat> VNĐ
+                                {d?.product?.discount?.type != 'noDiscount' && (
+                                    <div className="mt-2 flex items-center gap-2">
+                                        <span className="text-sm font-semibold text-red-500 line-through">
+                                            <PriceFormat>{d?.product?.price}</PriceFormat> VNĐ
+                                        </span>
+                                    </div>
+                                )}
+                                <p className="text-lg font-bold text-primary-600">
+                                    <PriceFormat>{d?.product?.priceDiscounted}</PriceFormat> VNĐ
                                 </p>
                             </div>
                             <QuantityInput
@@ -71,7 +79,10 @@ export default function Cart() {
                             <div className="w-[180px] px-6">
                                 <p className="text-gray-600"> {t('cartpage.totalPrice')}</p>
                                 <p className="text-lg font-medium text-gray-900">
-                                    <PriceFormat>{d?.price * d?.quantity}</PriceFormat> VNĐ
+                                    <PriceFormat>
+                                        {d?.product?.priceDiscounted * d?.quantity}
+                                    </PriceFormat>{' '}
+                                    VNĐ
                                 </p>
                             </div>
                             <div className="ml-4">
@@ -119,9 +130,9 @@ export default function Cart() {
                             </div>
                         </div>
                         <div className="mt-2 flex justify-between border-t py-2 text-lg font-semibold">
-                            <span> {t('cartpage.totalPrice')} (VNĐ)</span>
+                            <span> {t('cartpage.totalMoney')} (VNĐ)</span>
                             <span className="text-primary-600">
-                                <PriceFormat>{order.totalPrice}</PriceFormat>
+                                <PriceFormat>{order.intoMoney}</PriceFormat>
                             </span>
                         </div>
                         <div className="space-y-2">

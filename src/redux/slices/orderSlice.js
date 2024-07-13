@@ -39,6 +39,7 @@ export const orderSlice = createSlice({
                 state.details.push({
                     product: action.payload.product,
                     price: action.payload.price,
+                    priceDiscounted: action.payload.priceDiscounted,
                     quantity: 1,
                 });
             }
@@ -58,16 +59,21 @@ export const orderSlice = createSlice({
                 state.details.push({
                     product: action.payload.product,
                     price: action.payload.price,
+                    priceDiscounted: action.payload.priceDiscounted,
                     quantity: action.payload.quantity,
                 });
             }
             updateTotalPrice(state);
+            updateIntoPrice(state);
+            updatePriceDiscounted(state);
         },
 
         // payload: {_id}
         remove: (state, action) => {
             state.details = state.details.filter((detail) => detail.product._id !== action.payload);
             updateTotalPrice(state);
+            updateIntoPrice(state);
+            updatePriceDiscounted(state);
         },
 
         // payload: {_id, quantity}
@@ -87,6 +93,8 @@ export const orderSlice = createSlice({
                 state.details[indexDetail].quantity = Number(action.payload.quantity);
             }
             updateTotalPrice(state);
+            updateIntoPrice(state);
+            updatePriceDiscounted(state);
         },
         reset: () => initialState,
     },

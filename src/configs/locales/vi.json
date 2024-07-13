@@ -48,6 +48,10 @@
         "favoritesDescription": "Danh sách những sản phẩm bạn đã yêu thích",
         "recommend": "Sản phẩm khuyến nghị",
         "recommendDescription": "Chúng tôi mong bạn sẽ thích những mặt hàng mà chúng tôi dành riêng cho bạn.",
+        "hotProducts": "Sản phẩm bán chạy nhất",
+        "hotProductsDescription": "Đây là danh sách những sản phẩm được mua nhiều nhất ở cửa hàng chúng tôi",
+        "saleProducts": "Sản phẩm giảm giá",
+        "saleProductsDescription": "Đây là danh sách những sản phẩm đang giảm giá ở cửa hàng chúng tôi",
         "newProducts": "Sản phẩm mới",
         "newProductsDescription": "Đừng bỏ lỡ những mặt hàng mới ra mắt.",
         "pleaseSignUp": "Đăng nhập hoặc đăng ký khách hàng thành viên để áp dụng nhiều ưu đãi giảm giá đặc biệt."
@@ -55,6 +59,8 @@
     "cartpage": {
         "noproduct": "Chưa có sản phẩm trong giỏ hàng!",
         "totalPrice": "Tổng giá",
+        "totalMoney": "Tổng tiền",
+        "intoMoney": "Thành tiền",
         "totalCart": "Tổng giỏ hàng",
         "totalProduct": "Số sản phẩm",
         "totalQuantity": "Tổng số lượng",

@@ -10,7 +10,7 @@ import PriceFormat from '../../components/PriceFormat';
 import { useEffect, useMemo, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import ReactDOMServer from 'react-dom/server';
-import EmailTemplate from './template.jsx';
+import EmailTemplate from './emailTemplate.jsx';
 const validationSchema = Yup.object({
     phone: Yup.string()
         .required('Trường này bắt buộc')
@@ -78,19 +78,19 @@ export default function Order() {
 
     const intoMoney = useMemo(() => {
         if (!coupon) {
-            return order?.totalPrice;
+            return order?.intoMoney;
         }
         if (!coupon?.canUse) {
-            return order?.totalPrice;
+            return order?.intoMoney;
         }
-        return order?.totalPrice - (order?.totalPrice * coupon?.discountPercent) / 100;
+        return order?.intoMoney - (order?.intoMoney * coupon?.discountPercent) / 100;
     }, [coupon, order]);
 
     const intoMoneyByVoucher = useMemo(() => {
         if (!voucher) {
-            return order?.totalPrice;
+            return order?.intoMoney;
         }
-        return order?.totalPrice - calcDiscount(voucher, order);
+        return order?.intoMoney - calcDiscount(voucher, order);
     }, [voucher, order]);
 
     function handleFormsubmit(values) {
@@ -111,14 +111,16 @@ export default function Order() {
             product: d.product._id,
             quantity: d.quantity,
             price: d.price,
+            priceDiscounted: d.priceDiscounted,
         }));
         const _order = {
             customerId: customer?._id,
             deliveryStatus: 'pending',
             paymentStatus: 'unpaid',
             details: details,
-            receivedMoney: order.totalPrice,
+            receivedMoney: intoMoneyByVoucher,
             totalPrice: order.totalPrice,
+            discountByVoucher: intoMoney - intoMoneyByVoucher,
             intoMoney: intoMoneyByVoucher,
             coupon: coupon?.canUse ? coupon?._id : null,
             exchangeMoney: 0,
@@ -136,14 +138,16 @@ export default function Order() {
             product: d.product._id,
             quantity: d.quantity,
             price: d.price,
+            priceDiscounted: d.priceDiscounted,
         }));
         const pendingOrder = {
             customerId: customer?._id,
             deliveryStatus: 'pending',
             paymentStatus: 'paid',
             details: details,
-            receivedMoney: order.totalPrice,
+            receivedMoney: intoMoneyByVoucher,
             totalPrice: order.totalPrice,
+            discountByVoucher: intoMoney - intoMoneyByVoucher,
             intoMoney: intoMoneyByVoucher,
             coupon: coupon?.canUse ? coupon?._id : null,
             exchangeMoney: 0,
@@ -421,8 +425,15 @@ export default function Order() {
                                 />
                                 <div className="flex-1 pr-6">
                                     <p className="font-medium">{d?.product?.name}</p>
-                                    <p className="font-medium text-primary-600">
-                                        <PriceFormat>{d?.price}</PriceFormat> VNĐ
+                                    {d?.product?.discount?.type != 'noDiscount' && (
+                                        <div className="mt-2 flex items-center gap-2">
+                                            <span className="text-sm font-semibold text-red-500 line-through">
+                                                <PriceFormat>{d?.product?.price}</PriceFormat> VNĐ
+                                            </span>
+                                        </div>
+                                    )}
+                                    <p className="text-lg font-medium text-primary-600">
+                                        <PriceFormat>{d?.product?.priceDiscounted}</PriceFormat> VNĐ
                                     </p>
                                 </div>
                                 <p className="text-lg text-gray-600">{'x' + d?.quantity}</p>
@@ -511,7 +522,7 @@ export default function Order() {
                                             Không có phiếu giảm giá phù hợp
                                         </div>
                                     )}
-                                    {vouchers?.map((_voucher) => (
+                                    {vouchers?.slice(0, 10).map((_voucher) => (
                                         <div
                                             className={clsx(
                                                 'mb-2 mr-2 w-72 cursor-pointer rounded border-2 px-4 py-2',

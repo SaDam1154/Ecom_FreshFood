@@ -147,6 +147,34 @@ const EmailTemplate = ({ template }) => {
             .boldText {
               font-weight: 700;
             }
+            .priceDiscounted {
+                font-size: 10px;
+                font-weight: 500;
+                color: #FB5757;
+            }
+
+            .font-semibold {
+                font-weight: 600;
+            }   
+
+            .line-through {
+                text-decoration: line-through;
+            }
+                .mt-2 {
+                margin-top: 0.5rem; /* 8px */
+            }
+
+            .flex {
+                display: flex;
+            }
+
+            .items-center {
+                align-items: center;
+            }
+
+            .gap-2 {
+                gap: 0.5rem; /* 8px */
+            }
           `}
                 </style>
             </head>
@@ -203,11 +231,33 @@ const EmailTemplate = ({ template }) => {
                                             </td>
                                             <td>{product?.quantity}</td>
                                             <td className="price-cell">
-                                                <PriceFormat>{product?.product.price}</PriceFormat>{' '}
-                                                VND
+                                                {product?.product?.discount?.type !=
+                                                    'noDiscount' && (
+                                                    <span className="priceDiscounted line-through">
+                                                        <PriceFormat>
+                                                            {product?.product?.price}
+                                                        </PriceFormat>{' '}
+                                                        VNĐ
+                                                    </span>
+                                                )}
+                                                <p className="price-cell">
+                                                    <PriceFormat>
+                                                        {product?.product?.priceDiscounted}
+                                                    </PriceFormat>{' '}
+                                                    VNĐ
+                                                </p>
                                             </td>
                                         </tr>
                                     ))}
+                                    <tr className="">
+                                        <td colSpan="3">Giảm giá bởi voucher </td>
+                                        <td className="discountMoney">
+                                            <PriceFormat>
+                                                {template?.order?.discountByVoucher}
+                                            </PriceFormat>{' '}
+                                            VND
+                                        </td>
+                                    </tr>
                                     <tr className="total-row highlight">
                                         <th colSpan="3">Tổng giá </th>
                                         <th className="totalPrice">

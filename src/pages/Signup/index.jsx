@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { Formik, useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
@@ -6,19 +6,23 @@ import { ToastContainer, toast } from 'react-toastify';
 import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
 import LoadingForm from '../../components/LoadingForm';
+import Select from 'react-select';
 
 const validationSchema = Yup.object({
     name: Yup.string()
         .required('Trường này bắt buộc')
         .min(2, 'Tên phải có độ dài hơn 2 kí tự')
         .max(30, 'Tên dài tối đa 30 kí tự'),
+    email: Yup.string().required('Trường này bắt buộc'),
     address: Yup.string().required('Trường này bắt buộc'),
     phone: Yup.string()
         .required('Trường này bắt buộc')
         .matches(/^[\+|0]([0-9]{9,14})\b/, 'Số điện thoại không hợp lệ'),
     password: Yup.string().required('Trường này bắt buộc'),
+    province: Yup.object().required('Trường này bắt buộc'),
+    district: Yup.object().required('Trường này bắt buộc'),
+    commune: Yup.object().required('Trường này bắt buộc'),
 });
-
 function Signup() {
     const [loading, setLoading] = useState(false);
     const [validateOnChange, setValidateOnChange] = useState(false);
@@ -27,11 +31,54 @@ function Signup() {
     const showSuccessNoti = () => toast.success('Thêm khách hàng thành công!');
     const showErorrNoti = () => toast.error('Có lỗi xảy ra!');
 
+    const [provinces, setProvinces] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [communes, setCommunes] = useState([]);
+
+    const [selectedProvince, setSelectedProvince] = useState(null);
+    const [selectedDistrict, setSelectedDistrict] = useState(null);
+    const [selectedCommune, setSelectedCommune] = useState(null);
+
+    useEffect(() => {
+        fetch('https://api.npoint.io/ac646cb54b295b9555be')
+            .then((response) => response.json())
+            .then((data) => setProvinces(data));
+    }, []);
+
+    useEffect(() => {
+        if (selectedProvince) {
+            fetch('https://api.npoint.io/34608ea16bebc5cffd42')
+                .then((response) => response.json())
+                .then((data) =>
+                    setDistricts(data.filter((d) => d.ProvinceId === selectedProvince?.Id)),
+                );
+        }
+    }, [selectedProvince]);
+
+    useEffect(() => {
+        console.log(form.values);
+        setCommunes([]);
+        setSelectedCommune(null);
+        form.setFieldValue('commune', '');
+        if (selectedDistrict) {
+            console.log('isDis');
+            fetch('https://api.npoint.io/dd278dc276e65c68cdf5')
+                .then((response) => response.json())
+                .then((data) =>
+                    setCommunes(data.filter((c) => c.DistrictId === selectedDistrict?.Id)),
+                );
+        }
+    }, [selectedDistrict]);
+
     const form = useFormik({
         initialValues: {
             name: '',
+            email: '',
             phone: '',
             password: '',
+            province: '',
+            district: '',
+            commune: '',
             address: '',
         },
         validationSchema,
@@ -41,45 +88,48 @@ function Signup() {
     });
 
     async function handleFormsubmit(values) {
-        setLoading(true);
-        try {
-            let imageUrl = null;
-            if (image) {
-                let formdata = new FormData();
-                formdata.append('image', image.file);
-                const res = await fetch('http://localhost:5000/api/upload', {
-                    method: 'POST',
-                    body: formdata,
-                });
+        console.log(values);
+        // setLoading(true);
+        // try {
+        //     let imageUrl = null;
+        //     if (image) {
+        //         let formdata = new FormData();
+        //         formdata.append('image', image.file);
+        //         const res = await fetch('http://localhost:5000/api/upload', {
+        //             method: 'POST',
+        //             body: formdata,
+        //         });
 
-                const data = await res.json();
-                imageUrl = data.image.url;
-            }
+        //         const data = await res.json();
+        //         imageUrl = data.image.url;
+        //     }
 
-            const res = await fetch('http://localhost:5000/api/customer', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ...values, avatar: imageUrl }),
-            });
-            const resJson = await res.json();
-            if (resJson.success) {
-                showSuccessNoti();
-                form.resetForm();
-                setValidateOnChange(false);
-                setImage(null);
-                navigate('/login');
-            } else if (resJson.message === 'phone already exists') {
-                toast.error('Số điện thoại đã tồn tại');
-            } else {
-                showErorrNoti();
-            }
-        } catch {
-            showErorrNoti();
-        } finally {
-            setLoading(false);
-        }
+        //     const res = await fetch('http://localhost:5000/api/customer', {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify({
+        //             ...values,
+        //             avatar: imageUrl,
+        //         }),
+        //     });
+        //     const resJson = await res.json();
+        //     if (resJson.success) {
+        //         showSuccessNoti();
+        //         form.resetForm();
+        //         setImage(null);
+        //         navigate('/login');
+        //     } else if (resJson.message === 'phone already exists') {
+        //         toast.error('Số điện thoại đã tồn tại');
+        //     } else {
+        //         showErorrNoti();
+        //     }
+        // } catch {
+        //     showErorrNoti();
+        // } finally {
+        //     setLoading(false);
+        // }
     }
 
     function onImageInputChange(e) {
@@ -99,7 +149,7 @@ function Signup() {
                         <img className="mr-2 h-16 w-16" src="/mainLogo.png" alt="logo" />
                         Fresh Food
                     </Link>
-                    <div className=" w-[548px] rounded-lg bg-white shadow">
+                    <div className=" w-[648px] rounded-lg bg-white shadow">
                         <div className="space-y-4 p-8">
                             <h1 className="text-center text-2xl font-semibold text-gray-900">
                                 Đăng ký thành viên
@@ -201,40 +251,168 @@ function Signup() {
                                         </span>
                                     </div>
                                 </div>
-                                <div>
-                                    <label
-                                        htmlFor="name"
-                                        className="mb-1 block font-medium text-gray-900 "
-                                    >
-                                        Họ và tên *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        id="name"
-                                        className={clsx('text-input w-full py-2', {
-                                            invalid: form.errors.name,
-                                        })}
-                                        onChange={form.handleChange}
-                                        onBlur={form.handleBlur}
-                                        value={form.values.name}
-                                        placeholder="Họ và tên"
-                                    />
-                                    <span
-                                        className={clsx('text-sm text-red-500 opacity-0', {
-                                            'opacity-100': form.errors.name,
-                                        })}
-                                    >
-                                        {form.errors.name || 'No message'}
-                                    </span>
+                                <div className=" flex justify-between gap-1">
+                                    <div>
+                                        <label
+                                            htmlFor="name"
+                                            className="mb-1 block font-medium text-gray-900 "
+                                        >
+                                            Họ và tên *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            id="name"
+                                            className={clsx('text-input w-full py-2', {
+                                                invalid: form.errors.name,
+                                            })}
+                                            onChange={form.handleChange}
+                                            onBlur={form.handleBlur}
+                                            value={form.values.name}
+                                            placeholder="Họ và tên"
+                                        />
+                                        <span
+                                            className={clsx('text-sm text-red-500 opacity-0', {
+                                                'opacity-100': form.errors.name,
+                                            })}
+                                        >
+                                            {form.errors.name || 'No message'}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <label
+                                            htmlFor="email"
+                                            className="mb-1 block font-medium text-gray-900 "
+                                        >
+                                            Email *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="email"
+                                            id="email"
+                                            className={clsx('text-input w-full py-2', {
+                                                invalid: form.errors.email,
+                                            })}
+                                            onChange={form.handleChange}
+                                            onBlur={form.handleBlur}
+                                            value={form.values.email}
+                                            placeholder="Email"
+                                        />
+                                        <span
+                                            className={clsx('text-sm text-red-500 opacity-0', {
+                                                'opacity-100': form.errors.email,
+                                            })}
+                                        >
+                                            {form.errors.email || 'No message'}
+                                        </span>
+                                    </div>
                                 </div>
 
+                                <div className="flex justify-between gap-1">
+                                    <div className="flex flex-1 flex-col gap-1">
+                                        <label
+                                            htmlFor="province"
+                                            className="block text-sm font-medium text-gray-900"
+                                        >
+                                            Tỉnh/Thành phố
+                                        </label>
+                                        <Select
+                                            id="province"
+                                            className="mt-1 flex-1 whitespace-nowrap"
+                                            options={provinces.map((province) => ({
+                                                value: province,
+                                                label: province.Name,
+                                            }))}
+                                            value={selectedProvince && selectedProvince?.value}
+                                            onChange={(selectedOption) => {
+                                                setSelectedProvince(selectedOption.value);
+                                                form.setFieldValue(
+                                                    'province',
+                                                    selectedOption.value,
+                                                ); // Set form value
+                                            }}
+                                            placeholder="Chọn Tỉnh/T.Phố"
+                                        />
+                                        <span
+                                            className={clsx('text-sm text-red-500 opacity-0', {
+                                                'opacity-100': form.errors.province,
+                                            })}
+                                        >
+                                            {form.errors.province || 'No message'}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex flex-1 flex-col gap-1">
+                                        <label
+                                            htmlFor="district"
+                                            className="block text-sm font-medium text-gray-900"
+                                        >
+                                            Quận/Huyện
+                                        </label>
+                                        <Select
+                                            id="district"
+                                            className="mt-1 whitespace-nowrap"
+                                            options={districts.map((district) => ({
+                                                value: district,
+                                                label: district.Name,
+                                            }))}
+                                            value={selectedDistrict && selectedDistrict.value}
+                                            onChange={(selectedOption) => {
+                                                setSelectedDistrict(selectedOption.value);
+                                                form.setFieldValue(
+                                                    'district',
+                                                    selectedOption.value,
+                                                ); // Set form value
+                                            }}
+                                            placeholder="Chọn Quận/Huyện"
+                                            isDisabled={!selectedProvince}
+                                        />
+                                        <span
+                                            className={clsx('text-sm text-red-500 opacity-0', {
+                                                'opacity-100': form.errors.district,
+                                            })}
+                                        >
+                                            {form.errors.district || 'No message'}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex flex-1 flex-col gap-1">
+                                        <label
+                                            htmlFor="commune"
+                                            className="block text-sm font-medium text-gray-900"
+                                        >
+                                            Phường/Xã
+                                        </label>
+                                        <Select
+                                            id="commune"
+                                            className="mt-1 whitespace-nowrap"
+                                            options={communes.map((commune) => ({
+                                                value: commune,
+                                                label: commune.Name,
+                                            }))}
+                                            value={selectedCommune && selectedCommune.value}
+                                            onChange={(selectedOption) => {
+                                                setSelectedCommune(selectedOption.value);
+                                                form.setFieldValue('commune', selectedOption.value); // Set form value
+                                            }}
+                                            isDisabled={!selectedDistrict}
+                                            placeholder="Chọn Phường/Xã"
+                                        />
+                                        <span
+                                            className={clsx('text-sm text-red-500 opacity-0', {
+                                                'opacity-100': form.errors.commune,
+                                            })}
+                                        >
+                                            {form.errors.commune || 'No message'}
+                                        </span>
+                                    </div>
+                                </div>
                                 <div className="mb-2">
                                     <label
                                         htmlFor="address"
                                         className="mb-1 block font-medium text-gray-900 "
                                     >
-                                        Địa chỉ *
+                                        Địa chỉ cụ thể*
                                     </label>
                                     <textarea
                                         id="address"
