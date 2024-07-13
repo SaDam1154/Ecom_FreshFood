@@ -326,7 +326,7 @@ function Home() {
                                 </span>
                             </div>
                         ) : (
-                            <div className="text-[#4a5568]">{t('homepage.pleaseSignUp')}</div>
+                            <div className="text-[#4a5568]"></div>
                         )}
                         {customer ? (
                             <div className="3xl:grid-cols-4 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
