@@ -11,12 +11,16 @@ import { useEffect, useMemo, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import ReactDOMServer from 'react-dom/server';
 import EmailTemplate from './emailTemplate.jsx';
+import Select from 'react-select';
 const validationSchema = Yup.object({
     phone: Yup.string()
         .required('Trường này bắt buộc')
         .matches(/^[\+|0]([0-9]{9,14})\b/, 'Số điện thoại không hợp lệ'),
 
     address: Yup.string().required('Trường này bắt buộc'),
+    province: Yup.object().required('Trường này bắt buộc'),
+    district: Yup.object().required('Trường này bắt buộc'),
+    commune: Yup.object().required('Trường này bắt buộc'),
 });
 
 export default function Order() {
@@ -33,11 +37,68 @@ export default function Order() {
     const [paymentMethod, setPaymentMethod] = useState('cash');
     const [promotions, setPromotions] = useState([]);
     const navigate = useNavigate();
+    const [sendMail, setSendmail] = useState(false);
+
+    const [provinces, setProvinces] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [communes, setCommunes] = useState([]);
+
+    const [selectedProvince, setSelectedProvince] = useState(null);
+    const [selectedDistrict, setSelectedDistrict] = useState(null);
+    const [selectedCommune, setSelectedCommune] = useState(null);
+
+    useEffect(() => {
+        if (customer) {
+            setSelectedProvince(customer?.province);
+            setSelectedDistrict(customer?.district);
+            setSelectedCommune(customer?.commune);
+        }
+    }, [customer]);
+
+    useEffect(() => {
+        fetch('https://api.npoint.io/ac646cb54b295b9555be')
+            .then((response) => response.json())
+            .then((data) => setProvinces(data));
+    }, []);
+
+    useEffect(() => {
+        if (selectedProvince) {
+            fetch('https://api.npoint.io/34608ea16bebc5cffd42')
+                .then((response) => response.json())
+                .then((data) =>
+                    setDistricts(data.filter((d) => d.ProvinceId === selectedProvince?.Id)),
+                );
+        }
+    }, [selectedProvince]);
+
+    useEffect(() => {
+        if (selectedDistrict) {
+            fetch('https://api.npoint.io/dd278dc276e65c68cdf5')
+                .then((response) => response.json())
+                .then((data) =>
+                    setCommunes(data.filter((c) => c.DistrictId === selectedDistrict?.Id)),
+                );
+        }
+    }, [selectedDistrict]);
+
+    function resetDistricts() {
+        setDistricts([]);
+        setSelectedDistrict(null);
+        form.setFieldValue('district', '');
+    }
+    function resetCommunes() {
+        setCommunes([]);
+        setSelectedCommune(null);
+        form.setFieldValue('commune', '');
+    }
 
     const form = useFormik({
         initialValues: {
             phone: '',
-            address: '',
+            address: customer?.address,
+            province: customer?.province || {},
+            district: customer?.district || {},
+            commune: customer?.commune || {},
         },
         validationSchema,
         onSubmit: handleFormsubmit,
@@ -126,6 +187,9 @@ export default function Order() {
             exchangeMoney: 0,
             name: customer?.name,
             phone: values.phone,
+            province: values.province,
+            district: values.district,
+            commune: values.commune,
             address: values.address,
         };
         createOrder(_order);
@@ -153,6 +217,9 @@ export default function Order() {
             exchangeMoney: 0,
             name: customer?.name,
             phone: values.phone,
+            province: values.province,
+            district: values.district,
+            commune: values.commune,
             address: values.address,
         };
         localStorage.setItem('pendingOrder', JSON.stringify(pendingOrder));
@@ -181,7 +248,6 @@ export default function Order() {
         promotions
             ?.filter((p) => validatePromotion(p))
             ?.forEach((p) => {
-                console.log('pro');
                 const promises = p?.vouchers?.map(async (v) => {
                     fetch('http://localhost:5000/api/customer-voucher', {
                         method: 'POST',
@@ -198,7 +264,6 @@ export default function Order() {
                 });
             });
     }
-
     function deleteVoucher() {
         fetch('http://localhost:5000/api/customer-voucher/' + voucher?.id, {
             method: 'DELETE',
@@ -221,19 +286,6 @@ export default function Order() {
                     voucher && deleteVoucher();
                     dispatch(orderActions.reset());
                     toast.success('Đặt hàng thành công');
-                    // const templateParams = {
-                    //     Subject: 'Shop Thực Phẩm Sạch đã nhận đơn hàng.',
-                    //     Title: 'Cảm ơn bạn đã đặt hàng tại',
-                    //     Status: 'Đang chờ xử lý',
-                    //     Name: _order?.name,
-                    //     Address: _order?.address,
-                    //     Phone: _order?.phone,
-                    //     TotalPrice: _order.totalPrice || '0',
-                    //     DiscountPercent: _order?.totalPrice - _order?.intoMoney || '0',
-                    //     IntoMoney: _order?.intoMoney || '0',
-                    //     Link: 'http://localhost:5173/profile',
-                    //     reply_to: '20521154@gm.uit.edu.vn',
-                    // };
                     const template = {
                         status: 'Đang chờ xử lý',
                         orderProduct: order,
@@ -249,21 +301,22 @@ export default function Order() {
                         HTMLContent: templateHTML,
                         reply_to: '20521154@gm.uit.edu.vn',
                     };
-                    emailjs
-                        .send(
-                            'service_3dwhkaf',
-                            'template_m7a86er',
-                            templateParams,
-                            'JcAqZIglb_PsOO35p',
-                        )
-                        .then(
-                            (response) => {
-                                console.log('SUCCESS!', response.status, response.text);
-                            },
-                            (err) => {
-                                console.log('FAILED...', err);
-                            },
-                        );
+                    sendMail &&
+                        emailjs
+                            .send(
+                                'service_3dwhkaf',
+                                'template_m7a86er',
+                                templateParams,
+                                'JcAqZIglb_PsOO35p',
+                            )
+                            .then(
+                                (response) => {
+                                    console.log('SUCCESS!', response.status, response.text);
+                                },
+                                (err) => {
+                                    console.log('FAILED...', err);
+                                },
+                            );
                     setValidateOnChange(false);
                     navigate('/');
                 } else {
@@ -300,7 +353,6 @@ export default function Order() {
                     setVouchers(
                         resJson.vouchers.filter((voucher) => validateVoucher(voucher, order)),
                     );
-                    console.log(resJson.vouchers);
                 } else {
                     setVouchers([]);
                 }
@@ -324,7 +376,6 @@ export default function Order() {
     }
 
     function validateVoucher(voucher, order) {
-        console.log(voucher, order);
         if (voucher.orderCondition.targets === null) {
             return order.totalPrice >= voucher.orderCondition.condition.value;
         }
@@ -474,40 +525,162 @@ export default function Order() {
                             {form.errors.phone || 'No message'}
                         </span>
                     </div>
-                    <div className="mt-2">
-                        <div className="flex items-center space-x-3">
-                            <label className="label" htmlFor="address">
-                                Địa chỉ giao hàng *
+                    <div className="flex justify-between gap-1">
+                        <div className="flex flex-1 flex-col gap-1">
+                            <label
+                                htmlFor="province"
+                                className="block text-sm font-medium text-gray-900"
+                            >
+                                Tỉnh/Thành phố
                             </label>
-                            {customer && (
-                                <button
-                                    type="button"
-                                    className="font-semibold text-blue-600 hover:text-blue-700"
-                                    onClick={() => form.setFieldValue('address', customer.address)}
-                                >
-                                    Mặc định
-                                </button>
-                            )}
+                            <Select
+                                id="province"
+                                className="mt-1 flex-1 whitespace-nowrap"
+                                options={provinces}
+                                getOptionLabel={(option) => option.Name}
+                                getOptionValue={(option) => option.Id}
+                                value={selectedProvince}
+                                onChange={(selectedOption) => {
+                                    setSelectedProvince(selectedOption);
+                                    console.log(selectedOption, 'selectedOption');
+                                    form.setFieldValue('province', selectedOption); // Set form value
+                                    resetDistricts();
+                                    resetCommunes();
+                                }}
+                                placeholder="Chọn Tỉnh/T.Phố"
+                            />
+                            <span
+                                className={clsx('text-sm text-red-500 opacity-0', {
+                                    'opacity-100': form.errors.province,
+                                })}
+                            >
+                                {form.errors.province || 'No message'}
+                            </span>
                         </div>
+
+                        <div className="flex flex-1 flex-col gap-1">
+                            <label
+                                htmlFor="district"
+                                className="block text-sm font-medium text-gray-900"
+                            >
+                                Quận/Huyện
+                            </label>
+                            <Select
+                                id="districts"
+                                className="mt-1 whitespace-nowrap"
+                                name="districts"
+                                options={districts}
+                                getOptionLabel={(option) => option.Name}
+                                getOptionValue={(option) => option.Id}
+                                value={selectedDistrict}
+                                onChange={(selectedOption) => {
+                                    setSelectedDistrict(selectedOption);
+                                    form.setFieldValue('district', selectedOption);
+                                    resetCommunes();
+                                }}
+                                onBlur={form.handleBlur}
+                                isDisabled={!selectedProvince}
+                                placeholder="Chọn tỉnh/thành phố"
+                                isSearchable
+                            />
+                            <span
+                                className={clsx('text-sm text-red-500 opacity-0', {
+                                    'opacity-100': form.errors.district,
+                                })}
+                            >
+                                {form.errors.district || 'No message'}
+                            </span>
+                        </div>
+
+                        <div className="flex flex-1 flex-col gap-1">
+                            <label
+                                htmlFor="commune"
+                                className="block text-sm font-medium text-gray-900"
+                            >
+                                Phường/Xã
+                            </label>
+                            <Select
+                                id="commune"
+                                className="mt-1 whitespace-nowrap"
+                                options={communes}
+                                getOptionLabel={(option) => option.Name}
+                                getOptionValue={(option) => option.Id}
+                                value={selectedCommune}
+                                onChange={(selectedOption) => {
+                                    setSelectedCommune(selectedOption);
+                                    form.setFieldValue('commune', selectedOption); // Set form value
+                                }}
+                                isDisabled={!selectedDistrict}
+                                placeholder="Chọn Phường/Xã"
+                            />
+                            <span
+                                className={clsx('text-sm text-red-500 opacity-0', {
+                                    'opacity-100': form.errors.commune,
+                                })}
+                            >
+                                {form.errors.commune || 'No message'}
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <label htmlFor="address" className="mb-1 block font-medium text-gray-900 ">
+                            Địa chỉ cụ thể*
+                        </label>
                         <textarea
-                            type="text"
                             id="address"
-                            className={clsx('text-input !h-auto py-2', {
+                            className={clsx('text-input !h-auto', {
                                 invalid: form.errors.address,
                             })}
                             onChange={form.handleChange}
                             value={form.values.address}
-                            onBlur={form.handleBlur}
                             name="address"
                             rows={2}
                         ></textarea>
+
                         <span
-                            className={clsx('-mt-1 block text-sm text-red-500 opacity-0', {
+                            className={clsx('text-sm text-red-500 opacity-0', {
                                 'opacity-100': form.errors.address,
                             })}
                         >
                             {form.errors.address || 'No message'}
                         </span>
+                    </div>
+                    <div className="flex flex-col space-x-8">
+                        <label className="label !cursor-default">Thông báo đơn hàng</label>
+                        <div className="flex items-center space-x-8">
+                            <div className="flex items-center">
+                                <input
+                                    className="h-5 w-5 accent-blue-600"
+                                    type="radio"
+                                    id="noSendMail"
+                                    name="sendMail"
+                                    value={false}
+                                    onChange={() => {
+                                        setSendmail(false);
+                                    }}
+                                    checked={!sendMail}
+                                />
+                                <label htmlFor="noSendMail" className="cursor-pointer pl-2">
+                                    Không gửi email
+                                </label>
+                            </div>
+                            <div className="flex items-center">
+                                <input
+                                    className="h-5 w-5 accent-blue-600"
+                                    type="radio"
+                                    id="sendMail"
+                                    name="sendMail"
+                                    value={true}
+                                    onChange={() => {
+                                        setSendmail(true);
+                                    }}
+                                    checked={sendMail}
+                                />
+                                <label htmlFor="sendMail" className="cursor-pointer pl-2">
+                                    Gửi email
+                                </label>
+                            </div>
+                        </div>
                     </div>
                     {customer && (
                         <div className="mb-4 flex space-x-3">

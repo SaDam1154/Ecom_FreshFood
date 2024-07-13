@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import LoadingForm from '../../components/LoadingForm';
 import { customerActions } from '../../redux/slices/customerSlide';
 import PriceFormat from '../../components/PriceFormat';
+import Select from 'react-select';
 
 const validationSchema = Yup.object({
     name: Yup.string()
@@ -27,10 +28,58 @@ function InfoGroup() {
     const [isEdit, setIsEdit] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    console.log(customer);
+    const [provinces, setProvinces] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [communes, setCommunes] = useState([]);
+
+    const [selectedProvince, setSelectedProvince] = useState(null);
+    const [selectedDistrict, setSelectedDistrict] = useState(null);
+    const [selectedCommune, setSelectedCommune] = useState(null);
+
+    useEffect(() => {
+        fetch('https://api.npoint.io/ac646cb54b295b9555be')
+            .then((response) => response.json())
+            .then((data) => setProvinces(data));
+    }, []);
+
+    useEffect(() => {
+        if (selectedProvince) {
+            fetch('https://api.npoint.io/34608ea16bebc5cffd42')
+                .then((response) => response.json())
+                .then((data) =>
+                    setDistricts(data.filter((d) => d.ProvinceId === selectedProvince?.Id)),
+                );
+        }
+    }, [selectedProvince]);
+
+    useEffect(() => {
+        if (selectedDistrict) {
+            fetch('https://api.npoint.io/dd278dc276e65c68cdf5')
+                .then((response) => response.json())
+                .then((data) =>
+                    setCommunes(data.filter((c) => c.DistrictId === selectedDistrict?.Id)),
+                );
+        }
+    }, [selectedDistrict]);
+
+    function resetDistricts() {
+        setDistricts([]);
+        setSelectedDistrict(null);
+        form.setFieldValue('district', '');
+    }
+    function resetCommunes() {
+        setCommunes([]);
+        setSelectedCommune(null);
+        form.setFieldValue('commune', '');
+    }
 
     const form = useFormik({
         initialValues: {
             name: customer?.name || '',
+            province: customer?.province || {},
+            district: customer?.district || {},
+            commune: customer?.commune || {},
             address: customer?.address || '',
         },
         enableReinitialize: true,
@@ -48,6 +97,12 @@ function InfoGroup() {
             setImage({ file: null, url: customer?.avatar });
             form.setFieldValue('name', customer?.name || '');
             form.setFieldValue('address', customer?.address || '');
+            form.setFieldValue('province', customer?.province || {});
+            form.setFieldValue('district', customer?.district || {});
+            form.setFieldValue('commune', customer?.commune || {});
+            setSelectedProvince(customer?.province);
+            setSelectedDistrict(customer?.district);
+            setSelectedCommune(customer?.commune);
         }
     }, [isEdit, customer]);
 
@@ -77,6 +132,8 @@ function InfoGroup() {
             }
 
             reqValue.avatar = imageUrl;
+            console.log(values, 'valk');
+            console.log(reqValue, 'valk');
 
             const res = await fetch('http://localhost:5000/api/customer/' + customer?.id, {
                 method: 'PUT',
@@ -117,119 +174,215 @@ function InfoGroup() {
                 }}
                 className="mx-auto max-w-[700px] rounded-xl border border-slate-300 p-5"
             >
-                <div className="relative flex pt-10">
-                    <div
-                        className={clsx('relative h-[150px] w-[150px] rounded-full border', {
-                            'pointer-events-none': !isEdit,
-                        })}
-                    >
-                        <img
-                            className="absolute inset-0 block h-full w-full rounded-full object-cover"
-                            src={image?.url || '/placeholder.png'}
-                        />
-                        <label
-                            className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full"
-                            htmlFor="image-input"
-                        ></label>
-                        <input
-                            id="image-input"
-                            type="file"
-                            className="hidden"
-                            onChange={onImageInputChange}
-                        />
-                        {image?.url && isEdit && (
-                            <button
-                                className="absolute right-1 top-1 rounded-full border bg-white px-2 py-2 text-red-600 hover:text-red-400"
-                                onClick={() => setImage(null)}
-                            >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={1.5}
-                                    stroke="currentColor"
-                                    className="h-6 w-6"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                        )}
-                    </div>
-                    <div className="ml-8 flex-1">
-                        <div className="mb-4 flex flex-col">
-                            <label className="label pointer-events-none" htmlFor="phone">
-                                Số điện thoại:
-                            </label>
-                            <input
-                                type="text"
-                                className={clsx('text-input w-full py-[5px]')}
-                                value={customer?.phone}
-                                disabled
+                <div className="flex flex-col">
+                    <div className="relative flex pt-10">
+                        <div
+                            className={clsx('relative h-[150px] w-[150px] rounded-full border', {
+                                'pointer-events-none': !isEdit,
+                            })}
+                        >
+                            <img
+                                className="absolute inset-0 block h-full w-full rounded-full object-cover"
+                                src={image?.url || '/placeholder.png'}
                             />
-                        </div>
-
-                        <div className="flex flex-col">
                             <label
-                                className={clsx('label', {
-                                    'pointer-events-none': !isEdit,
-                                })}
-                                htmlFor="name"
-                            >
-                                Tên khách hàng *
-                            </label>
+                                className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full"
+                                htmlFor="image-input"
+                            ></label>
                             <input
-                                type="text"
-                                id="name"
-                                className={clsx('text-input w-full py-[5px]', {
-                                    invalid: form.errors.name,
-                                })}
-                                onChange={form.handleChange}
-                                value={form.values.name}
-                                disabled={!isEdit}
-                                name="name"
-                                placeholder="Nguyễn Văn A"
+                                id="image-input"
+                                type="file"
+                                className="hidden"
+                                onChange={onImageInputChange}
+                            />
+                            {image?.url && isEdit && (
+                                <button
+                                    className="absolute right-1 top-1 rounded-full border bg-white px-2 py-2 text-red-600 hover:text-red-400"
+                                    onClick={() => setImage(null)}
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={1.5}
+                                        stroke="currentColor"
+                                        className="h-6 w-6"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M6 18L18 6M6 6l12 12"
+                                        />
+                                    </svg>
+                                </button>
+                            )}
+                        </div>
+                        <div className="ml-8 flex-1">
+                            <div className="mb-4 flex flex-col">
+                                <label className="label pointer-events-none" htmlFor="phone">
+                                    Số điện thoại:
+                                </label>
+                                <input
+                                    type="text"
+                                    className={clsx('text-input w-full py-[5px]')}
+                                    value={customer?.phone}
+                                    disabled
+                                />
+                            </div>
+
+                            <div className="flex flex-col">
+                                <label
+                                    className={clsx('label', {
+                                        'pointer-events-none': !isEdit,
+                                    })}
+                                    htmlFor="name"
+                                >
+                                    Tên khách hàng *
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    className={clsx('text-input w-full py-[5px]', {
+                                        invalid: form.errors.name,
+                                    })}
+                                    onChange={form.handleChange}
+                                    value={form.values.name}
+                                    disabled={!isEdit}
+                                    name="name"
+                                    placeholder="Nguyễn Văn A"
+                                />
+                                <span
+                                    className={clsx('text-sm text-red-500 opacity-0', {
+                                        'opacity-100': form.errors.name,
+                                    })}
+                                >
+                                    {form.errors.name || 'No message'}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex justify-between gap-1">
+                        <div className="flex flex-1 flex-col gap-1">
+                            <label
+                                htmlFor="province"
+                                className="block text-sm font-medium text-gray-900"
+                            >
+                                Tỉnh/Thành phố
+                            </label>
+                            <Select
+                                id="province"
+                                className="mt-1 flex-1 whitespace-nowrap"
+                                options={provinces}
+                                getOptionLabel={(option) => option.Name}
+                                getOptionValue={(option) => option.Id}
+                                value={selectedProvince}
+                                onChange={(selectedOption) => {
+                                    setSelectedProvince(selectedOption);
+                                    console.log(selectedOption, 'selectedOption');
+                                    form.setFieldValue('province', selectedOption); // Set form value
+                                    resetDistricts();
+                                    resetCommunes();
+                                }}
+                                placeholder="Chọn Tỉnh/T.Phố"
+                                isDisabled={!isEdit}
                             />
                             <span
                                 className={clsx('text-sm text-red-500 opacity-0', {
-                                    'opacity-100': form.errors.name,
+                                    'opacity-100': form.errors.province,
                                 })}
                             >
-                                {form.errors.name || 'No message'}
+                                {form.errors.province || 'No message'}
                             </span>
                         </div>
 
-                        <div className="flex flex-col">
+                        <div className="flex flex-1 flex-col gap-1">
                             <label
-                                className={clsx('label', {
-                                    'pointer-events-none': !isEdit,
-                                })}
-                                htmlFor="address"
+                                htmlFor="district"
+                                className="block text-sm font-medium text-gray-900"
                             >
-                                Địa chỉ *
+                                Quận/Huyện
                             </label>
-                            <textarea
-                                id="address"
-                                className={clsx('text-input !h-auto py-2', {
-                                    invalid: form.errors.address,
-                                })}
-                                onChange={form.handleChange}
-                                value={form.values.address}
-                                name="address"
-                                rows={3}
-                                disabled={!isEdit}
-                            ></textarea>
+                            <Select
+                                id="districts"
+                                className="mt-1 whitespace-nowrap"
+                                name="districts"
+                                options={districts}
+                                getOptionLabel={(option) => option.Name}
+                                getOptionValue={(option) => option.Id}
+                                value={selectedDistrict}
+                                onChange={(selectedOption) => {
+                                    setSelectedDistrict(selectedOption);
+                                    form.setFieldValue('district', selectedOption);
+                                    resetCommunes();
+                                }}
+                                onBlur={form.handleBlur}
+                                placeholder="Chọn tỉnh/thành phố"
+                                isSearchable
+                                isDisabled={!isEdit}
+                            />
                             <span
-                                className={clsx('block text-sm text-red-500 opacity-0', {
-                                    'opacity-100': form.errors.address,
+                                className={clsx('text-sm text-red-500 opacity-0', {
+                                    'opacity-100': form.errors.district,
                                 })}
                             >
-                                {form.errors.address || 'No message'}
+                                {form.errors.district || 'No message'}
                             </span>
                         </div>
+
+                        <div className="flex flex-1 flex-col gap-1">
+                            <label
+                                htmlFor="commune"
+                                className="block text-sm font-medium text-gray-900"
+                            >
+                                Phường/Xã
+                            </label>
+                            <Select
+                                id="commune"
+                                className="mt-1 whitespace-nowrap"
+                                options={communes}
+                                getOptionLabel={(option) => option.Name}
+                                getOptionValue={(option) => option.Id}
+                                value={selectedCommune}
+                                onChange={(selectedOption) => {
+                                    setSelectedCommune(selectedOption);
+                                    form.setFieldValue('commune', selectedOption); // Set form value
+                                }}
+                                isDisabled={!isEdit || !selectedDistrict}
+                                placeholder="Chọn Phường/Xã"
+                            />
+                            <span
+                                className={clsx('text-sm text-red-500 opacity-0', {
+                                    'opacity-100': form.errors.commune,
+                                })}
+                            >
+                                {form.errors.commune || 'No message'}
+                            </span>
+                        </div>
+                    </div>
+                    <div className="mb-2">
+                        <label htmlFor="address" className="mb-1 block font-medium text-gray-900 ">
+                            Địa chỉ cụ thể*
+                        </label>
+                        <textarea
+                            id="address"
+                            className={clsx('text-input !h-auto py-2', {
+                                invalid: form.errors.address,
+                            })}
+                            onChange={form.handleChange}
+                            value={form.values.address}
+                            name="address"
+                            disabled={!isEdit}
+                            rows={2}
+                        ></textarea>
+
+                        <span
+                            className={clsx('text-sm text-red-500 opacity-0', {
+                                'opacity-100': form.errors.address,
+                            })}
+                        >
+                            {form.errors.address || 'No message'}
+                        </span>
                     </div>
                     <LoadingForm loading={loading} />
                 </div>

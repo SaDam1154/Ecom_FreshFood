@@ -54,13 +54,13 @@ export default function ChatBox({ onClose, senderId, conversationId, customerId 
             sendMessage(newMessage);
             updateLastMessage(conversationId, newMessage);
 
-            setTimeout(() => {
-                const opponentMessage = {
-                    text: 'Vui lòng chờ trong giây lát',
-                    timestamp: Timestamp.now(),
-                };
-                setMessages((prevMessages) => [...prevMessages, opponentMessage]);
-            }, 1000);
+            // setTimeout(() => {
+            //     const opponentMessage = {
+            //         text: 'Vui lòng chờ trong giây lát',
+            //         timestamp: Timestamp.now(),
+            //     };
+            //     setMessages((prevMessages) => [...prevMessages, opponentMessage]);
+            // }, 1000);
         }
     };
 
@@ -74,7 +74,7 @@ export default function ChatBox({ onClose, senderId, conversationId, customerId 
         return moment(date).format('HH:mm');
     };
     return (
-        <div className="fixed bottom-4 right-4 z-50 flex h-[440px] w-80 flex-col rounded-lg border border-gray-300 bg-white shadow-lg">
+        <div className="fixed bottom-24 right-8 z-50 flex h-[440px] w-80 flex-col rounded-lg border border-gray-300 bg-white shadow-lg">
             <div className="flex items-center justify-between rounded-t-lg bg-blue-600 p-2 text-white">
                 <h2 className="text-lg">ADMIN</h2>
                 <button

@@ -33,9 +33,6 @@ function Home() {
         if (customer) {
             getFavorites();
         }
-        console.log(customer?.listFavorite, 'đây là cus');
-        console.log(favorites, 'đây là fa');
-        console.log(productsRec, 'đây là Rec');
     }, [customer]);
 
     function getProducts() {
@@ -368,7 +365,7 @@ function Home() {
                 </div>
             </div>
             <div className="fixed bottom-4 right-4 z-50">
-                {/* {customer && <ChatIcon onClick={handleChatIconClick} />}
+                {customer && <ChatIcon onClick={handleChatIconClick} />}
                 {customer && isChatOpen && (
                     <ChatBox
                         onClose={handleChatBoxClose}
@@ -377,7 +374,7 @@ function Home() {
                         conversationId={idBox}
                         customerId={customer._id}
                     />
-                )} */}
+                )}
             </div>
         </div>
     );

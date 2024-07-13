@@ -56,10 +56,6 @@ function Signup() {
     }, [selectedProvince]);
 
     useEffect(() => {
-        console.log(form.values);
-        setCommunes([]);
-        setSelectedCommune(null);
-        form.setFieldValue('commune', '');
         if (selectedDistrict) {
             console.log('isDis');
             fetch('https://api.npoint.io/dd278dc276e65c68cdf5')
@@ -70,15 +66,26 @@ function Signup() {
         }
     }, [selectedDistrict]);
 
+    function resetDistricts() {
+        setDistricts([]);
+        setSelectedDistrict(null);
+        form.setFieldValue('district', '');
+    }
+    function resetCommunes() {
+        setCommunes([]);
+        setSelectedCommune(null);
+        form.setFieldValue('commune', '');
+    }
+
     const form = useFormik({
         initialValues: {
             name: '',
             email: '',
             phone: '',
             password: '',
-            province: '',
-            district: '',
-            commune: '',
+            province: {},
+            district: {},
+            commune: {},
             address: '',
         },
         validationSchema,
@@ -89,47 +96,47 @@ function Signup() {
 
     async function handleFormsubmit(values) {
         console.log(values);
-        // setLoading(true);
-        // try {
-        //     let imageUrl = null;
-        //     if (image) {
-        //         let formdata = new FormData();
-        //         formdata.append('image', image.file);
-        //         const res = await fetch('http://localhost:5000/api/upload', {
-        //             method: 'POST',
-        //             body: formdata,
-        //         });
+        setLoading(true);
+        try {
+            let imageUrl = null;
+            if (image) {
+                let formdata = new FormData();
+                formdata.append('image', image.file);
+                const res = await fetch('http://localhost:5000/api/upload', {
+                    method: 'POST',
+                    body: formdata,
+                });
 
-        //         const data = await res.json();
-        //         imageUrl = data.image.url;
-        //     }
+                const data = await res.json();
+                imageUrl = data.image.url;
+            }
 
-        //     const res = await fetch('http://localhost:5000/api/customer', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: JSON.stringify({
-        //             ...values,
-        //             avatar: imageUrl,
-        //         }),
-        //     });
-        //     const resJson = await res.json();
-        //     if (resJson.success) {
-        //         showSuccessNoti();
-        //         form.resetForm();
-        //         setImage(null);
-        //         navigate('/login');
-        //     } else if (resJson.message === 'phone already exists') {
-        //         toast.error('Số điện thoại đã tồn tại');
-        //     } else {
-        //         showErorrNoti();
-        //     }
-        // } catch {
-        //     showErorrNoti();
-        // } finally {
-        //     setLoading(false);
-        // }
+            const res = await fetch('http://localhost:5000/api/customer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...values,
+                    avatar: imageUrl,
+                }),
+            });
+            const resJson = await res.json();
+            if (resJson.success) {
+                showSuccessNoti();
+                form.resetForm();
+                setImage(null);
+                navigate('/login');
+            } else if (resJson.message === 'phone already exists') {
+                toast.error('Số điện thoại đã tồn tại');
+            } else {
+                showErorrNoti();
+            }
+        } catch {
+            showErorrNoti();
+        } finally {
+            setLoading(false);
+        }
     }
 
     function onImageInputChange(e) {
@@ -319,19 +326,19 @@ function Signup() {
                                         <Select
                                             id="province"
                                             className="mt-1 flex-1 whitespace-nowrap"
-                                            options={provinces.map((province) => ({
-                                                value: province,
-                                                label: province.Name,
-                                            }))}
-                                            value={selectedProvince && selectedProvince?.value}
+                                            options={provinces}
+                                            getOptionLabel={(option) => option.Name}
+                                            getOptionValue={(option) => option.Id}
+                                            value={selectedProvince}
                                             onChange={(selectedOption) => {
-                                                setSelectedProvince(selectedOption.value);
-                                                form.setFieldValue(
-                                                    'province',
-                                                    selectedOption.value,
-                                                ); // Set form value
+                                                setSelectedProvince(selectedOption);
+                                                console.log(selectedOption);
+                                                form.setFieldValue('province', selectedOption); // Set form value
+                                                resetDistricts();
+                                                resetCommunes();
                                             }}
                                             placeholder="Chọn Tỉnh/T.Phố"
+                                            isSearchable
                                         />
                                         <span
                                             className={clsx('text-sm text-red-500 opacity-0', {
@@ -363,6 +370,7 @@ function Signup() {
                                                     'district',
                                                     selectedOption.value,
                                                 ); // Set form value
+                                                resetCommunes();
                                             }}
                                             placeholder="Chọn Quận/Huyện"
                                             isDisabled={!selectedProvince}

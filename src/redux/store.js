@@ -19,6 +19,9 @@ const reHydrateStore = () => {
                 customer: {
                     name: '',
                     phone: '',
+                    province: '',
+                    district: '',
+                    commune: '',
                     address: '',
                 },
                 details: [],
@@ -35,6 +38,9 @@ const reHydrateStore = () => {
                 customer: {
                     name: '',
                     phone: '',
+                    province: '',
+                    district: '',
+                    commune: '',
                     address: '',
                 },
                 details: [],
