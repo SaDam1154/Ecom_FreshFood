@@ -102,26 +102,10 @@ function Products() {
                                     ? products
                                           .filter((product) => product.type._id === type)
                                           .map((product, index) => (
-                                              <CardProduct
-                                                  key={index}
-                                                  product={product}
-                                                  isFavorite={customer?.listFavorite.find(
-                                                      (fav) => fav._id == product._id,
-                                                  )}
-                                                  onFavoriteToggle={() =>
-                                                      handleAddToFavorites(product)
-                                                  }
-                                              />
+                                              <CardProduct key={index} product={product} />
                                           ))
                                     : products.map((product, index) => (
-                                          <CardProduct
-                                              key={index}
-                                              product={product}
-                                              isFavorite={customer?.listFavorite.find(
-                                                  (fav) => fav._id == product._id,
-                                              )}
-                                              onFavoriteToggle={() => handleAddToFavorites(product)}
-                                          />
+                                          <CardProduct key={index} product={product} />
                                       ))}
                             </div>
                         </div>
