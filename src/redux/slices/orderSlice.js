@@ -76,6 +76,16 @@ export const orderSlice = createSlice({
             updatePriceDiscounted(state);
         },
 
+        // payload: id
+        removeMany: (state, action) => {
+            state.details = state.details.filter(
+                (detail) => !action.payload?.find((id) => detail.product.id === id),
+            );
+            updateTotalPrice(state);
+            updateIntoPrice(state);
+            updatePriceDiscounted(state);
+        },
+
         // payload: {_id, quantity}
         updateQuantity: (state, action) => {
             const indexDetail = state.details.findIndex(

@@ -11,6 +11,7 @@ import { useEffect, useMemo, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import ReactDOMServer from 'react-dom/server';
 import EmailTemplate from './emailTemplate.jsx';
+import { selectedOrderItemsActions } from '../../redux/slices/selectedOrderItemsSlice.js';
 const validationSchema = Yup.object({
     phone: Yup.string()
         .required('Trường này bắt buộc')
@@ -219,7 +220,7 @@ export default function Order() {
                 if (resJson.success) {
                     applyPromotion();
                     voucher && deleteVoucher();
-                    dispatch(orderActions.reset());
+                    removeProductsFromCart();
                     toast.success('Đặt hàng thành công');
                     // const templateParams = {
                     //     Subject: 'Shop Thực Phẩm Sạch đã nhận đơn hàng.',
@@ -277,6 +278,11 @@ export default function Order() {
             .finally(() => {
                 setLoading(false);
             });
+    }
+
+    function removeProductsFromCart() {
+        dispatch(orderActions.removeMany(order.details.map((d) => d.product.id)));
+        dispatch(selectedOrderItemsActions.reset());
     }
 
     useEffect(() => {
