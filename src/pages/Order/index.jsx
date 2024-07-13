@@ -5,13 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { orderActions } from '../../redux/slices/orderSlice';
-import { customerSelector, orderSelector } from '../../redux/selectors';
+import { customerSelector, paymentOrderSelector } from '../../redux/selectors';
 import PriceFormat from '../../components/PriceFormat';
 import { useEffect, useMemo, useState } from 'react';
 import emailjs from '@emailjs/browser';
 import ReactDOMServer from 'react-dom/server';
 import EmailTemplate from './emailTemplate.jsx';
 import Select from 'react-select';
+import { selectedOrderItemsActions } from '../../redux/slices/selectedOrderItemsSlice.js';
 const validationSchema = Yup.object({
     phone: Yup.string()
         .required('Trường này bắt buộc')
@@ -25,7 +26,7 @@ const validationSchema = Yup.object({
 
 export default function Order() {
     const dispatch = useDispatch();
-    const order = useSelector(orderSelector);
+    const order = useSelector(paymentOrderSelector);
     const customer = useSelector(customerSelector);
     const [loading, setLoading] = useState(false);
     const [couponInput, setCouponInput] = useState('');
@@ -284,7 +285,7 @@ export default function Order() {
                 if (resJson.success) {
                     applyPromotion();
                     voucher && deleteVoucher();
-                    dispatch(orderActions.reset());
+                    removeProductsFromCart();
                     toast.success('Đặt hàng thành công');
                     const template = {
                         status: 'Đang chờ xử lý',
@@ -330,6 +331,11 @@ export default function Order() {
             .finally(() => {
                 setLoading(false);
             });
+    }
+
+    function removeProductsFromCart() {
+        dispatch(orderActions.removeMany(order.details.map((d) => d.product.id)));
+        dispatch(selectedOrderItemsActions.reset());
     }
 
     useEffect(() => {
