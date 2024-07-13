@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import orderReducer from './slices/orderSlice';
 import customerReducer from './slices/customerSlide';
 import langReducer from './slices/langSlide';
+import selectedOrderItemsReducer from './slices/selectedOrderItemsSlice';
 
 const localStorageMiddleware = (store) => (next) => (action) => {
     const result = next(action);
@@ -49,7 +50,12 @@ const reHydrateStore = () => {
 };
 
 export const store = configureStore({
-    reducer: { order: orderReducer, customer: customerReducer, lang: langReducer },
+    reducer: {
+        order: orderReducer,
+        customer: customerReducer,
+        lang: langReducer,
+        selectedOrderItems: selectedOrderItemsReducer,
+    },
     preloadedState: reHydrateStore(),
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(localStorageMiddleware),
 });

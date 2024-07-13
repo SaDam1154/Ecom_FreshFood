@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { orderActions } from '../../redux/slices/orderSlice';
-import { customerSelector, orderSelector } from '../../redux/selectors';
+import { customerSelector, paymentOrderSelector } from '../../redux/selectors';
 import PriceFormat from '../../components/PriceFormat';
 import { useEffect, useMemo, useState } from 'react';
 import emailjs from '@emailjs/browser';
@@ -21,7 +21,7 @@ const validationSchema = Yup.object({
 
 export default function Order() {
     const dispatch = useDispatch();
-    const order = useSelector(orderSelector);
+    const order = useSelector(paymentOrderSelector);
     const customer = useSelector(customerSelector);
     const [loading, setLoading] = useState(false);
     const [couponInput, setCouponInput] = useState('');
