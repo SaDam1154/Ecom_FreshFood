@@ -54,7 +54,8 @@
         "saleProductsDescription": "Đây là danh sách những sản phẩm đang giảm giá ở cửa hàng chúng tôi",
         "newProducts": "Sản phẩm mới",
         "newProductsDescription": "Đừng bỏ lỡ những mặt hàng mới ra mắt.",
-        "pleaseSignUp": "Đăng nhập hoặc đăng ký khách hàng thành viên để áp dụng nhiều ưu đãi giảm giá đặc biệt."
+        "pleaseSignUp": "Đăng nhập hoặc đăng ký khách hàng thành viên để áp dụng nhiều ưu đãi giảm giá đặc biệt.",
+        "noProduct": "Hiện không có sản phẩm nào phù hợp trong danh sách này!"
     },
     "cartpage": {
         "noproduct": "Chưa có sản phẩm trong giỏ hàng!",

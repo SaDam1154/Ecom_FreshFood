@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { checkAndCreateUser, checkConversation } from '../../configs/firebase/firebaseUtils';
 import { toast } from 'react-toastify';
+import clsx from 'clsx';
 
 function Home() {
     const dispatch = useDispatch();
@@ -233,9 +234,16 @@ function Home() {
                 <MyCarousel />
             </div>
             {/* khu 3 */}
-            <div className="3xl:grid-cols-6 grid h-full w-full grid-cols-1  xl:grid-cols-4  2xl:grid-cols-5">
+            <div className=" 3xl:grid-cols-6 grid h-full w-full grid-cols-1  xl:grid-cols-4  2xl:grid-cols-5">
                 {/* khu Category */}
-                <div className="jite mx-1 flex flex-col gap-2 rounded-2xl bg-slate-100 p-1 sm:mx-2 lg:mx-3 lg:p-2 xl:mx-4 2xl:mx-5">
+                <div
+                    className={clsx(
+                        'mx-1 flex flex-col gap-2 rounded-2xl bg-slate-100 p-1 sm:mx-2 lg:mx-3 lg:p-2 xl:mx-4 2xl:mx-5',
+                        {
+                            'sticky top-20 z-50 bg-red-50': false,
+                        },
+                    )}
+                >
                     <div className="flex w-full flex-col items-start justify-center gap-1">
                         <span className="select-none text-3xl font-semibold">
                             {t('common.Category')}
@@ -244,8 +252,8 @@ function Home() {
                     </div>
                     <HoverLinks home={true} />
                 </div>
-                {/* khu Category */}
-                <div className="3xl:col-span-5 flex flex-col gap-4 sm:col-span-2 xl:col-span-3 2xl:col-span-4">
+                {/* khu sanpham */}
+                <div className="3xl:col-span-5 flex h-[80vh] flex-col gap-4 overflow-scroll sm:col-span-2 xl:col-span-3 2xl:col-span-4">
                     {!customer && (
                         <div className="text-[#4a5568]">{t('homepage.pleaseSignUp')}</div>
                     )}
@@ -311,7 +319,7 @@ function Home() {
                     </div>
 
                     <div className="flex flex-col">
-                        {customer ? (
+                        {customer && favorites.length > 0 ? (
                             <div className="flex w-full flex-col items-end justify-center gap-1">
                                 <span className="select-none text-3xl font-semibold text-neutral-900">
                                     {t('homepage.favorites')}
@@ -325,7 +333,7 @@ function Home() {
                         ) : (
                             <div className="text-[#4a5568]"></div>
                         )}
-                        {customer ? (
+                        {customer && favorites.length > 0 ? (
                             <div className="3xl:grid-cols-4 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
                                 {favorites.map((product, index) => {
                                     if (product)
@@ -337,7 +345,7 @@ function Home() {
                         )}
                     </div>
                     <div className="flex flex-col">
-                        {customer ? (
+                        {customer && productsRec.length > 0 ? (
                             <div className="flex w-full flex-col items-end justify-center gap-1">
                                 <span className="select-none text-3xl font-semibold text-neutral-900">
                                     {t('homepage.recommend')}
@@ -349,9 +357,9 @@ function Home() {
                                 </span>
                             </div>
                         ) : (
-                            <div className="text-[#4a5568]">{t('homepage.pleaseSignUp')}</div>
+                            <div className="text-[#4a5568]"></div>
                         )}
-                        {customer ? (
+                        {customer && productsRec.length > 0 ? (
                             <div className="3xl:grid-cols-4 grid grid-cols-1 gap-3 p-1 pb-2 sm:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
                                 {productsRec.map((product, index) => {
                                     if (product)

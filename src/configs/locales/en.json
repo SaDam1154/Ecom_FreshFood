@@ -54,7 +54,8 @@
         "saleProductsDescription": "This is the list of products currently on sale in our store",
         "newProducts": "New Products",
         "newProductsDescription": "Don't miss out on the latest arrivals.",
-        "pleaseSignUp": "Log in or register as a member to apply for many special discounts."
+        "pleaseSignUp": "Log in or register as a member to apply for many special discounts.",
+        "noProduct": "There are currently no matching products in this list!"
     },
     "cartpage": {
         "noproduct": "No products in the cart yet!",
