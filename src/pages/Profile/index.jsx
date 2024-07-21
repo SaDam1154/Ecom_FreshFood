@@ -11,6 +11,7 @@ import LoadingForm from '../../components/LoadingForm';
 import { customerActions } from '../../redux/slices/customerSlide';
 import PriceFormat from '../../components/PriceFormat';
 import Select from 'react-select';
+import apiConfig from '../../configs/apiConfig';
 
 const validationSchema = Yup.object({
     name: Yup.string()
@@ -120,7 +121,7 @@ function InfoGroup() {
             if (image?.file) {
                 let formdata = new FormData();
                 formdata.append('image', image.file);
-                const res = await fetch('http://localhost:5000/api/upload', {
+                const res = await fetch(apiConfig.apiUrl + '/api/upload', {
                     method: 'POST',
                     body: formdata,
                 });
@@ -135,7 +136,7 @@ function InfoGroup() {
             console.log(values, 'valk');
             console.log(reqValue, 'valk');
 
-            const res = await fetch('http://localhost:5000/api/customer/' + customer?.id, {
+            const res = await fetch(apiConfig.apiUrl + '/api/customer/' + customer?.id, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -555,7 +556,7 @@ function OrderGroup() {
         if (!selectedOrderId) {
             setSelectedOrder(null);
         } else {
-            fetch('http://localhost:5000/api/order/' + selectedOrderId)
+            fetch(apiConfig.apiUrl + '/api/order/' + selectedOrderId)
                 .then((res) => res.json())
                 .then((resJson) => {
                     if (resJson.success) {
@@ -572,7 +573,7 @@ function OrderGroup() {
     }, [selectedOrderId]);
 
     function getOrders() {
-        fetch('http://localhost:5000/api/order')
+        fetch(apiConfig.apiUrl + '/api/order')
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {

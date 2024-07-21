@@ -10,6 +10,7 @@ import LatestProductBlock from './LatestProductsBlock';
 import QuantityInput from '../../components/QuantityInput';
 import { orderActions } from '../../redux/slices/orderSlice';
 import { orderSelector } from '../../redux/selectors';
+import apiConfig from '../../configs/apiConfig';
 
 export default function ProductDetail() {
     const dispatch = useDispatch();
@@ -23,7 +24,7 @@ export default function ProductDetail() {
         setQty(1);
     }, [id]);
     function getProduct() {
-        fetch('http://localhost:5000/api/product' + '/' + id)
+        fetch(apiConfig.apiUrl + '/api/product' + '/' + id)
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {

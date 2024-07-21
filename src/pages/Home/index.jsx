@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { checkAndCreateUser, checkConversation } from '../../configs/firebase/firebaseUtils';
 import { toast } from 'react-toastify';
 import clsx from 'clsx';
+import apiConfig from '../../configs/apiConfig';
 
 function Home() {
     const dispatch = useDispatch();
@@ -37,7 +38,7 @@ function Home() {
     }, [customer]);
 
     function getProducts() {
-        fetch('http://localhost:5000/api/product')
+        fetch(apiConfig.apiUrl + '/api/product')
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {
@@ -49,7 +50,7 @@ function Home() {
     }
 
     function getProductsRec() {
-        fetch('http://localhost:5000/api/recommend/' + customer?._id)
+        fetch(apiConfig.apiUrl + '/api/recommend/' + customer?._id)
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {
@@ -61,7 +62,7 @@ function Home() {
     }
 
     function getFavorites() {
-        fetch(`http://localhost:5000/api/customer/${customer.id}/favorites`)
+        fetch(`${apiConfig.apiUrl}/api/customer/${customer.id}/favorites`)
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {

@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import PriceFormat from '../PriceFormat';
-
+import apiConfig from '../../configs/apiConfig';
 function FilterBar({ selectedTypes, setSelectedTypes, types, price, setPrice }) {
     function getPrice(price) {
         return price === 1000000 ? (
@@ -120,7 +120,7 @@ function Search() {
     const { t } = useTranslation();
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/product-type')
+        fetch(apiConfig.apiUrl + '/api/product-type')
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {
@@ -140,7 +140,7 @@ function Search() {
             return;
         }
 
-        fetch('http://localhost:5000/api/product/search?q=' + searchInputValue)
+        fetch(apiConfig.apiUrl + '/api/product/search?q=' + searchInputValue)
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {

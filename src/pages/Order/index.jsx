@@ -13,6 +13,7 @@ import ReactDOMServer from 'react-dom/server';
 import EmailTemplate from './emailTemplate.jsx';
 import Select from 'react-select';
 import { selectedOrderItemsActions } from '../../redux/slices/selectedOrderItemsSlice.js';
+import apiConfig from '../../configs/apiConfig';
 const validationSchema = Yup.object({
     phone: Yup.string()
         .required('Trường này bắt buộc')
@@ -120,7 +121,7 @@ export default function Order() {
     useEffect(() => {
         if (customer) {
             form.setFieldValue('phone', customer.phone);
-            fetch('http://localhost:5000/api/coupon/get-by-customer/' + customer?._id)
+            fetch(apiConfig.apiUrl + '/api/coupon/get-by-customer/' + customer?._id)
                 .then((res) => res.json())
                 .then((resJson) => {
                     if (resJson.success) {
@@ -226,7 +227,7 @@ export default function Order() {
         localStorage.setItem('pendingOrder', JSON.stringify(pendingOrder));
 
         // redirect to gateway
-        const res = await fetch('http://localhost:5000/api/payment/create-trans', {
+        const res = await fetch(apiConfig.apiUrl + '/api/payment/create-trans', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -250,7 +251,7 @@ export default function Order() {
             ?.filter((p) => validatePromotion(p))
             ?.forEach((p) => {
                 const promises = p?.vouchers?.map(async (v) => {
-                    fetch('http://localhost:5000/api/customer-voucher', {
+                    fetch(apiConfig.apiUrl + '/api/customer-voucher', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -266,14 +267,14 @@ export default function Order() {
             });
     }
     function deleteVoucher() {
-        fetch('http://localhost:5000/api/customer-voucher/' + voucher?.id, {
+        fetch(apiConfig.apiUrl + '/api/customer-voucher/' + voucher?.id, {
             method: 'DELETE',
         }).then((res) => res.json());
     }
 
     function createOrder(_order) {
         setLoading(true);
-        fetch('http://localhost:5000/api/order', {
+        fetch(apiConfig.apiUrl + 'pi/order', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -352,7 +353,7 @@ export default function Order() {
     }, []);
 
     function getVouchers() {
-        fetch('http://localhost:5000/api/voucher/get-active-by-customer-id/' + customer?.id)
+        fetch(apiConfig.apiUrl + '/api/voucher/get-active-by-customer-id/' + customer?.id)
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {
@@ -369,7 +370,7 @@ export default function Order() {
     }
 
     function getPromotions() {
-        fetch('http://localhost:5000/api/promotion-program')
+        fetch(apiConfig.apiUrl + '/api/promotion-program')
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {

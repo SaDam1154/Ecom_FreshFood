@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import 'react-toastify/dist/ReactToastify.css';
 import LoadingForm from '../../components/LoadingForm';
 import Select from 'react-select';
+import apiConfig from '../../configs/apiConfig';
 
 const validationSchema = Yup.object({
     name: Yup.string()
@@ -102,7 +103,7 @@ function Signup() {
             if (image) {
                 let formdata = new FormData();
                 formdata.append('image', image.file);
-                const res = await fetch('http://localhost:5000/api/upload', {
+                const res = await fetch(apiConfig.apiUrl + '/api/upload', {
                     method: 'POST',
                     body: formdata,
                 });

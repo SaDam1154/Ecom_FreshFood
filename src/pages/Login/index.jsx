@@ -11,6 +11,7 @@ const validationSchema = Yup.object({
     phone: Yup.string().required('Vui lòng nhập số điện thoại!'),
     password: Yup.string().required('Vui lòng nhập nhập mật khẩu!'),
 });
+import apiConfig from '../../configs/apiConfig';
 
 function Login() {
     const dispatch = useDispatch();
@@ -32,7 +33,7 @@ function Login() {
     });
     function handleFormsubmit(values) {
         setLoading(true);
-        fetch('http://localhost:5000/api/customer/login', {
+        fetch(apiConfig.apiUrl + '/api/customer/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

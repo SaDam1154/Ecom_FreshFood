@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import apiConfig from '../../configs/apiConfig';
 
 function Rating({ rating, isOwn = false, onDelete, onEdit }) {
     return (
@@ -184,7 +185,7 @@ export default function RatingsBlock({ product, onChange }) {
 
     function handleCreateRating() {
         setLoading(true);
-        fetch('http://localhost:5000/api/rating', {
+        fetch(apiConfig.apiUrl + '/api/rating', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -216,7 +217,7 @@ export default function RatingsBlock({ product, onChange }) {
 
     function handleUpdateRating() {
         setLoading(true);
-        fetch('http://localhost:5000/api/rating/' + ownRating?.id, {
+        fetch(apiConfig.apiUrl + '/api/rating/' + ownRating?.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -246,7 +247,7 @@ export default function RatingsBlock({ product, onChange }) {
     }
 
     function handleDeleteRating() {
-        fetch('http://localhost:5000/api/rating/' + ownRating?.id, {
+        fetch(apiConfig.apiUrl + '/api/rating/' + ownRating?.id, {
             method: 'DELETE',
         })
             .then((res) => res.json())

@@ -9,6 +9,7 @@ import { customerActions } from '../../redux/slices/customerSlide';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import apiConfig from '../../configs/apiConfig';
 
 function Products() {
     const { type } = useParams();
@@ -27,7 +28,7 @@ function Products() {
     }, [type, lang]);
 
     function getTypes() {
-        fetch('http://localhost:5000/api/product-type')
+        fetch(apiConfig.apiUrl + '/api/product-type')
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {
@@ -43,7 +44,7 @@ function Products() {
     }
 
     function getProducts() {
-        fetch('http://localhost:5000/api/product')
+        fetch(apiConfig.apiUrl + '/api/product')
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {

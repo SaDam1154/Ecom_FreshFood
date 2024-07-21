@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PriceFormat from '../../components/PriceFormat';
+import apiConfig from '../../configs/apiConfig';
 
 export default function RelatedProductBlock({ product }) {
     const [products, setProducts] = useState([]);
@@ -12,7 +13,7 @@ export default function RelatedProductBlock({ product }) {
     }, [product]);
 
     function getProducts() {
-        fetch('http://localhost:5000/api/product')
+        fetch(apiConfig.apiUrl + '/api/product')
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {
