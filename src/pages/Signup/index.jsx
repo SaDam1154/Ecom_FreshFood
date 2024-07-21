@@ -154,7 +154,7 @@ function Signup() {
                         to="/"
                         className="flex select-none items-center text-2xl font-semibold text-green-600"
                     >
-                        <img className="mr-2 h-16 w-16" src="/mainLogo.png" alt="logo" />
+                        <img className="mr-2 h-16 w-16" src="/public/mainLogo.png" alt="logo" />
                         Fresh Food
                     </Link>
                     <div className=" w-[648px] rounded-lg bg-white shadow">

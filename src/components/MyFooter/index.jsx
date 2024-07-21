@@ -84,7 +84,7 @@ export default function MyFooter() {
                 <div className="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
                     <div className=" lg:col-span-2">
                         <h6 className="mb-4 flex items-center justify-center font-semibold uppercase md:justify-start">
-                            <img src="/mainLogo.png" alt="" className="h-20 w-20" />
+                            <img src="/public/mainLogo.png" alt="" className="h-20 w-20" />
                             {t('footer.title')}
                         </h6>
                         <p className="select-none">{t('footer.description')}</p>

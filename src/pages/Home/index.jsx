@@ -94,7 +94,7 @@ function Home() {
                 {/* Hình ảnh lớn thứ nhất */}
                 <div className="relative col-span-2 flex h-full w-full flex-col items-start justify-center px-[2vw]">
                     <img
-                        src="/1.jpg"
+                        src="/public/1.jpg"
                         alt="Banner1"
                         className="absolute left-0 top-0 -z-0 h-full w-full"
                     />
@@ -148,7 +148,7 @@ function Home() {
                 <div className="relative hidden h-full w-full flex-col items-start justify-start gap-2 lg:flex lg:gap-4 2xl:gap-6">
                     <div className="relative flex h-full w-full flex-col items-start justify-center px-5">
                         <img
-                            src="/2.jpg"
+                            src="/public/2.jpg"
                             alt="Banner1"
                             className="absolute left-0 top-0 -z-0 h-full w-full"
                         />
@@ -189,7 +189,7 @@ function Home() {
                     </div>
                     <div className="relative flex h-full w-full flex-col items-start justify-center px-5">
                         <img
-                            src="/3.jpg"
+                            src="/public/3.jpg"
                             alt="Banner1"
                             className="absolute left-0 top-0 -z-0 h-full w-full"
                         />
