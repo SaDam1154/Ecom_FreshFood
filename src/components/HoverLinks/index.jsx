@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { langSelector } from '../../redux/selectors';
-
+import apiConfig from '../../configs/apiConfig';
 export default function HoverLinks({ home }) {
     const [productTypes, setProductTypes] = useState([]);
     const lang = useSelector(langSelector);
@@ -18,7 +18,7 @@ export default function HoverLinks({ home }) {
     }, []);
 
     function getProductTypes() {
-        fetch('http://localhost:5000/api/product-type')
+        fetch(apiConfig.apiUrl + '/api/product-type')
             .then((res) => res.json())
             .then((resJson) => {
                 if (resJson.success) {
