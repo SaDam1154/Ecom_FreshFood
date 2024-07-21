@@ -321,7 +321,7 @@ function Signup() {
                                             htmlFor="province"
                                             className="block text-sm font-medium text-gray-900"
                                         >
-                                            Tỉnh/Thành phố
+                                            Tỉnh/Thành phố *
                                         </label>
                                         <Select
                                             id="province"
@@ -354,7 +354,7 @@ function Signup() {
                                             htmlFor="district"
                                             className="block text-sm font-medium text-gray-900"
                                         >
-                                            Quận/Huyện
+                                            Quận/Huyện *
                                         </label>
                                         <Select
                                             id="district"
@@ -389,7 +389,7 @@ function Signup() {
                                             htmlFor="commune"
                                             className="block text-sm font-medium text-gray-900"
                                         >
-                                            Phường/Xã
+                                            Phường/Xã *
                                         </label>
                                         <Select
                                             id="commune"
@@ -420,7 +420,7 @@ function Signup() {
                                         htmlFor="address"
                                         className="mb-1 block font-medium text-gray-900 "
                                     >
-                                        Địa chỉ cụ thể*
+                                        Số nhà, tên đường *
                                     </label>
                                     <textarea
                                         id="address"

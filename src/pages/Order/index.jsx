@@ -537,7 +537,7 @@ export default function Order() {
                                 htmlFor="province"
                                 className="block text-sm font-medium text-gray-900"
                             >
-                                Tỉnh/Thành phố
+                                Tỉnh/Thành phố *
                             </label>
                             <Select
                                 id="province"
@@ -569,7 +569,7 @@ export default function Order() {
                                 htmlFor="district"
                                 className="block text-sm font-medium text-gray-900"
                             >
-                                Quận/Huyện
+                                Quận/Huyện *
                             </label>
                             <Select
                                 id="districts"
@@ -603,7 +603,7 @@ export default function Order() {
                                 htmlFor="commune"
                                 className="block text-sm font-medium text-gray-900"
                             >
-                                Phường/Xã
+                                Phường/Xã *
                             </label>
                             <Select
                                 id="commune"
@@ -630,7 +630,7 @@ export default function Order() {
                     </div>
                     <div>
                         <label htmlFor="address" className="mb-1 block font-medium text-gray-900 ">
-                            Địa chỉ cụ thể*
+                            Số nhà, tên đường *
                         </label>
                         <textarea
                             id="address"
@@ -651,7 +651,7 @@ export default function Order() {
                             {form.errors.address || 'No message'}
                         </span>
                     </div>
-                    <div className="flex flex-col space-x-8">
+                    <div className="mb-4 flex flex-col space-x-8">
                         <label className="label !cursor-default">Thông báo đơn hàng</label>
                         <div className="flex items-center space-x-8">
                             <div className="flex items-center">

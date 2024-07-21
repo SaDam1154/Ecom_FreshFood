@@ -5,6 +5,7 @@ import { customerActions } from '../../../redux/slices/customerSlide';
 import { useDispatch, useSelector } from 'react-redux';
 import ChooseLanguage from './ChooseLanguage';
 import { useTranslation } from 'react-i18next';
+import { orderActions } from '../../../redux/slices/orderSlice';
 function Header() {
     const dispatch = useDispatch();
     const customer = useSelector(customerSelector);
@@ -65,7 +66,10 @@ function Header() {
 
                             <div className="px-4 ">
                                 <svg
-                                    onClick={() => dispatch(customerActions.logout())}
+                                    onClick={() => {
+                                        dispatch(orderActions.reset());
+                                        dispatch(customerActions.logout());
+                                    }}
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"

@@ -234,29 +234,25 @@ function Home() {
                 <MyCarousel />
             </div>
             {/* khu 3 */}
-            <div className=" 3xl:grid-cols-6 grid h-full w-full grid-cols-1  xl:grid-cols-4  2xl:grid-cols-5">
+            <div className=" 3xl:grid-cols-6 grid  h-[80vh] w-full grid-cols-1 overflow-scroll  xl:grid-cols-4  2xl:grid-cols-5">
                 {/* khu Category */}
-                <div
-                    className={clsx(
-                        'mx-1 flex flex-col gap-2 rounded-2xl bg-slate-100 p-1 sm:mx-2 lg:mx-3 lg:p-2 xl:mx-4 2xl:mx-5',
-                        {
-                            'sticky top-20 z-50 bg-red-50': false,
-                        },
-                    )}
-                >
-                    <div className="flex w-full flex-col items-start justify-center gap-1">
-                        <span className="select-none text-3xl font-semibold">
-                            {t('common.Category')}
-                        </span>
-                        <hr className=" h-1 w-12 rounded border-0 bg-green-400" />
+                <div>
+                    <div className="sticky top-2 z-50 mx-1 flex h-auto flex-col gap-2 rounded-2xl bg-slate-100 sm:mx-2 lg:mx-3 lg:p-2 xl:mx-4 2xl:mx-5">
+                        <div className="flex h-auto w-full flex-col items-start justify-center gap-1">
+                            <span className="select-none text-3xl font-semibold">
+                                {t('common.Category')}
+                            </span>
+                            <hr className=" h-1 w-12 rounded border-0 bg-green-400" />
+                        </div>
+                        <HoverLinks home={true} />
                     </div>
-                    <HoverLinks home={true} />
                 </div>
                 {/* khu sanpham */}
-                <div className="3xl:col-span-5 flex h-[80vh] flex-col gap-4 overflow-scroll sm:col-span-2 xl:col-span-3 2xl:col-span-4">
+                <div className="3xl:col-span-5 flex flex-col gap-4 sm:col-span-2 xl:col-span-3 2xl:col-span-4">
                     {!customer && (
                         <div className="text-[#4a5568]">{t('homepage.pleaseSignUp')}</div>
                     )}
+                    {/* Sản phẩm nổi bật */}
                     <div className="flex flex-col">
                         <div className="flex w-full flex-col items-end justify-center gap-1">
                             <span className="text-3xl font-semibold text-neutral-900">
@@ -277,6 +273,8 @@ function Home() {
                                 })}
                         </div>
                     </div>
+
+                    {/* Sản phẩm giảm giá */}
                     <div className="flex flex-col">
                         <div className="flex w-full flex-col items-end justify-center gap-1">
                             <span className="text-3xl font-semibold text-neutral-900">
@@ -297,6 +295,8 @@ function Home() {
                                 })}
                         </div>
                     </div>
+
+                    {/* Sản phẩm mới */}
                     <div className="flex flex-col">
                         <div className="flex w-full flex-col items-end justify-center gap-1">
                             <span className="text-3xl font-semibold text-neutral-900">
@@ -318,6 +318,7 @@ function Home() {
                         </div>
                     </div>
 
+                    {/* Sản phẩm yêu thích */}
                     <div className="flex flex-col">
                         {customer && favorites.length > 0 ? (
                             <div className="flex w-full flex-col items-end justify-center gap-1">
@@ -344,6 +345,8 @@ function Home() {
                             <div className="flex h-full w-full items-center justify-center"></div>
                         )}
                     </div>
+
+                    {/* Sản phẩm được gợi ý */}
                     <div className="flex flex-col">
                         {customer && productsRec.length > 0 ? (
                             <div className="flex w-full flex-col items-end justify-center gap-1">

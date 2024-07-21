@@ -49,7 +49,7 @@ export default function HoverLinks({ home }) {
         y.set(yPct);
     };
     return (
-        <div className="flex w-full flex-col items-center justify-start">
+        <div className="flex h-auto w-full flex-col items-center justify-start">
             <Link
                 to={'/products'}
                 className="group relative flex w-full cursor-pointer items-center justify-between"
