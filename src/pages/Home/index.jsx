@@ -231,11 +231,9 @@ function Home() {
                 </div>
             </div>
             {/* Khu slider thứ 2 */}
-            <div className="m-8 h-full w-full">
-                <MyCarousel />
-            </div>
+
             {/* khu 3 */}
-            <div className=" 3xl:grid-cols-6 grid  h-[80vh] w-full grid-cols-1 overflow-scroll  xl:grid-cols-4  2xl:grid-cols-5">
+            <div className="3xl:grid-cols-6 mt-8 grid  h-fit w-full grid-cols-1 xl:grid-cols-4  2xl:grid-cols-5">
                 {/* khu Category */}
                 <div>
                     <div className="sticky top-2 z-50 mx-1 flex h-auto flex-col gap-2 rounded-2xl bg-slate-100 sm:mx-2 lg:mx-3 lg:p-2 xl:mx-4 2xl:mx-5">
@@ -376,7 +374,7 @@ function Home() {
                     </div>
                 </div>
             </div>
-            <div className="fixed bottom-4 right-4 z-50">
+            {/* <div className="fixed bottom-4 right-4 z-50">
                 {customer && <ChatIcon onClick={handleChatIconClick} />}
                 {customer && isChatOpen && (
                     <ChatBox
@@ -387,7 +385,7 @@ function Home() {
                         customerId={customer._id}
                     />
                 )}
-            </div>
+            </div> */}
         </div>
     );
 }

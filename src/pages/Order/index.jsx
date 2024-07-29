@@ -181,7 +181,7 @@ export default function Order() {
             deliveryStatus: 'pending',
             paymentStatus: 'unpaid',
             details: details,
-            receivedMoney: intoMoneyByVoucher,
+            receivedMoney: 0,
             totalPrice: order.totalPrice,
             discountByVoucher: intoMoney - intoMoneyByVoucher,
             intoMoney: intoMoneyByVoucher,
@@ -274,7 +274,7 @@ export default function Order() {
 
     function createOrder(_order) {
         setLoading(true);
-        fetch(apiConfig.apiUrl + 'pi/order', {
+        fetch(apiConfig.apiUrl + '/api/order', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -206,7 +206,16 @@ const EmailTemplate = ({ template }) => {
                         <h2>Thông tin khách hàng</h2>
                         <p>Tên khách hàng: {template?.order?.name}</p>
                         <p>Số điện thoại: {template?.order?.phone}</p>
-                        <p>Địa chỉ giao hàng: {template?.order?.address}</p>
+                        <p>
+                            Địa chỉ giao hàng:{' '}
+                            {template?.order?.address +
+                                ', ' +
+                                template?.order?.commune?.Name +
+                                ', ' +
+                                template?.order?.district?.Name +
+                                ', ' +
+                                template?.order?.province?.Name}
+                        </p>
 
                         <div className="invoice-info">
                             <h2>Thông tin hóa đơn</h2>
