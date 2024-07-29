@@ -9,6 +9,8 @@ import { orderActions } from '../../redux/slices/orderSlice';
 import { customerSelector, orderSelector, paymentOrderSelector } from '../../redux/selectors';
 import { useTranslation } from 'react-i18next';
 import { selectedOrderItemsActions } from '../../redux/slices/selectedOrderItemsSlice';
+import apiConfig from '../../configs/apiConfig';
+import { useEffect, useMemo, useState } from 'react';
 
 function CartItem({ detail, t }) {
     const selectedProductIds = useSelector((state) => state.selectedOrderItems.productIds);
@@ -94,8 +96,52 @@ export default function Cart() {
     const dispatch = useDispatch();
     const order = useSelector(orderSelector);
     const paymentOrder = useSelector(paymentOrderSelector);
+    const [promotions, setPromotions] = useState([]);
     console.log(order);
     const { t } = useTranslation();
+
+    const suggetTexts = useMemo(
+        () =>
+            promotions
+                .filter(
+                    (promotion) =>
+                        promotion?.trigger === 'buy' &&
+                        promotion?.orderCondition?.targets === null &&
+                        promotion?.orderCondition?.condition?.type === 'amount',
+                )
+                .filter(
+                    (promotion) =>
+                        promotion?.orderCondition?.condition?.value > paymentOrder.intoMoney &&
+                        promotion?.orderCondition?.condition?.value < 1.25 * paymentOrder.intoMoney,
+                )
+                .map((promotion) => (
+                    <p>
+                        <span>{'Mua thêm '}</span>
+                        <span className='font-semibold'>
+                            <PriceFormat>
+                                {promotion?.orderCondition?.condition?.value -
+                                    paymentOrder.intoMoney}
+                            </PriceFormat>
+                        </span>
+                        <span>{'đ để nhận ưu đãi của chương trình'}</span>
+                        <span>{`"${promotion?.description}".`}</span>
+                    </p>
+                )),
+        [promotions, paymentOrder],
+    );
+
+    useEffect(() => {
+        fetch(apiConfig.apiUrl + '/api/promotion-program')
+            .then((res) => res.json())
+            .then((resJson) => {
+                if (resJson.success) {
+                    setPromotions(resJson.promotionPrograms);
+                    console.log(resJson.promotionPrograms);
+                } else {
+                    setPromotions([]);
+                }
+            });
+    }, []);
 
     console.log(paymentOrder);
     function isSelectAll() {
@@ -153,6 +199,12 @@ export default function Cart() {
                     )}
                     {order?.details?.map((detail, index) => (
                         <CartItem detail={detail} t={t} key={index} />
+                    ))}
+
+                    {suggetTexts?.map((text, index) => (
+                        <div key={index} className="text-green-700 mt-1">
+                            {text}
+                        </div>
                     ))}
                 </div>
                 <div className="w-[290px] rounded-lg bg-gray-50 p-4">
