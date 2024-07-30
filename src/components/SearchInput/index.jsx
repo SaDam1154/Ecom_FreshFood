@@ -4,20 +4,29 @@ import { useTranslation } from 'react-i18next';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import useDebounce from '../../hooks/useDebouce';
 import clsx from 'clsx';
+import { useSelector } from 'react-redux';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import PriceFormat from '../PriceFormat';
 import apiConfig from '../../configs/apiConfig';
+import { langSelector } from '../../redux/selectors';
+
 function FilterBar({ selectedTypes, setSelectedTypes, types, price, setPrice }) {
+    const lang = useSelector(langSelector);
     function getPrice(price) {
         return price === 1000000 ? (
-            'Vô hạn'
+            lang == 'Vi' ? (
+                'Vô hạn'
+            ) : (
+                'Unlimited'
+            )
         ) : (
             <p>
                 <PriceFormat>{price}</PriceFormat>đ
             </p>
         );
     }
+
     return (
         <div className="mt-1 flex space-x-2">
             <Listbox
@@ -34,8 +43,12 @@ function FilterBar({ selectedTypes, setSelectedTypes, types, price, setPrice }) 
                     <div className="flex w-full items-center justify-between">
                         <p className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
                             {selectedTypes.length == 0
-                                ? 'Tất cả danh mục'
-                                : selectedTypes.map((t) => t.name).join(', ')}
+                                ? lang == 'Vi'
+                                    ? 'Tất cả danh mục'
+                                    : 'All product type'
+                                : selectedTypes
+                                      .map((t) => (lang == 'Vi' ? t.name : t.nameEN))
+                                      .join(', ')}
                         </p>
 
                         <svg
@@ -71,7 +84,7 @@ function FilterBar({ selectedTypes, setSelectedTypes, types, price, setPrice }) 
                                             d="m4.5 12.75 6 6 9-13.5"
                                         />
                                     </svg>
-                                    {type.name}
+                                    {lang == 'Vi' ? type.name : type.nameEN}
                                 </div>
                             )}
                         </ListboxOption>
@@ -81,7 +94,7 @@ function FilterBar({ selectedTypes, setSelectedTypes, types, price, setPrice }) 
 
             <button className="group/price relative flex w-[250px] rounded border px-3 py-1 text-right">
                 {price.from === 0 && price.to === 1000000 ? (
-                    <div>Tất cả giá</div>
+                    <div>{lang == 'Vi' ? 'Tất cả giá' : 'All price'}</div>
                 ) : (
                     <div className="flex space-x-2">
                         <p> {getPrice(price.from)}</p>
